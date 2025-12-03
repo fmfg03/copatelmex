@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Club América Colors - Pantone Process Yellow C */
+    --brand-yellow: 56 100% 50%;           /* Pantone Process Yellow C */
+    --brand-navy: 212 60% 15%;             /* Azul marino oscuro */
+    --brand-red: 348 95% 50%;              /* Rojo/Rosa vibrante */
+    --brand-blue: 210 80% 40%;             /* Azul medio */
+    
+    /* Base colors */
+    --background: 0 0% 100%;
+    --foreground: 212 60% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 212 60% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 212 60% 15%;
+
+    --primary: 56 100% 50%;                /* Pantone Process Yellow C */
+    --primary-foreground: 212 60% 15%;     /* Navy text on yellow */
+
+    --secondary: 212 60% 15%;              /* Navy oscuro */
+    --secondary-foreground: 0 0% 100%;     /* White text on navy */
+
+    --muted: 210 15% 96%;
+    --muted-foreground: 212 20% 50%;
+
+    --accent: 348 95% 50%;                 /* Rosa/Rojo vibrante */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 15% 88%;
+    --input: 210 15% 90%;
+    --ring: 56 100% 50%;
+
+    --radius: 0.5rem;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+    --shadow-yellow: 0 4px 24px hsla(56, 100%, 50%, 0.4);
+    --shadow-navy: 0 8px 32px hsla(212, 60%, 15%, 0.3);
+    
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Gradients */
+    --gradient-navy: linear-gradient(135deg, hsl(212, 60%, 18%) 0%, hsl(212, 65%, 12%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(210, 70%, 35%) 0%, hsl(212, 60%, 15%) 100%);
+    --gradient-yellow: linear-gradient(135deg, hsl(56, 100%, 55%) 0%, hsl(56, 100%, 50%) 100%);
+    --gradient-overlay: linear-gradient(135deg, hsla(212, 60%, 15%, 0.92) 0%, hsla(210, 70%, 30%, 0.85) 100%);
+    --gradient-blue-ocean: linear-gradient(135deg, hsl(210, 80%, 40%) 0%, hsl(212, 60%, 15%) 100%);
+  }
+
+  .dark {
+    --background: 212 65% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 212 60% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 212 60% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 56 100% 55%;
+    --primary-foreground: 212 70% 12%;
+
+    --secondary: 212 55% 20%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 212 55% 18%;
+    --muted-foreground: 210 15% 75%;
+
+    --accent: 348 95% 55%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 212 45% 28%;
+    --input: 212 50% 20%;
+    --ring: 56 100% 55%;
+    
+    /* Dark mode shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+    --shadow-yellow: 0 4px 24px hsla(56, 100%, 55%, 0.3);
+    --shadow-navy: 0 8px 32px hsla(212, 60%, 10%, 0.8);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-weight: 400;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+  }
+  
+  /* Smooth scroll with offset for fixed navbar */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+}

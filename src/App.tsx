@@ -1,0 +1,51 @@
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ScrollToTop } from "@/components/ScrollToTop";
+import Index from "./pages/Index";
+import Auth from "./pages/Auth";
+import Register from "./pages/Register";
+import DocumentsPortal from "./pages/DocumentsPortal";
+import TournamentInfo from "./pages/TournamentInfo";
+import Schedule from "./pages/Schedule";
+import MediaGallery from "./pages/MediaGallery";
+import Privacy from "./pages/Privacy";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentCancelled from "./pages/PaymentCancelled";
+import Admin from "./pages/Admin";
+import MyTeams from "./pages/MyTeams";
+import NotFound from "./pages/NotFound";
+
+const queryClient = new QueryClient();
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/documents" element={<DocumentsPortal />} />
+          <Route path="/tournament-info" element={<TournamentInfo />} />
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/media" element={<MediaGallery />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/payment-cancelled" element={<PaymentCancelled />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/my-teams" element={<MyTeams />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
+
+export default App;
