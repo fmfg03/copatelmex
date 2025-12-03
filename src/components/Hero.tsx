@@ -4,6 +4,7 @@ import { CountdownTimer } from "./CountdownTimer";
 import { Calendar, Trophy, Users } from "lucide-react";
 import heroImage from "@/assets/hero-copa-telmex.jpg";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
+import fundacionLogo from "@/assets/fundacion-telmex-logo-white.png";
 
 export const Hero = () => {
   const navigate = useNavigate();
@@ -31,19 +32,26 @@ export const Hero = () => {
       {/* Content */}
       <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
         <div className="max-w-6xl mx-auto space-y-8 md:space-y-12">
-          {/* Logo */}
-          <div className="flex justify-center mb-8 md:mb-12">
-            <div className="relative">
-              <img 
-                src={copaTelmexLogo} 
-                alt="Copa Telmex Telcel" 
-                title="Copa Telmex Telcel" 
-                width="320" 
-                height="320" 
-                fetchPriority="high" 
-                className="w-64 h-auto md:w-80 md:h-auto object-contain drop-shadow-2xl animate-fade-in" 
-              />
-            </div>
+          {/* Logos */}
+          <div className="flex justify-center items-center gap-8 md:gap-12 mb-8 md:mb-12">
+            <img 
+              src={copaTelmexLogo} 
+              alt="Copa Telmex Telcel" 
+              title="Copa Telmex Telcel" 
+              width="280" 
+              height="280" 
+              fetchPriority="high" 
+              className="w-48 h-auto md:w-64 object-contain drop-shadow-2xl animate-fade-in" 
+            />
+            <img 
+              src={fundacionLogo} 
+              alt="Fundación Telmex Telcel" 
+              title="Fundación Telmex Telcel" 
+              width="280" 
+              height="280" 
+              fetchPriority="high" 
+              className="w-48 h-auto md:w-64 object-contain drop-shadow-2xl animate-fade-in" 
+            />
           </div>
 
           {/* Main Title */}
