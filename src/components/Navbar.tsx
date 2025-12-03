@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import clubAmericaCupLogo from "@/assets/copa-club-america-2026-logo.png";
+import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -80,15 +80,15 @@ export const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-america-navy dark:bg-secondary/95 shadow-md border-b border-transparent dark:border-border backdrop-blur-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-secondary dark:bg-secondary/95 shadow-md border-b border-transparent dark:border-border backdrop-blur-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <img 
-              src={clubAmericaCupLogo} 
-              alt="Copa Club América 2026"
-              title="Copa Club América 2026"
+              src={copaTelmexLogo} 
+              alt="Copa Telmex Telcel"
+              title="Copa Telmex Telcel"
               fetchPriority="high"
               width="64"
               height="64"
@@ -122,7 +122,7 @@ export const Navbar = () => {
                   className={`px-4 py-2 text-white rounded-lg transition-all duration-fast font-semibold text-sm tracking-wide ${
                     link.disabled 
                       ? "cursor-not-allowed opacity-60" 
-                      : "hover:text-america-yellow"
+                      : "hover:text-primary"
                   }`}
                 >
                   <span className={link.disabled ? "group-hover:hidden" : ""}>
@@ -147,7 +147,7 @@ export const Navbar = () => {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className="text-secondary hover:bg-secondary hover:text-primary border-secondary"
+                      className="text-white hover:bg-primary hover:text-white border-white/30"
                     >
                       <User className="w-4 h-4 mr-2" />
                       ¡Hola, {user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0]}!
@@ -192,7 +192,7 @@ export const Navbar = () => {
                 <Button
                   variant="default"
                   onClick={() => navigate("/register")}
-                  className="bg-primary hover:bg-primary/90 text-secondary shadow-lg"
+                  className="bg-accent hover:bg-accent/90 text-white shadow-lg"
                 >
                   Inscríbete aquí
                 </Button>
@@ -201,7 +201,7 @@ export const Navbar = () => {
               <Button
                 variant="default"
                 onClick={() => navigate("/auth")}
-                className="bg-primary hover:bg-primary/90 text-secondary shadow-lg"
+                className="bg-accent hover:bg-accent/90 text-white shadow-lg"
               >
                 Inscríbete aquí
               </Button>
@@ -211,7 +211,7 @@ export const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-white hover:text-america-yellow rounded-lg transition-colors"
+            className="md:hidden p-2 text-white hover:text-primary rounded-lg transition-colors"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -246,7 +246,7 @@ export const Navbar = () => {
                     className={`px-4 py-3 text-white rounded-lg transition-colors font-medium block ${
                       link.disabled 
                         ? "cursor-not-allowed opacity-60" 
-                        : "hover:text-america-yellow"
+                        : "hover:text-primary"
                     }`}
                   >
                     <span className={link.disabled ? "group-hover:hidden" : ""}>
@@ -315,7 +315,7 @@ export const Navbar = () => {
                   setIsOpen(false);
                   navigate(user ? "/register" : "/auth");
                 }}
-                className="bg-primary hover:bg-primary/90 text-secondary w-full"
+                className="bg-accent hover:bg-accent/90 text-white w-full"
               >
                 Inscríbete aquí
               </Button>

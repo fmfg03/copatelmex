@@ -1,46 +1,48 @@
 import { Facebook, Instagram, Mail, Phone, MessageCircle } from "lucide-react";
-import clubAmericaLogo from "@/assets/copa-club-america-2026-logo.png";
+import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
+import fundacionLogo from "@/assets/fundacion-telmex-logo-white.png";
+
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
-  return <footer id="contacto" className="bg-secondary dark:bg-secondary/90 text-white border-t border-transparent dark:border-border">
+  
+  return (
+    <footer id="contacto" className="bg-secondary dark:bg-secondary/90 text-white border-t border-transparent dark:border-border">
       <div className="container mx-auto px-4 py-16 md:py-20">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
             {/* Brand */}
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <img src={clubAmericaLogo} alt="Club América Logo" className="w-12 h-12 object-contain" />
+                <img src={copaTelmexLogo} alt="Copa Telmex Telcel" className="w-12 h-12 object-contain" />
                 <div>
-                  <h3 className="font-bold text-lg">COPA CLUB AMÉRICA 2026</h3>
-                  <p className="text-xs text-white/70">Torneo Juvenil 2026</p>
+                  <h3 className="font-bold text-lg">COPA TELMEX TELCEL</h3>
+                  <p className="text-xs text-white/70">26ª Edición</p>
                 </div>
               </div>
               <p className="text-white/80 text-sm leading-relaxed text-justify">
-                Torneo de fútbol formativo, organizado oficialmente por el Club América.
+                El torneo aficionado más grande del mundo, impulsando la asistencia social mediante el deporte.
               </p>
+              <div className="mt-4">
+                <img src={fundacionLogo} alt="Fundación Telmex Telcel" className="h-8 object-contain opacity-80" />
+              </div>
             </div>
 
             {/* Quick Links */}
             <div>
               <h4 className="font-bold text-lg mb-4">Enlaces Rápidos</h4>
               <ul className="space-y-2">
-                {[{
-                name: "Inicio",
-                href: "#inicio"
-              }, {
-                name: "Información",
-                href: "#informacion"
-              }, {
-                name: "Categorías",
-                href: "#categorias"
-              }, {
-                name: "Sede",
-                href: "#sedes"
-              }].map(link => <li key={link.name}>
+                {[
+                  { name: "Inicio", href: "#inicio" },
+                  { name: "Información", href: "#informacion" },
+                  { name: "Categorías", href: "#categorias" },
+                  { name: "Sede", href: "#sedes" },
+                ].map((link) => (
+                  <li key={link.name}>
                     <a href={link.href} className="text-white/80 hover:text-primary transition-colors text-sm">
                       {link.name}
                     </a>
-                  </li>)}
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -49,15 +51,15 @@ export const Footer = () => {
               <h4 className="font-bold text-lg mb-4">Contacto</h4>
               <ul className="space-y-3">
                 <li className="flex items-center space-x-3 text-sm">
-                  <Mail className="w-4 h-4 text-america-blue flex-shrink-0" />
-                  <a href="mailto:copa@clubamerica.com.mx" className="text-white/80 hover:text-primary transition-colors">
-                    copa@clubamerica.com.mx
+                  <Mail className="w-4 h-4 text-primary flex-shrink-0" />
+                  <a href="mailto:copa@fundaciontelmextelcel.org" className="text-white/80 hover:text-primary transition-colors">
+                    copa@fundaciontelmextelcel.org
                   </a>
                 </li>
                 <li className="flex items-center space-x-3 text-sm">
-                  <Phone className="w-4 h-4 text-america-blue flex-shrink-0" />
-                  <a href="tel:+525512011498" className="text-white/80 hover:text-primary transition-colors">
-                    +52 55 1201 1498
+                  <Phone className="w-4 h-4 text-primary flex-shrink-0" />
+                  <a href="tel:+525555555555" className="text-white/80 hover:text-primary transition-colors">
+                    +52 55 5555 5555
                   </a>
                 </li>
               </ul>
@@ -67,14 +69,29 @@ export const Footer = () => {
             <div>
               <h4 className="font-bold text-lg mb-4">Síguenos</h4>
               <div className="flex space-x-3">
-                <a href="https://facebook.com/copaclubamerica" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20">
-                  <Facebook className="w-5 h-5 text-white group-hover:text-secondary" />
+                <a 
+                  href="https://facebook.com/fundaciontelmextelcel" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
+                >
+                  <Facebook className="w-5 h-5 text-white group-hover:text-white" />
                 </a>
-                <a href="https://instagram.com/copaclubamerica" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20">
-                  <Instagram className="w-5 h-5 text-white group-hover:text-secondary" />
+                <a 
+                  href="https://instagram.com/fundaciontelmextelcel" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
+                >
+                  <Instagram className="w-5 h-5 text-white group-hover:text-white" />
                 </a>
-                <a href="https://wa.me/525512011498?text=Hola,%20me%20interesa%20información%20sobre%20la%20Copa%20Club%20América%202026" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20">
-                  <MessageCircle className="w-5 h-5 text-white group-hover:text-secondary" />
+                <a 
+                  href="https://wa.me/525555555555?text=Hola,%20me%20interesa%20información%20sobre%20la%20Copa%20Telmex%20Telcel" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
+                >
+                  <MessageCircle className="w-5 h-5 text-white group-hover:text-white" />
                 </a>
               </div>
               <p className="text-white/60 text-xs mt-4 text-justify">
@@ -86,10 +103,10 @@ export const Footer = () => {
           {/* Bottom Bar */}
           <div className="border-t border-white/20 pt-8 text-center">
             <p className="text-white/60 text-sm">
-              © {currentYear} Copa Club América 2026. Todos los derechos reservados.
+              © {currentYear} Copa Telmex Telcel. Todos los derechos reservados.
             </p>
-              <p className="text-white/40 text-xs mt-2">
-              Organizado por el Club América y <a href="https://goatmkt.com" target="_blank" rel="noopener noreferrer" className="hover:text-white/60 transition-colors underline">GOAT MKT</a>.
+            <p className="text-white/40 text-xs mt-2">
+              Organizado por <a href="https://fundaciontelmextelcel.org" target="_blank" rel="noopener noreferrer" className="hover:text-white/60 transition-colors underline">Fundación Telmex Telcel</a>.
             </p>
             <div className="mt-4">
               <a href="/privacy" className="text-white/60 hover:text-primary text-xs transition-colors">
@@ -99,5 +116,6 @@ export const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };

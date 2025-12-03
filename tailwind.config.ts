@@ -47,17 +47,17 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        america: {
-          yellow: "hsl(var(--brand-yellow))",
-          navy: "hsl(var(--brand-navy))",
+        telmex: {
+          blue: "hsl(var(--brand-blue-light))",
+          navy: "hsl(var(--brand-blue-dark))",
           red: "hsl(var(--brand-red))",
-          blue: "hsl(var(--brand-blue))",
+          gray: "hsl(var(--brand-gray))",
         },
       },
       backgroundImage: {
         'gradient-navy': 'var(--gradient-navy)',
         'gradient-hero': 'var(--gradient-hero)',
-        'gradient-yellow': 'var(--gradient-yellow)',
+        'gradient-blue': 'var(--gradient-blue)',
         'gradient-overlay': 'var(--gradient-overlay)',
         'gradient-blue-ocean': 'var(--gradient-blue-ocean)',
         'gradient-card': 'linear-gradient(to bottom, hsl(var(--card)), hsl(var(--muted)/0.5))',
@@ -66,7 +66,7 @@ export default {
         'sm': 'var(--shadow-sm)',
         'md': 'var(--shadow-md)',
         'lg': 'var(--shadow-lg)',
-        'yellow': 'var(--shadow-yellow)',
+        'blue': 'var(--shadow-blue)',
         'navy': 'var(--shadow-navy)',
       },
       transitionDuration: {
