@@ -44,7 +44,7 @@ const Privacy = () => {
                       Aviso de Privacidad Oficial
                     </h2>
                     <p className="text-sm text-muted-foreground">
-                      Club de Fútbol América, S.A. de C.V.
+                      Plataforma Sports SC y/o Fundación Telmex Telcel SC
                     </p>
                   </div>
                 </div>
@@ -75,7 +75,7 @@ const Privacy = () => {
                   </div>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  <strong>Club de Fútbol América, S.A. de C.V.</strong>, con domicilio en Prolongación División del Norte número 3901, Colonia Ex Hacienda de Coapa, Alcaldía Coyoacán, Ciudad de México, México, es el responsable del tratamiento de sus datos personales conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.
+                  <strong>Plataforma Sports SC y/o Fundación Telmex Telcel SC</strong>, con domicilio en Ciudad de México, México, es el responsable del tratamiento de sus datos personales conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.
                 </p>
               </div>
               
