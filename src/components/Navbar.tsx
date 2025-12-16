@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, X, LogOut, User, Users, ChevronDown, Shield, Key } from "lucide-react";
+import { Menu, X, LogOut, User, Users, ChevronDown, Shield, Key, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -140,6 +140,16 @@ export const Navbar = () => {
 
           {/* User Menu */}
           <div className="hidden md:flex items-center space-x-2">
+            <Button
+              variant="default"
+              asChild
+              className="bg-accent hover:bg-accent/90 text-white shadow-lg"
+            >
+              <a href="/cedula-inscripcion.pdf" download>
+                <Download className="w-4 h-4 mr-2" />
+                Cédula de Inscripción
+              </a>
+            </Button>
             <ThemeToggle />
             {user && (
               <DropdownMenu>
@@ -246,6 +256,16 @@ export const Navbar = () => {
               <div className="px-4 py-2">
                 <ThemeToggle />
               </div>
+              <Button
+                variant="default"
+                asChild
+                className="bg-accent hover:bg-accent/90 text-white w-full"
+              >
+                <a href="/cedula-inscripcion.pdf" download onClick={() => setIsOpen(false)}>
+                  <Download className="w-4 h-4 mr-2" />
+                  Cédula de Inscripción
+                </a>
+              </Button>
               {user && (
                 <>
                   <div className="px-4 py-2 text-white font-medium border-t border-white/20 mt-2 pt-4">
