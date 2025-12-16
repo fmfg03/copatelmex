@@ -24,7 +24,7 @@ export const exportDashboardToPDF = (stats: StatsData, trendData: TrendData, dat
   
   // Title
   doc.setFontSize(18);
-  doc.text("Reporte de Estadísticas - Copa Club América", pageWidth / 2, 20, { align: "center" });
+  doc.text("Reporte de Estadísticas - Copa Telmex Telcel", pageWidth / 2, 20, { align: "center" });
   
   // Date range
   doc.setFontSize(10);
@@ -154,7 +154,7 @@ export const exportDashboardToExcel = (stats: StatsData, trendData: TrendData, d
 
   // Summary sheet
   const summaryData = [
-    ["Reporte de Estadísticas - Copa Club América"],
+    ["Reporte de Estadísticas - Copa Telmex Telcel"],
     [dateRange?.from && dateRange?.to 
       ? `Período: ${dateRange.from.toLocaleDateString('es-MX')} - ${dateRange.to.toLocaleDateString('es-MX')}`
       : "Período: Todo el tiempo"],

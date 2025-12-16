@@ -21,7 +21,7 @@ export default function TournamentInfo() {
               Información del Torneo
             </h1>
             <p className="text-xl mb-8 text-white/90">
-              Todo lo que necesitas saber sobre la Copa Club América 2026
+              Todo lo que necesitas saber sobre la Copa Telmex Telcel
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button size="lg" onClick={() => navigate("/auth")} className="bg-primary hover:bg-primary/90 text-secondary font-bold shadow-yellow">
@@ -57,7 +57,7 @@ export default function TournamentInfo() {
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold text-secondary mb-4">Una Oportunidad Única</h3>
                   <p className="text-muted-foreground mb-4">
-                    La Copa Club América 2026 es más que un torneo: es una experiencia formativa donde jóvenes talentos 
+                    La Copa Telmex Telcel es más que un torneo: es una experiencia formativa donde jóvenes talentos 
                     tienen la oportunidad de desarrollar sus habilidades en un ambiente competitivo y profesional.
                   </p>
                   <p className="text-muted-foreground">

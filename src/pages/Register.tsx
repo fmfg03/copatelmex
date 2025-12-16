@@ -1874,7 +1874,7 @@ export default function Register() {
                 <CheckCircle className="mx-auto h-24 w-24 text-green-500" />
                 <h2 className="text-3xl font-bold">¡Registro Completado!</h2>
                 <p className="text-muted-foreground">
-                  Has inscrito exitosamente {numberOfTeams} equipo{numberOfTeams > 1 ? 's' : ''} a la Copa Club América 2026
+                  Has inscrito exitosamente {numberOfTeams} equipo{numberOfTeams > 1 ? 's' : ''} a la Copa Telmex Telcel
                 </p>
                 <div className="pt-4">
                   <Button onClick={() => navigate("/")} size="lg">

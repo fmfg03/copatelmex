@@ -3,7 +3,7 @@ import { MessageCircle } from "lucide-react";
 export const FloatingWhatsApp = () => {
   // Número de WhatsApp Business (formato internacional sin + ni espacios)
   const whatsappNumber = "525512011498";
-  const message = "Hola, tengo una pregunta sobre la Copa Club América 2026";
+  const message = "Hola, tengo una pregunta sobre la Copa Telmex Telcel";
 
   const handleClick = () => {
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;

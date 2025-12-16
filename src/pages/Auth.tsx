@@ -209,7 +209,7 @@ export default function Auth() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-secondary">
-            Copa Club América
+            Copa Telmex Telcel
           </CardTitle>
           <CardDescription>
             Ingresa para inscribir tu equipo

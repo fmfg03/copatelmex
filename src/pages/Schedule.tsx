@@ -341,7 +341,7 @@ export default function Schedule() {
     const icsContent = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
-      "PRODID:-//Copa Club América//NONSGML v1.0//EN",
+      "PRODID:-//Copa Telmex Telcel//NONSGML v1.0//EN",
       "BEGIN:VEVENT",
       `UID:${match.id}@copaclubamerica.com`,
       `DTSTAMP:${formatDate(new Date())}`,
