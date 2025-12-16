@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Mail, Phone, MessageCircle } from "lucide-react";
+import { Facebook, Instagram, Mail, Phone, MessageCircle, Twitter, Youtube } from "lucide-react";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
 import fundacionLogo from "@/assets/fundacion-telmex-logo-white.png";
 
@@ -35,7 +35,6 @@ export const Footer = () => {
                   { name: "Inicio", href: "#inicio" },
                   { name: "Información", href: "#informacion" },
                   { name: "Categorías", href: "#categorias" },
-                  { name: "Sede", href: "#sedes" },
                 ].map((link) => (
                   <li key={link.name}>
                     <a href={link.href} className="text-white/80 hover:text-primary transition-colors text-sm">
@@ -68,30 +67,42 @@ export const Footer = () => {
             {/* Social Media */}
             <div>
               <h4 className="font-bold text-lg mb-4">Síguenos</h4>
-              <div className="flex space-x-3">
+              <div className="flex flex-wrap gap-3">
                 <a 
-                  href="https://facebook.com/fundaciontelmextelcel" 
+                  href="https://www.facebook.com/oficialCopaTelmex" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
+                  title="Facebook"
                 >
                   <Facebook className="w-5 h-5 text-white group-hover:text-white" />
                 </a>
                 <a 
-                  href="https://instagram.com/fundaciontelmextelcel" 
+                  href="https://www.instagram.com/copatelmextelcel_oficial" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
+                  title="Instagram"
                 >
                   <Instagram className="w-5 h-5 text-white group-hover:text-white" />
                 </a>
                 <a 
-                  href="https://wa.me/525555555555?text=Hola,%20me%20interesa%20información%20sobre%20la%20Copa%20Telmex%20Telcel" 
+                  href="https://x.com/Copatelmex" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
+                  title="X (Twitter)"
                 >
-                  <MessageCircle className="w-5 h-5 text-white group-hover:text-white" />
+                  <Twitter className="w-5 h-5 text-white group-hover:text-white" />
+                </a>
+                <a 
+                  href="https://www.youtube.com/@CopaTelmexTelcelFutbol" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
+                  title="YouTube"
+                >
+                  <Youtube className="w-5 h-5 text-white group-hover:text-white" />
                 </a>
               </div>
               <p className="text-white/60 text-xs mt-4 text-justify">
