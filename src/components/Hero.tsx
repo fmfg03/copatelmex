@@ -77,17 +77,25 @@ export const Hero = () => {
               <div className="bg-white/15 backdrop-blur-md rounded-xl p-8 border-2 border-white/80 shadow-lg">
                 <Calendar className="w-8 h-8 text-white mb-4" />
                 <h3 className="text-white font-bold text-lg mb-3 tracking-wide">Formato</h3>
-                <p className="text-white/95 font-medium text-justify">Fútbol 11</p>
+                <ul className="text-white/95 font-medium text-sm space-y-1">
+                  <li>• Fase Colectiva</li>
+                  <li>• Fase Estatal</li>
+                  <li>• Fase Nacional</li>
+                </ul>
               </div>
               <div className="bg-white/15 backdrop-blur-md rounded-xl p-8 border-2 border-white/80 shadow-lg">
                 <Users className="w-8 h-8 text-white mb-4" />
                 <h3 className="text-white font-bold text-lg mb-3 tracking-wide">Categorías</h3>
-                <p className="text-white/95 text-sm font-medium text-justify">Femenil 2012, Juvenil 2009-2011, Varonil 2008</p>
+                <p className="text-white/95 text-sm font-medium">Femenil 2012, Juvenil 2009-2011, Varonil 2008</p>
               </div>
               <div className="bg-white/15 backdrop-blur-md rounded-xl p-8 border-2 border-white/80 shadow-lg">
                 <Trophy className="w-8 h-8 text-white mb-4" />
-                <h3 className="text-white font-bold text-lg mb-3 tracking-wide">Sede</h3>
-                <p className="text-white/95 font-medium text-justify">República Mexicana</p>
+                <h3 className="text-white font-bold text-lg mb-3 tracking-wide">Premiación</h3>
+                <ul className="text-white/95 font-medium text-sm space-y-1">
+                  <li>• Trofeos y medallas</li>
+                  <li>• Reconocimientos MVP</li>
+                  <li>• Viaje de Campeones</li>
+                </ul>
               </div>
             </div>
 
