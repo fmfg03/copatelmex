@@ -117,7 +117,7 @@ export const Footer = () => {
               © {currentYear} Copa Telmex Telcel. Todos los derechos reservados.
             </p>
             <p className="text-white/40 text-xs mt-2">
-              Organizado por <a href="https://fundaciontelmextelcel.org" target="_blank" rel="noopener noreferrer" className="hover:text-white/60 transition-colors underline">Fundación Telmex Telcel</a>.
+              Operado por <a href="https://www.plataformasports.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white/60 transition-colors underline">Plataforma Sports</a>.
             </p>
             <div className="mt-4">
               <a href="/privacy" className="text-white/60 hover:text-primary text-xs transition-colors">
