@@ -138,73 +138,56 @@ export const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA Button */}
+          {/* User Menu */}
           <div className="hidden md:flex items-center space-x-2">
             <ThemeToggle />
-            {user ? (
-              <>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className="text-white hover:bg-primary hover:text-white border-white/30"
-                    >
-                      <User className="w-4 h-4 mr-2" />
-                      ¡Hola, {user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0]}!
-                      <ChevronDown className="w-4 h-4 ml-2" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56 bg-popover">
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium">{user.user_metadata?.full_name || 'Usuario'}</p>
-                        <p className="text-xs text-muted-foreground">{user.email}</p>
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate("/my-teams")} className="cursor-pointer">
-                      <Users className="w-4 h-4 mr-2" />
-                      Mis Equipos
+            {user && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="text-white hover:bg-primary hover:text-white border-white/30"
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    ¡Hola, {user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0]}!
+                    <ChevronDown className="w-4 h-4 ml-2" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56 bg-popover">
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium">{user.user_metadata?.full_name || 'Usuario'}</p>
+                      <p className="text-xs text-muted-foreground">{user.email}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate("/my-teams")} className="cursor-pointer">
+                    <Users className="w-4 h-4 mr-2" />
+                    Mis Equipos
+                  </DropdownMenuItem>
+                  {isAdmin && (
+                    <DropdownMenuItem onClick={() => navigate("/admin")} className="cursor-pointer">
+                      <Shield className="w-4 h-4 mr-2" />
+                      Panel de Administrador
                     </DropdownMenuItem>
-                    {isAdmin && (
-                      <DropdownMenuItem onClick={() => navigate("/admin")} className="cursor-pointer">
-                        <Shield className="w-4 h-4 mr-2" />
-                        Panel de Administrador
-                      </DropdownMenuItem>
-                    )}
-                    <DropdownMenuItem onClick={handleChangePassword} className="cursor-pointer">
-                      <Key className="w-4 h-4 mr-2" />
-                      Cambiar Contraseña
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={async () => {
-                        await supabase.auth.signOut();
-                        navigate("/");
-                      }}
-                      className="cursor-pointer text-destructive focus:text-destructive"
-                    >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Cerrar Sesión
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <Button
-                  variant="default"
-                  onClick={() => navigate("/register")}
-                  className="bg-accent hover:bg-accent/90 text-white shadow-lg"
-                >
-                  Inscríbete aquí
-                </Button>
-              </>
-            ) : (
-              <Button
-                variant="default"
-                onClick={() => navigate("/auth")}
-                className="bg-accent hover:bg-accent/90 text-white shadow-lg"
-              >
-                Inscríbete aquí
-              </Button>
+                  )}
+                  <DropdownMenuItem onClick={handleChangePassword} className="cursor-pointer">
+                    <Key className="w-4 h-4 mr-2" />
+                    Cambiar Contraseña
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={async () => {
+                      await supabase.auth.signOut();
+                      navigate("/");
+                    }}
+                    className="cursor-pointer text-destructive focus:text-destructive"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Cerrar Sesión
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
 
@@ -309,16 +292,6 @@ export const Navbar = () => {
                   </Button>
                 </>
               )}
-              <Button
-                variant="default"
-                onClick={() => {
-                  setIsOpen(false);
-                  navigate(user ? "/register" : "/auth");
-                }}
-                className="bg-accent hover:bg-accent/90 text-white w-full"
-              >
-                Inscríbete aquí
-              </Button>
               {user && (
                 <Button
                   variant="outline"

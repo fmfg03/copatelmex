@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { FloatingCTA } from "@/components/FloatingCTA";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Shield, Mail, Lock, Users, FileText, RefreshCw, Baby, AlertTriangle, Camera } from "lucide-react";
 
@@ -437,7 +436,6 @@ const Privacy = () => {
       </main>
 
       <Footer />
-      <FloatingCTA />
       <FloatingWhatsApp />
     </div>
   );

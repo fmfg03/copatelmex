@@ -8,7 +8,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
-import { FloatingCTA } from "@/components/FloatingCTA";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 
 const signupSchema = z.object({
@@ -367,7 +366,6 @@ export default function Auth() {
           </Tabs>
         </CardContent>
       </Card>
-      <FloatingCTA />
       <FloatingWhatsApp />
     </div>
   );

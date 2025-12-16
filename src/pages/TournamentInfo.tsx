@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { FloatingCTA } from "@/components/FloatingCTA";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Calendar, Trophy, Shield, Users, FileText, MapPin, Clock, Award, CheckCircle, Star, Download, Hotel, Bed, Car, ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -676,7 +675,6 @@ export default function TournamentInfo() {
       </section>
 
       <Footer />
-      <FloatingCTA />
       <FloatingWhatsApp />
     </div>;
 }

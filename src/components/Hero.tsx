@@ -93,17 +93,7 @@ export const Hero = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              size="lg" 
-              onClick={() => {
-                navigate("/register");
-                window.scrollTo(0, 0);
-              }} 
-              className="bg-accent hover:bg-accent/90 text-white font-extrabold text-lg px-8 py-6 shadow-lg w-full sm:w-auto rounded-full"
-            >
-              Inscríbete Ahora
-            </Button>
+          <div className="flex justify-center">
             <Button 
               size="lg" 
               variant="outline" 
