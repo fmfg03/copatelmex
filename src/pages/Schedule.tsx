@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { FloatingCTA } from "@/components/FloatingCTA";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -985,7 +984,6 @@ export default function Schedule() {
         </div>
       </div>
       <Footer />
-      <FloatingCTA />
       <FloatingWhatsApp />
     </div>
   );

@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { FloatingCTA } from "@/components/FloatingCTA";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 
 const NotFound = () => {
@@ -19,7 +18,6 @@ const NotFound = () => {
           Return to Home
         </a>
       </div>
-      <FloatingCTA />
       <FloatingWhatsApp />
     </div>
   );

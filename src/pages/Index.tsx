@@ -5,7 +5,6 @@ import { TournamentHighlights } from "@/components/TournamentHighlights";
 import { Categories } from "@/components/Categories";
 import { Venues } from "@/components/Venues";
 import { Footer } from "@/components/Footer";
-import { FloatingCTA } from "@/components/FloatingCTA";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 
 const Index = () => {
@@ -18,7 +17,6 @@ const Index = () => {
       <Categories />
       <Venues />
       <Footer />
-      <FloatingCTA />
       <FloatingWhatsApp />
     </div>
   );
