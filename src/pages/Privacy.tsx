@@ -33,7 +33,7 @@ const Privacy = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               
-              {/* Aviso Oficial Club América */}
+              {/* Aviso Oficial Fundación Telmex Telcel */}
               <div className="bg-gradient-to-br from-america-blue/10 to-america-blue/5 rounded-xl shadow-lg p-8 mb-8 border-2 border-america-blue/20">
                 <div className="flex items-start space-x-4 mb-6">
                   <div className="w-12 h-12 bg-america-blue rounded-lg flex items-center justify-center flex-shrink-0">
@@ -109,11 +109,11 @@ const Privacy = () => {
                   </li>
                   <li className="flex items-start">
                     <span className="text-america-blue mr-2 mt-1">•</span>
-                    <span>Envío de información relevante del Club América</span>
+                    <span>Envío de información relevante de Fundación Telmex Telcel</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-america-blue mr-2 mt-1">•</span>
-                    <span>Participación en dinámicas y experiencias organizadas por el Club</span>
+                    <span>Participación en dinámicas y experiencias organizadas por Fundación Telmex Telcel</span>
                   </li>
                 </ul>
               </div>
@@ -182,7 +182,7 @@ const Privacy = () => {
                   </div>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  El Club América cuenta con medidas físicas, técnicas y administrativas para la protección de sus datos personales contra daño, pérdida, alteración, destrucción o el uso, acceso o tratamiento no autorizado.
+                  Fundación Telmex Telcel cuenta con medidas físicas, técnicas y administrativas para la protección de sus datos personales contra daño, pérdida, alteración, destrucción o el uso, acceso o tratamiento no autorizado.
                 </p>
               </div>
 
@@ -199,7 +199,7 @@ const Privacy = () => {
                   </div>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  El Club América podrá, conforme a lo establecido en la Ley, revelar, divulgar y/o transferir dentro y fuera de México sus datos personales a empresas filiales, subsidiarias y/o relacionadas, así como para dar cumplimiento con disposiciones legales que así lo requieran.
+                  Fundación Telmex Telcel podrá, conforme a lo establecido en la Ley, revelar, divulgar y/o transferir dentro y fuera de México sus datos personales a empresas filiales, subsidiarias y/o relacionadas, así como para dar cumplimiento con disposiciones legales que así lo requieran.
                 </p>
               </div>
 
