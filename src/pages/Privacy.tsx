@@ -161,11 +161,11 @@ const Privacy = () => {
                   Usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento de sus datos personales, así como a Limitar su uso o divulgación. Para ejercer estos derechos, envíe su solicitud a:
                 </p>
                 <a 
-                  href="mailto:datos@clubamerica.com.mx"
+                  href="mailto:quejas@plataformasports.com"
                   className="inline-flex items-center text-america-blue hover:text-america-blue/80 font-semibold transition-colors"
                 >
                   <Mail className="w-5 h-5 mr-2" />
-                  datos@clubamerica.com.mx
+                  quejas@plataformasports.com
                 </a>
               </div>
 
@@ -391,7 +391,7 @@ const Privacy = () => {
                       Contacto para Retirar Imágenes
                     </h3>
                     <p>
-                      En caso de que los padres o tutores deseen retirar alguna imagen específica de su hijo(a) de nuestras plataformas, les instamos a que se comuniquen con el equipo organizador proporcionando detalles precisos de la imagen en cuestión a través de <a href="mailto:hola@superfns.com" className="text-america-blue hover:text-america-blue/80 font-semibold">hola@superfns.com</a>
+                      En caso de que los padres o tutores deseen retirar alguna imagen específica de su hijo(a) de nuestras plataformas, les instamos a que se comuniquen con el equipo organizador proporcionando detalles precisos de la imagen en cuestión a través de <a href="mailto:quejas@plataformasports.com" className="text-america-blue hover:text-america-blue/80 font-semibold">quejas@plataformasports.com</a>
                     </p>
                   </div>
 
@@ -421,11 +421,11 @@ const Privacy = () => {
                     Para cualquier duda o aclaración respecto al tratamiento de sus datos personales, puede ponerse en contacto con nosotros a través de:
                   </p>
                   <a 
-                    href="mailto:hola@superfns.com"
+                    href="mailto:quejas@plataformasports.com"
                     className="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
                   >
                     <Mail className="w-5 h-5 mr-2" />
-                    hola@superfns.com
+                    quejas@plataformasports.com
                   </a>
                 </div>
               </div>
