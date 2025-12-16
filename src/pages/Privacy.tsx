@@ -22,7 +22,7 @@ const Privacy = () => {
                 Aviso de Privacidad
               </h1>
               <p className="text-xl text-white/90">
-                Copa Club América 2026 - Protección de Datos Personales
+                Copa Telmex Telcel - Protección de Datos Personales
               </p>
             </div>
           </div>
@@ -49,7 +49,7 @@ const Privacy = () => {
                   </div>
                 </div>
                 <p className="text-muted-foreground leading-relaxed mb-6">
-                  La Copa Club América 2026 es organizada bajo los estándares y políticas del Club América. Para información completa sobre el tratamiento de datos personales, consulte el aviso de privacidad oficial del Club América.
+                  La Copa Telmex Telcel es organizada bajo los estándares y políticas de Fundación Telmex Telcel. Para información completa sobre el tratamiento de datos personales, consulte el aviso de privacidad oficial.
                 </p>
                 <a
                   href="https://www.clubamerica.com.mx/aviso-de-privacidad"
@@ -92,7 +92,7 @@ const Privacy = () => {
                   </div>
                 </div>
                 <p className="text-muted-foreground mb-4 leading-relaxed">
-                  Los datos personales recabados para la Copa Club América 2026 tienen como finalidad:
+                  Los datos personales recabados para la Copa Telmex Telcel tienen como finalidad:
                 </p>
                 <ul className="space-y-2 text-muted-foreground">
                   <li className="flex items-start">
@@ -234,16 +234,16 @@ const Privacy = () => {
                 </div>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    Copa Club América 2026 desea enfatizar que la seguridad y el cuidado de los niños participantes durante el torneo son responsabilidad exclusiva de los representantes de cada equipo, así como de los padres de familia o tutores legales. Aunque nos esforzamos por proporcionar un entorno seguro y supervisado durante las actividades del torneo, no asumimos la responsabilidad directa del cuidado y la vigilancia de los menores fuera del campo de juego.
+                    Copa Telmex Telcel desea enfatizar que la seguridad y el cuidado de los niños participantes durante el torneo son responsabilidad exclusiva de los representantes de cada equipo, así como de los padres de familia o tutores legales. Aunque nos esforzamos por proporcionar un entorno seguro y supervisado durante las actividades del torneo, no asumimos la responsabilidad directa del cuidado y la vigilancia de los menores fuera del campo de juego.
                   </p>
                   <p>
-                    Instamos a los representantes de equipos, padres de familia y tutores a tomar las precauciones necesarias para garantizar la seguridad y el bienestar de los niños durante su participación en Copa Club América 2026. Esto incluye la supervisión fuera de los horarios de juego, la atención a las necesidades médicas individuales, y la coordinación de la llegada y salida de los participantes.
+                    Instamos a los representantes de equipos, padres de familia y tutores a tomar las precauciones necesarias para garantizar la seguridad y el bienestar de los niños durante su participación en Copa Telmex Telcel. Esto incluye la supervisión fuera de los horarios de juego, la atención a las necesidades médicas individuales, y la coordinación de la llegada y salida de los participantes.
                   </p>
                   <p>
-                    Al registrarse para el torneo, los representantes de equipos y los padres/tutores aceptan y comprenden que Copa Club América 2026 no asume responsabilidad por incidentes que ocurran fuera de las actividades oficiales del torneo.
+                    Al registrarse para el torneo, los representantes de equipos y los padres/tutores aceptan y comprenden que Copa Telmex Telcel no asume responsabilidad por incidentes que ocurran fuera de las actividades oficiales del torneo.
                   </p>
                   <p className="font-semibold text-secondary">
-                    Agradecemos la colaboración y comprensión de todos los participantes, y estamos comprometidos a trabajar juntos para garantizar un ambiente seguro y positivo para todos los niños involucrados en Copa Club América 2026.
+                    Agradecemos la colaboración y comprensión de todos los participantes, y estamos comprometidos a trabajar juntos para garantizar un ambiente seguro y positivo para todos los niños involucrados en Copa Telmex Telcel.
                   </p>
                 </div>
               </div>
@@ -259,13 +259,13 @@ const Privacy = () => {
                       Descargo de Responsabilidad
                     </h2>
                     <p className="text-sm text-muted-foreground">
-                      Copa Club América 2026
+                      Copa Telmex Telcel
                     </p>
                   </div>
                 </div>
                 <div className="space-y-6 text-muted-foreground">
                   <p className="leading-relaxed">
-                    La Copa Club América 2026 es un torneo de fútbol infantil y juvenil. Al participar en este evento, los equipos, jugadores, entrenadores, y cualquier otra parte involucrada, aceptan plenamente los términos y condiciones establecidos a continuación:
+                    La Copa Telmex Telcel es un torneo de fútbol infantil y juvenil. Al participar en este evento, los equipos, jugadores, entrenadores, y cualquier otra parte involucrada, aceptan plenamente los términos y condiciones establecidos a continuación:
                   </p>
                   
                   <div>
@@ -275,11 +275,11 @@ const Privacy = () => {
                     <ul className="space-y-2">
                       <li className="flex items-start">
                         <span className="text-america-blue mr-2 mt-1">•</span>
-                        <span>Los participantes y sus representantes legales reconocen y aceptan que la participación en la Copa Club América 2026 conlleva riesgos inherentes asociados con la práctica del fútbol.</span>
+                        <span>Los participantes y sus representantes legales reconocen y aceptan que la participación en la Copa Telmex Telcel conlleva riesgos inherentes asociados con la práctica del fútbol.</span>
                       </li>
                       <li className="flex items-start">
                         <span className="text-america-blue mr-2 mt-1">•</span>
-                        <span>Cada equipo es responsable de garantizar que sus jugadores y personal cumplan con todas las reglas y regulaciones establecidas por la Copa Club América 2026 y las autoridades locales.</span>
+                        <span>Cada equipo es responsable de garantizar que sus jugadores y personal cumplan con todas las reglas y regulaciones establecidas por la Copa Telmex Telcel y las autoridades locales.</span>
                       </li>
                     </ul>
                   </div>
@@ -305,7 +305,7 @@ const Privacy = () => {
                       Regulaciones del Torneo
                     </h3>
                     <p>
-                      Los equipos deben seguir las reglas y regulaciones del torneo establecidas por la Copa Club América 2026. Cualquier incumplimiento puede resultar en sanciones, descalificación o acciones disciplinarias.
+                      Los equipos deben seguir las reglas y regulaciones del torneo establecidas por la Copa Telmex Telcel. Cualquier incumplimiento puede resultar en sanciones, descalificación o acciones disciplinarias.
                     </p>
                   </div>
 
@@ -314,7 +314,7 @@ const Privacy = () => {
                       Fotografías y Grabaciones
                     </h3>
                     <p>
-                      Al participar en la Copa Club América 2026, los equipos otorgan el derecho a la organización para tomar fotografías, grabaciones de video u otros medios de los eventos relacionados con el torneo. Estos materiales pueden ser utilizados con fines promocionales y de marketing.
+                      Al participar en la Copa Telmex Telcel, los equipos otorgan el derecho a la organización para tomar fotografías, grabaciones de video u otros medios de los eventos relacionados con el torneo. Estos materiales pueden ser utilizados con fines promocionales y de marketing.
                     </p>
                   </div>
 
@@ -337,7 +337,7 @@ const Privacy = () => {
                   </div>
 
                   <p className="text-sm italic pt-4 border-t border-muted">
-                    Al inscribirse en la Copa Club América 2026, todos los participantes aceptan y comprenden estos términos y condiciones. La organización hará todo lo posible por garantizar un torneo seguro y exitoso para todos los involucrados.
+                    Al inscribirse en la Copa Telmex Telcel, todos los participantes aceptan y comprenden estos términos y condiciones. La organización hará todo lo posible por garantizar un torneo seguro y exitoso para todos los involucrados.
                   </p>
                 </div>
               </div>
@@ -356,7 +356,7 @@ const Privacy = () => {
                 </div>
                 <div className="space-y-4 text-muted-foreground">
                   <p className="leading-relaxed">
-                    La Copa Club América 2026 es un torneo de fútbol infantil y juvenil. En relación con la publicación de fotografías que incluyen a niños y jóvenes menores de edad, solicitamos a todos los participantes, padres, tutores y espectadores que tomen en cuenta lo siguiente:
+                    La Copa Telmex Telcel es un torneo de fútbol infantil y juvenil. En relación con la publicación de fotografías que incluyen a niños y jóvenes menores de edad, solicitamos a todos los participantes, padres, tutores y espectadores que tomen en cuenta lo siguiente:
                   </p>
 
                   <div>
@@ -364,7 +364,7 @@ const Privacy = () => {
                       Consentimiento Informado
                     </h3>
                     <p>
-                      Al inscribirse en la Copa Club América 2026, los participantes y sus representantes legales otorgan su consentimiento para la toma de fotografías y grabaciones de video que incluyan a los menores de edad con fines relacionados con el torneo, como la promoción y documentación del evento.
+                      Al inscribirse en la Copa Telmex Telcel, los participantes y sus representantes legales otorgan su consentimiento para la toma de fotografías y grabaciones de video que incluyan a los menores de edad con fines relacionados con el torneo, como la promoción y documentación del evento.
                     </p>
                   </div>
 
@@ -373,7 +373,7 @@ const Privacy = () => {
                       Uso Responsable
                     </h3>
                     <p>
-                      Las imágenes capturadas durante la Copa Club América 2026 se utilizarán de manera responsable y ética. Se evitará cualquier uso que pudiera resultar inapropiado, invasivo o perjudicial para la integridad de los menores.
+                      Las imágenes capturadas durante la Copa Telmex Telcel se utilizarán de manera responsable y ética. Se evitará cualquier uso que pudiera resultar inapropiado, invasivo o perjudicial para la integridad de los menores.
                     </p>
                   </div>
 
@@ -405,7 +405,7 @@ const Privacy = () => {
                   </div>
 
                   <p className="text-sm italic pt-4 border-t border-muted">
-                    Al participar en la Copa Club América 2026, todos los participantes y sus representantes legales aceptan y comprenden estas pautas con respecto a la fotografía de menores de edad.
+                    Al participar en la Copa Telmex Telcel, todos los participantes y sus representantes legales aceptan y comprenden estas pautas con respecto a la fotografía de menores de edad.
                   </p>
                 </div>
               </div>
