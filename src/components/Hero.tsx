@@ -50,8 +50,8 @@ export const Hero = () => {
               />
               <img 
                 src={fundacionLogo} 
-                alt="Fundación Telmex Telcel" 
-                title="Fundación Telmex Telcel" 
+                alt="Fundación Telmex, A.C." 
+                title="Fundación Telmex, A.C."
                 width="280" 
                 height="280" 
                 fetchPriority="high" 
