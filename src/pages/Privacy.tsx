@@ -33,7 +33,7 @@ const Privacy = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               
-              {/* Aviso Oficial Fundación Telmex Telcel */}
+              {/* Aviso Principal Fundación Telmex */}
               <div className="bg-gradient-to-br from-america-blue/10 to-america-blue/5 rounded-xl shadow-lg p-8 mb-8 border-2 border-america-blue/20">
                 <div className="flex items-start space-x-4 mb-6">
                   <div className="w-12 h-12 bg-america-blue rounded-lg flex items-center justify-center flex-shrink-0">
@@ -41,42 +41,56 @@ const Privacy = () => {
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-secondary mb-2">
-                      Aviso de Privacidad Oficial
+                      Aviso de Privacidad
                     </h2>
                     <p className="text-sm text-muted-foreground">
-                      Plataforma Sports SC y/o Fundación Telmex Telcel SC
+                      Aviso dirigido a los titulares de datos personales que obran en posesión de Fundación Telmex, A.C.
                     </p>
                   </div>
                 </div>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  La Copa Telmex Telcel es organizada bajo los estándares y políticas de Fundación Telmex Telcel. Para información completa sobre el tratamiento de datos personales, consulte el aviso de privacidad oficial.
-                </p>
-                <a
-                  href="https://www.clubamerica.com.mx/aviso-de-privacidad"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center bg-america-blue hover:bg-america-blue/90 text-white font-bold px-6 py-3 rounded-full transition-colors"
-                >
-                  <FileText className="w-5 h-5 mr-2" />
-                  Ver Aviso de Privacidad Completo
-                </a>
+                <div className="space-y-4 text-muted-foreground leading-relaxed">
+                  <p>
+                    <strong>Fundación Telmex, A.C.</strong> (La Fundación), con domicilio en Plaza Carso, Lago Zurich 245, Edificio Presa Falcón - piso 20, Col. Ampliación Granada, C.P. 11529, Ciudad de México, hace de su conocimiento que los datos personales de usted, incluyendo los sensibles, que actualmente o en el futuro obren en nuestras bases de datos, serán tratados y/o utilizados por: La Fundación y/o por aquellos terceros que por la naturaleza de sus trabajos o funciones tengan la necesidad de tratar y/o utilizar sus datos personales; con el propósito de cumplir aquellas obligaciones que se derivan de la relación jurídica existente entre usted como titular de los datos personales y las partes antes señaladas.
+                  </p>
+                  <p>
+                    La Fundación podrá transferir los datos personales que obren en sus bases de datos a cualesquiera de las terceras personas, nacionales o extranjeras, salvo que los titulares respectivos manifiesten expresamente su oposición, en términos de lo dispuesto por la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (en lo sucesivo la Ley).
+                  </p>
+                </div>
               </div>
 
-              {/* Responsable */}
+              {/* Ejercicio de Derechos */}
               <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
                 <div className="flex items-start space-x-4 mb-6">
                   <div className="w-12 h-12 bg-america-blue/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Shield className="w-6 h-6 text-america-blue" />
+                    <FileText className="w-6 h-6 text-america-blue" />
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-secondary mb-2">
-                      Responsable de los Datos Personales
+                      Ejercicio de Derechos
                     </h2>
                   </div>
                 </div>
-                <p className="text-muted-foreground leading-relaxed">
-                  <strong>Plataforma Sports SC y/o Fundación Telmex Telcel SC</strong>, con domicilio en Ciudad de México, México, es el responsable del tratamiento de sus datos personales conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  Los titulares podrán ejercer los derechos que les confiere la Ley, mediante una solicitud por escrito, que deberá ser presentada en el domicilio de La Fundación. Independiente del medio utilizado por los titulares, deberán:
                 </p>
+                <ul className="space-y-2 text-muted-foreground">
+                  <li className="flex items-start">
+                    <span className="text-america-blue mr-2 mt-1">•</span>
+                    <span>Incluir el nombre y firma autógrafa del titular, así como un domicilio u otro medio para comunicarle la respuesta a su solicitud.</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-america-blue mr-2 mt-1">•</span>
+                    <span>Acompañar los documentos oficiales que acrediten la identidad del titular.</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-america-blue mr-2 mt-1">•</span>
+                    <span>Incluir una descripción clara y precisa de los datos personales respecto de los cuales ejercitará los derechos que les confiere la Ley.</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-america-blue mr-2 mt-1">•</span>
+                    <span>Incluir cualquier elemento o documento que facilite la localización de los datos personales de que se traten.</span>
+                  </li>
+                </ul>
               </div>
               
               {/* Finalidades del Tratamiento */}
@@ -216,7 +230,7 @@ const Privacy = () => {
                   </div>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  Nos reservamos el derecho de realizar cambios o actualizaciones al presente Aviso de Privacidad para cumplir con modificaciones legislativas, políticas internas o para adaptarlo a nuevas circunstancias.
+                  La Fundación se reserva el derecho de cambiar, modificar, complementar y/o alterar el presente aviso, en cualquier momento, en cuyo caso se hará de su conocimiento a través de cualquiera de los medios que establece la legislación en la materia.
                 </p>
               </div>
 
