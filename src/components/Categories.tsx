@@ -1,6 +1,8 @@
 import { Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
+import categoryFemenil from "@/assets/category-femenil-2014.png";
+import categoryVaronil from "@/assets/category-varonil-2014.png";
+import categorySub11 from "@/assets/category-sub11.jpg";
 
 export const Categories = () => {
   const categories = [
@@ -9,35 +11,40 @@ export const Categories = () => {
       type: "Femenil",
       format: "Fútbol 11",
       description: "Categoría Femenil",
-      maxPlayers: 22
+      maxPlayers: 22,
+      image: categoryFemenil
     },
     {
       year: "2011",
       type: "Juvenil",
       format: "Fútbol 11",
       description: "Categoría Juvenil",
-      maxPlayers: 22
+      maxPlayers: 22,
+      image: categorySub11
     },
     {
       year: "2010",
       type: "Juvenil",
       format: "Fútbol 11",
       description: "Categoría Juvenil",
-      maxPlayers: 22
+      maxPlayers: 22,
+      image: categorySub11
     },
     {
       year: "2009",
       type: "Juvenil",
       format: "Fútbol 11",
       description: "Categoría Juvenil",
-      maxPlayers: 22
+      maxPlayers: 22,
+      image: categorySub11
     },
     {
       year: "2008",
       type: "Varonil",
       format: "Fútbol 11",
       description: "Categoría Varonil",
-      maxPlayers: 22
+      maxPlayers: 22,
+      image: categoryVaronil
     }
   ];
 
@@ -68,21 +75,19 @@ export const Categories = () => {
                 style={{ animationDelay: `${index * 0.15}s` }}
               >
                 {/* Image Container */}
-                <div className="relative h-80 overflow-hidden bg-gradient-to-br from-primary via-primary/80 to-secondary">
-                  {/* Logo */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <img 
-                      src={copaTelmexLogo} 
-                      alt={`Categoría ${category.type} ${category.year}`} 
-                      loading="lazy" 
-                      width="200" 
-                      height="200" 
-                      className="w-40 h-40 object-contain opacity-90 group-hover:scale-110 transition-all duration-700 drop-shadow-lg" 
-                    />
-                  </div>
+                <div className="relative h-80 overflow-hidden">
+                  {/* Category Image */}
+                  <img 
+                    src={category.image} 
+                    alt={`Categoría ${category.type} ${category.year}`} 
+                    loading="lazy" 
+                    width="400" 
+                    height="320" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" 
+                  />
                   
                   {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/95 via-transparent to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/95 via-secondary/40 to-transparent"></div>
                   
                   {/* Shimmer Effect on Hover */}
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
