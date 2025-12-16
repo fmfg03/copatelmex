@@ -14,7 +14,8 @@ export const Hero = () => {
   const tournamentStartDate = new Date("2026-06-01T12:00:00"); // TBD
 
   // YouTube video ID
-  const youtubeVideoId = "F7X_U-pxuR8";
+  const youtubeVideoId = "eic4VntNlXw";
+  const videoStartTime = 74;
   
   return (
     <>
@@ -140,7 +141,7 @@ export const Hero = () => {
             {/* YouTube Video Embed */}
             <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20">
               <iframe
-                src={`https://www.youtube.com/embed/${youtubeVideoId}?rel=0`}
+                src={`https://www.youtube.com/embed/${youtubeVideoId}?rel=0&start=${videoStartTime}`}
                 title="Final Copa Telmex Telcel"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
