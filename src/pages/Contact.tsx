@@ -12,8 +12,77 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { useToast } from "@/hooks/use-toast";
-import { Phone, MapPin, Send } from "lucide-react";
+import { Phone, MapPin, Send, HelpCircle } from "lucide-react";
+
+const FAQS = [
+  {
+    question: "¿Cómo me inscribo al torneo?",
+    answer: "Para inscribirte, debes crear una cuenta en nuestra plataforma, registrar tu equipo y completar el proceso de pago. Una vez confirmado el pago, recibirás un correo de confirmación."
+  },
+  {
+    question: "¿Cuánto cuesta la inscripción?",
+    answer: "El costo de inscripción varía según la categoría. Consulta la sección de información del torneo para conocer los precios actualizados."
+  },
+  {
+    question: "¿Cuáles son las categorías disponibles?",
+    answer: "El torneo cuenta con categorías varoniles y femeniles para diferentes años de nacimiento. Consulta la sección de categorías para ver todas las opciones disponibles."
+  },
+  {
+    question: "¿Cuántos jugadores puedo inscribir por equipo?",
+    answer: "Cada equipo puede inscribir un máximo de jugadores según la categoría. Consulta las bases del torneo para conocer el límite específico de tu categoría."
+  },
+  {
+    question: "¿Cuál es la fecha límite de inscripción?",
+    answer: "La fecha límite de inscripción se publicará próximamente. Te recomendamos inscribirte con anticipación ya que los lugares son limitados."
+  },
+  {
+    question: "¿Dónde se llevará a cabo el torneo?",
+    answer: "El torneo se realizará en las instalaciones del CECAP (Centro de Capacitación y Desarrollo). Consulta la sección de sedes para más detalles."
+  },
+  {
+    question: "¿Qué documentos necesito para inscribir a mi equipo?",
+    answer: "Se requiere acta de nacimiento, CURP, fotografía reciente y carta responsiva firmada por el padre o tutor de cada jugador."
+  },
+  {
+    question: "¿Cuándo se realizará el torneo?",
+    answer: "Las fechas del torneo se publicarán próximamente. Mantente atento a nuestras redes sociales y sitio web para conocer el calendario oficial."
+  },
+  {
+    question: "¿Qué incluye la inscripción?",
+    answer: "La inscripción incluye la participación en todos los partidos de la fase de grupos, acceso a las instalaciones, arbitraje, servicios médicos básicos y kit de bienvenida."
+  },
+  {
+    question: "¿Puedo inscribir más de un equipo?",
+    answer: "Sí, puedes inscribir múltiples equipos en diferentes categorías. Cada equipo debe completar su proceso de inscripción y pago de forma independiente."
+  },
+  {
+    question: "¿Cuáles son los métodos de pago aceptados?",
+    answer: "Aceptamos pagos con tarjeta de crédito/débito a través de nuestra plataforma segura. También puedes realizar transferencias bancarias."
+  },
+  {
+    question: "¿Hay reembolsos si no puedo participar?",
+    answer: "Las políticas de reembolso dependen de la fecha de cancelación. Consulta los términos y condiciones o contáctanos para más información."
+  },
+  {
+    question: "¿Cuántos partidos jugará cada equipo?",
+    answer: "Cada equipo jugará un mínimo de partidos en la fase de grupos. La cantidad total dependerá del avance en el torneo."
+  },
+  {
+    question: "¿Qué pasa si un jugador no puede asistir a un partido?",
+    answer: "Los jugadores pueden ser sustituidos por otros jugadores previamente registrados en la plantilla del equipo. No se permiten jugadores no registrados."
+  },
+  {
+    question: "¿Hay premios para los ganadores?",
+    answer: "Sí, habrá premios para los equipos ganadores de cada categoría. Los detalles de los premios se anunciarán próximamente."
+  }
+];
 
 const ESTADOS_MEXICO = [
   "Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas",
@@ -166,8 +235,39 @@ const Contact = () => {
                         placeholder="10 dígitos"
                         required
                       />
-                    </div>
-                  </div>
+          </div>
+
+          {/* FAQ Section */}
+          <div className="max-w-4xl mx-auto mt-16">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-4 py-2 mb-4">
+                <HelpCircle className="w-5 h-5 text-primary" />
+                <span className="text-primary font-medium">FAQ</span>
+              </div>
+              <h2 className="text-3xl font-bold text-foreground mb-4">
+                Preguntas Frecuentes
+              </h2>
+              <p className="text-muted-foreground">
+                Encuentra respuestas a las preguntas más comunes sobre el torneo
+              </p>
+            </div>
+
+            <div className="bg-card rounded-2xl p-6 md:p-8 shadow-lg border border-border">
+              <Accordion type="single" collapsible className="w-full">
+                {FAQS.map((faq, index) => (
+                  <AccordionItem key={index} value={`item-${index}`}>
+                    <AccordionTrigger className="text-left">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
