@@ -153,7 +153,7 @@ const Contact = () => {
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Contact Info */}
+            {/* Contact Info & FAQ */}
             <div className="lg:col-span-1 space-y-6">
               <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
                 <h2 className="text-xl font-bold text-foreground mb-6">
@@ -161,7 +161,6 @@ const Contact = () => {
                 </h2>
                 
                 <div className="space-y-4">
-
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <Phone className="w-5 h-5 text-primary" />
@@ -201,6 +200,26 @@ const Contact = () => {
                   <p>Domingos: Cerrado</p>
                 </div>
               </div>
+
+              {/* FAQ Section */}
+              <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
+                <div className="flex items-center gap-2 mb-4">
+                  <HelpCircle className="w-5 h-5 text-primary" />
+                  <h3 className="text-lg font-bold text-foreground">Preguntas Frecuentes</h3>
+                </div>
+                <Accordion type="single" collapsible className="w-full">
+                  {FAQS.map((faq, index) => (
+                    <AccordionItem key={index} value={`item-${index}`}>
+                      <AccordionTrigger className="text-left text-sm">
+                        {faq.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-muted-foreground text-sm">
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
             </div>
 
             {/* Contact Form */}
@@ -235,39 +254,8 @@ const Contact = () => {
                         placeholder="10 dígitos"
                         required
                       />
-          </div>
-
-          {/* FAQ Section */}
-          <div className="max-w-4xl mx-auto mt-16">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-4 py-2 mb-4">
-                <HelpCircle className="w-5 h-5 text-primary" />
-                <span className="text-primary font-medium">FAQ</span>
-              </div>
-              <h2 className="text-3xl font-bold text-foreground mb-4">
-                Preguntas Frecuentes
-              </h2>
-              <p className="text-muted-foreground">
-                Encuentra respuestas a las preguntas más comunes sobre el torneo
-              </p>
-            </div>
-
-            <div className="bg-card rounded-2xl p-6 md:p-8 shadow-lg border border-border">
-              <Accordion type="single" collapsible className="w-full">
-                {FAQS.map((faq, index) => (
-                  <AccordionItem key={index} value={`item-${index}`}>
-                    <AccordionTrigger className="text-left">
-                      {faq.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-          </div>
-        </div>
+                    </div>
+                  </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
