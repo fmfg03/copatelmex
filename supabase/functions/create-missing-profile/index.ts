@@ -1,5 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
 import { corsHeaders } from '../_shared/cors.ts'
+import { createMissingProfileSchema, validateInput } from '../_shared/validation.ts'
 
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
@@ -64,19 +65,15 @@ Deno.serve(async (req) => {
       )
     }
 
-    // Get request body
-    const { userId, email, full_name, phone } = await req.json()
-
-    // Validate required fields
-    if (!userId || !email || !full_name) {
-      return new Response(
-        JSON.stringify({ error: 'Faltan campos requeridos' }),
-        { 
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      )
+    // Get and validate request body
+    const body = await req.json()
+    const validation = validateInput(createMissingProfileSchema, body, corsHeaders)
+    
+    if (!validation.success) {
+      return validation.response
     }
+
+    const { userId, email, full_name, phone } = validation.data
 
     // Create profile using admin client (bypasses RLS)
     const { error: profileError } = await supabaseAdmin

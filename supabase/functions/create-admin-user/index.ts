@@ -1,5 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
 import { corsHeaders } from '../_shared/cors.ts'
+import { createAdminUserSchema, validateInput } from '../_shared/validation.ts'
 
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
@@ -77,19 +78,15 @@ Deno.serve(async (req) => {
       )
     }
 
-    // Get request body
-    const { email, password, full_name, phone, role } = await req.json()
-
-    // Validate required fields
-    if (!email || !password || !full_name || !phone) {
-      return new Response(
-        JSON.stringify({ error: 'Faltan campos requeridos' }),
-        { 
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      )
+    // Get and validate request body
+    const body = await req.json()
+    const validation = validateInput(createAdminUserSchema, body, corsHeaders)
+    
+    if (!validation.success) {
+      return validation.response
     }
+
+    const { email, password, full_name, phone, role } = validation.data
 
     // Create the user using admin API
     const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
@@ -139,15 +136,15 @@ Deno.serve(async (req) => {
 
     // Assign role if provided and not 'none'
     if (role && role !== 'none') {
-      const { error: roleError } = await supabaseAdmin
+      const { error: roleInsertError } = await supabaseAdmin
         .from('user_roles')
         .insert({
           user_id: newUser.user.id,
           role: role,
         })
 
-      if (roleError) {
-        console.error('Error assigning role:', roleError)
+      if (roleInsertError) {
+        console.error('Error assigning role:', roleInsertError)
         // Don't fail if role assignment fails, just log it
       }
 

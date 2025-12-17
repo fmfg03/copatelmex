@@ -1,11 +1,19 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+// Validation schema for checkout
+const checkoutSchema = z.object({
+  amount: z.number().positive('Monto debe ser positivo').max(1000000, 'Monto excede límite'),
+  numberOfTeams: z.number().int('Debe ser entero').positive('Debe ser positivo').max(50, 'Máximo 50 equipos'),
+  registrationIds: z.string().max(2000, 'IDs muy largos')
+});
 
 const logStep = (step: string) => {
   console.log(`[CREATE-CHECKOUT] ${step}`);
@@ -34,9 +42,29 @@ serve(async (req) => {
     if (!user?.email) throw new Error("User not authenticated or email not available");
     logStep("User authenticated");
 
-    // Get request body
+    // Get and validate request body
     const body = await req.json();
-    const { amount, numberOfTeams, registrationIds } = body;
+    const validation = checkoutSchema.safeParse(body);
+    
+    if (!validation.success) {
+      const errors = validation.error.issues.map(issue => ({
+        field: issue.path.join('.'),
+        message: issue.message
+      }));
+      logStep("Validation failed");
+      return new Response(
+        JSON.stringify({ 
+          error: 'Datos de entrada inválidos',
+          details: errors 
+        }),
+        { 
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      );
+    }
+
+    const { amount, numberOfTeams, registrationIds } = validation.data;
     
     logStep(`Processing payment for ${numberOfTeams} teams, amount: $${amount}`);
 
