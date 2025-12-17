@@ -12,6 +12,7 @@ import TournamentInfo from "./pages/TournamentInfo";
 import Schedule from "./pages/Schedule";
 import MediaGallery from "./pages/MediaGallery";
 import Privacy from "./pages/Privacy";
+import Contact from "./pages/Contact";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import Admin from "./pages/Admin";
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/media" element={<MediaGallery />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/contacto" element={<Contact />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/payment-cancelled" element={<PaymentCancelled />} />
           <Route path="/admin" element={<Admin />} />

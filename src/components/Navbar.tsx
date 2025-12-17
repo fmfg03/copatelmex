@@ -76,7 +76,7 @@ export const Navbar = () => {
     { name: "Calendario", href: "/schedule", disabled: true },
     { name: "Multimedia", href: "/media", disabled: true },
     { name: "Sede", href: "/#sedes", disabled: false },
-    { name: "Contacto", href: "/#contacto", disabled: false },
+    { name: "Contacto", href: "/contacto", disabled: false },
   ];
 
   return (
@@ -114,7 +114,7 @@ export const Navbar = () => {
                         const element = document.querySelector(link.href.substring(1));
                         element?.scrollIntoView({ behavior: "smooth" });
                       }, 100);
-                    } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule") {
+                    } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto") {
                       e.preventDefault();
                       navigate(link.href);
                     }
@@ -231,7 +231,7 @@ export const Navbar = () => {
                           const element = document.querySelector(link.href.substring(1));
                           element?.scrollIntoView({ behavior: "smooth" });
                         }, 100);
-                      } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule") {
+                      } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto") {
                         e.preventDefault();
                         navigate(link.href);
                       }
