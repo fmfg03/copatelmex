@@ -1,5 +1,20 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
 import { corsHeaders } from '../_shared/cors.ts'
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts'
+
+// Validation schemas for user metadata
+const userMetadataSchema = z.object({
+  full_name: z.string().max(200).optional(),
+  phone: z.string().max(20).optional()
+}).passthrough()
+
+const emailSchema = z.string().email().max(255)
+
+// Sanitize string to prevent any potential issues
+function sanitizeString(str: string | undefined | null, maxLength: number = 200): string {
+  if (!str) return ''
+  return str.toString().trim().slice(0, maxLength)
+}
 
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
@@ -103,54 +118,67 @@ Deno.serve(async (req) => {
     let updated = 0
     let created = 0
     let errors = 0
+    let skipped = 0
     const errorDetails: Array<{ userId: string; email: string; error: string }> = []
 
     for (const authUser of authUsers || []) {
-      if (!authUser.email) {
-        console.log(`Skipping user ${authUser.id} - no email`)
+      // Validate email
+      const emailValidation = emailSchema.safeParse(authUser.email)
+      if (!emailValidation.success) {
+        console.log(`Skipping user ${authUser.id} - invalid or missing email`)
+        skipped++
         continue
       }
+
+      const validEmail = emailValidation.data
+
+      // Validate and sanitize user metadata
+      const metadataValidation = userMetadataSchema.safeParse(authUser.user_metadata || {})
+      const metadata = metadataValidation.success ? metadataValidation.data : {}
 
       try {
         // Check if profile exists
         if (!existingProfileIds.has(authUser.id)) {
-          // Create missing profile
-          console.log(`Creating missing profile for ${authUser.email}`)
+          // Create missing profile with sanitized data
+          console.log(`Creating missing profile for ${validEmail}`)
+          
+          const fullName = sanitizeString(metadata.full_name, 200) || validEmail.split('@')[0].slice(0, 100)
+          const phone = sanitizeString(metadata.phone, 20) || '0000000000'
           
           const { error: insertError } = await supabaseAdmin
             .from('profiles')
             .insert({
               id: authUser.id,
-              email: authUser.email,
-              full_name: authUser.user_metadata?.full_name || authUser.email.split('@')[0],
-              phone: authUser.user_metadata?.phone || '0000000000'
+              email: validEmail,
+              full_name: fullName,
+              phone: phone
             })
 
           if (insertError) {
-            console.error(`Error creating profile for ${authUser.email}:`, insertError)
+            console.error(`Error creating profile for ${validEmail}:`, insertError)
             errors++
             errorDetails.push({
               userId: authUser.id,
-              email: authUser.email,
+              email: validEmail,
               error: insertError.message
             })
           } else {
             created++
-            console.log(`Profile created for ${authUser.email}`)
+            console.log(`Profile created for ${validEmail}`)
           }
         } else {
           // Update existing profile email
           const { error: updateError } = await supabaseAdmin
             .from('profiles')
-            .update({ email: authUser.email })
+            .update({ email: validEmail })
             .eq('id', authUser.id)
 
           if (updateError) {
-            console.error(`Error updating profile for ${authUser.email}:`, updateError)
+            console.error(`Error updating profile for ${validEmail}:`, updateError)
             errors++
             errorDetails.push({
               userId: authUser.id,
-              email: authUser.email,
+              email: validEmail,
               error: updateError.message
             })
           } else {
@@ -158,17 +186,17 @@ Deno.serve(async (req) => {
           }
         }
       } catch (error) {
-        console.error(`Exception processing user ${authUser.email}:`, error)
+        console.error(`Exception processing user ${validEmail}:`, error)
         errors++
         errorDetails.push({
           userId: authUser.id,
-          email: authUser.email,
+          email: validEmail,
           error: error instanceof Error ? error.message : 'Error desconocido'
         })
       }
     }
 
-    const message = `Sincronización completada: ${created} perfiles creados, ${updated} perfiles actualizados${errors > 0 ? `, ${errors} errores` : ''}`
+    const message = `Sincronización completada: ${created} perfiles creados, ${updated} perfiles actualizados, ${skipped} omitidos${errors > 0 ? `, ${errors} errores` : ''}`
     console.log(message)
 
     return new Response(
@@ -176,6 +204,7 @@ Deno.serve(async (req) => {
         success: true, 
         created,
         updated,
+        skipped,
         errors,
         totalAuthUsers: authUsers?.length || 0,
         totalProfiles: existingProfileIds.size + created,

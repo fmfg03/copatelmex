@@ -335,11 +335,8 @@ export default function Register() {
 
           if (uploadError) throw uploadError;
 
-          const { data: { publicUrl } } = supabase.storage
-            .from('registration-documents')
-            .getPublicUrl(filePath);
-
-          shieldUrl = publicUrl;
+          // Store the file path instead of public URL (bucket is now private)
+          shieldUrl = filePath;
         }
 
         // 2. Create team
@@ -409,10 +406,8 @@ export default function Register() {
               .upload(photoPath, player.photoFile);
 
             if (!photoError) {
-              const { data: { publicUrl } } = supabase.storage
-                .from('registration-documents')
-                .getPublicUrl(photoPath);
-              photoUrl = publicUrl;
+              // Store the file path instead of public URL (bucket is now private)
+              photoUrl = photoPath;
             }
           }
 
@@ -427,10 +422,8 @@ export default function Register() {
               .upload(certPath, player.birthCertFile);
 
             if (!certError) {
-              const { data: { publicUrl } } = supabase.storage
-                .from('registration-documents')
-                .getPublicUrl(certPath);
-              birthCertUrl = publicUrl;
+              // Store the file path instead of public URL (bucket is now private)
+              birthCertUrl = certPath;
             }
           }
 
@@ -821,11 +814,8 @@ export default function Register() {
 
           if (uploadError) throw uploadError;
 
-          const { data: { publicUrl } } = supabase.storage
-            .from('registration-documents')
-            .getPublicUrl(filePath);
-
-          shieldUrl = publicUrl;
+          // Store the file path instead of public URL (bucket is now private)
+          shieldUrl = filePath;
         }
 
         // 2. Create team

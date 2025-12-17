@@ -1,11 +1,20 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+// Validation schema for verify-payment
+const verifyPaymentSchema = z.object({
+  sessionId: z.string()
+    .min(20, 'Session ID muy corto')
+    .max(200, 'Session ID muy largo')
+    .regex(/^cs_/, 'Session ID debe empezar con cs_')
+});
 
 const logStep = (step: string) => {
   console.log(`[VERIFY-PAYMENT] ${step}`);
@@ -33,15 +42,29 @@ serve(async (req) => {
     
     if (!user?.email) throw new Error("User not authenticated or email not available");
 
-    const { sessionId } = await req.json();
+    // Get and validate request body
+    const body = await req.json();
+    const validation = verifyPaymentSchema.safeParse(body);
     
-    // Validate session ID format
-    if (!sessionId || typeof sessionId !== 'string') {
-      throw new Error("Session ID is required");
+    if (!validation.success) {
+      const errors = validation.error.issues.map(issue => ({
+        field: issue.path.join('.'),
+        message: issue.message
+      }));
+      logStep("Validation failed");
+      return new Response(
+        JSON.stringify({ 
+          error: 'Datos de entrada inválidos',
+          details: errors 
+        }),
+        { 
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      );
     }
-    if (!sessionId.startsWith('cs_') || sessionId.length < 20) {
-      throw new Error("Invalid session ID format");
-    }
+
+    const { sessionId } = validation.data;
 
     logStep("Verifying payment session");
 

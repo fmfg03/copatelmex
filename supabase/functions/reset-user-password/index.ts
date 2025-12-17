@@ -1,5 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
 import { corsHeaders } from '../_shared/cors.ts'
+import { resetUserPasswordSchema, validateInput, uuidSchema, emailSchema } from '../_shared/validation.ts'
 
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
@@ -65,17 +66,41 @@ Deno.serve(async (req) => {
       )
     }
 
-    // Get request body
-    const { email, userId } = await req.json()
+    // Get and validate request body
+    const body = await req.json()
+    const validation = validateInput(resetUserPasswordSchema, body, corsHeaders)
+    
+    if (!validation.success) {
+      return validation.response
+    }
 
-    if (!email && !userId) {
-      return new Response(
-        JSON.stringify({ error: 'Se requiere email o userId' }),
-        { 
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      )
+    const { email, userId } = validation.data
+
+    // Additional validation for specific fields if provided
+    if (userId) {
+      const uuidValidation = uuidSchema.safeParse(userId)
+      if (!uuidValidation.success) {
+        return new Response(
+          JSON.stringify({ error: 'Formato de userId inválido' }),
+          { 
+            status: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          }
+        )
+      }
+    }
+
+    if (email) {
+      const emailValidation = emailSchema.safeParse(email)
+      if (!emailValidation.success) {
+        return new Response(
+          JSON.stringify({ error: 'Formato de email inválido' }),
+          { 
+            status: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          }
+        )
+      }
     }
 
     // Get user email if only userId provided
@@ -102,7 +127,7 @@ Deno.serve(async (req) => {
     // Generate password recovery link
     const { data: recoveryData, error: recoveryError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'recovery',
-      email: userEmail,
+      email: userEmail!,
       options: {
         redirectTo: `${Deno.env.get('SUPABASE_URL')?.replace('.supabase.co', '.lovableproject.com')}/auth`
       }
