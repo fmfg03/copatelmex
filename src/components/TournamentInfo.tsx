@@ -31,13 +31,6 @@ export const TournamentInfo = () => {
     }
   ];
 
-  const categories = [
-    { name: "Femenil", year: "2012", players: "Por definir" },
-    { name: "Juvenil", year: "2009", players: "Por definir" },
-    { name: "Juvenil", year: "2010", players: "Por definir" },
-    { name: "Juvenil", year: "2011", players: "Por definir" },
-    { name: "Varonil", year: "2008", players: "Por definir" },
-  ];
 
   return (
     <section id="informacion" className="py-24 bg-background">
@@ -214,25 +207,6 @@ export const TournamentInfo = () => {
             </CardContent>
           </Card>
 
-          {/* Categorías */}
-          <Card className="border-2 border-border">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Users className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-2xl font-bold text-secondary">Categorías</h3>
-              </div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {categories.map((category, index) => (
-                  <div key={index} className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-lg p-4 border border-border">
-                    <p className="text-lg font-bold text-secondary">{category.name} {category.year}</p>
-                    <p className="text-sm text-muted-foreground">{category.players}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
 
         </div>
       </div>
