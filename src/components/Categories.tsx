@@ -1,5 +1,6 @@
 import { Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import categoryFemenil2012 from "@/assets/category-femenil-2012.jpg";
 import categoryVaronil2008 from "@/assets/category-varonil-2008.jpg";
 import categoryJuvenil2009 from "@/assets/category-juvenil-2009.jpg";
 import categoryJuvenil2010 from "@/assets/category-juvenil-2010.jpg";
@@ -7,6 +8,14 @@ import categoryJuvenil2011 from "@/assets/category-juvenil-2011.jpg";
 
 export const Categories = () => {
   const categories = [
+    {
+      year: "2012",
+      type: "Femenil",
+      format: "Fútbol 11",
+      description: "Categoría Femenil",
+      maxPlayers: 22,
+      image: categoryFemenil2012
+    },
     {
       year: "2011",
       type: "Juvenil",
@@ -55,7 +64,7 @@ export const Categories = () => {
               Todas las categorías juegan <strong className="text-primary">Fútbol 11</strong>
             </p>
             <Badge variant="outline" className="text-lg px-6 py-3 border-2 border-primary text-primary font-semibold">
-              Cuatro Categorías Disponibles
+              Cinco Categorías Disponibles
             </Badge>
           </div>
 
