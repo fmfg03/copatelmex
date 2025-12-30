@@ -83,7 +83,8 @@ export default function TournamentInfo() {
                     <Calendar className="w-6 h-6 text-america-blue" />
                   </div>
                   <h3 className="font-bold text-lg mb-2">Fechas</h3>
-                  <p className="text-muted-foreground">27 Feb - 1 Mar 2026</p>
+                  <p className="text-muted-foreground">1 de Junio 2025</p>
+                  <p className="text-muted-foreground text-sm">Inicio Fase Nacional</p>
                 </CardContent>
               </Card>
               <Card className="text-center border-2 hover:border-primary transition-all duration-300 hover:shadow-lg bg-gradient-card hover:-translate-y-1">
@@ -92,7 +93,8 @@ export default function TournamentInfo() {
                     <MapPin className="w-6 h-6 text-america-blue" />
                   </div>
                   <h3 className="font-bold text-lg mb-2">Sede</h3>
-                  <p className="text-muted-foreground">CECAP Facilities</p>
+                  <p className="text-muted-foreground">Sede Nacional</p>
+                  <p className="text-muted-foreground text-sm">Por definir</p>
                 </CardContent>
               </Card>
               <Card className="text-center border-2 hover:border-primary transition-all duration-300 hover:shadow-lg bg-gradient-card hover:-translate-y-1">
@@ -101,8 +103,8 @@ export default function TournamentInfo() {
                     <Users className="w-6 h-6 text-america-blue" />
                   </div>
                   <h3 className="font-bold text-lg mb-2">Categorías</h3>
-                  <p className="text-muted-foreground">7 categorías varoniles  </p>
-                  <p className="text-muted-foreground text-sm">(16 equipos por categoría)</p>
+                  <p className="text-muted-foreground">3 categorías</p>
+                  <p className="text-muted-foreground text-sm">Varonil, Juvenil y Femenil</p>
                 </CardContent>
               </Card>
               <Card className="text-center border-2 hover:border-primary transition-all duration-300 hover:shadow-lg bg-gradient-card hover:-translate-y-1">
@@ -623,17 +625,17 @@ export default function TournamentInfo() {
                       <div className="bg-america-blue/10 rounded-lg p-4">
                         <Calendar className="w-6 h-6 text-america-blue mb-2" />
                         <p className="text-sm font-semibold text-secondary">Inicio Inscripciones</p>
-                        <p className="text-lg font-bold text-america-blue">24 Noviembre 2025</p>
+                        <p className="text-lg font-bold text-america-blue">Por definir</p>
                       </div>
                       <div className="bg-america-blue/10 rounded-lg p-4">
                         <Clock className="w-6 h-6 text-america-blue mb-2" />
                         <p className="text-sm font-semibold text-secondary">Cierre de Inscripciones</p>
-                        <p className="text-lg font-bold text-america-blue">30 Diciembre 2025</p>
+                        <p className="text-lg font-bold text-america-blue">Por definir</p>
                       </div>
                       <div className="bg-america-blue/10 rounded-lg p-4">
                         <Trophy className="w-6 h-6 text-america-blue mb-2" />
-                        <p className="text-sm font-semibold text-secondary">Inicio Torneo</p>
-                        <p className="text-lg font-bold text-america-blue">27 Febrero - 1 Marzo 2026</p>
+                        <p className="text-sm font-semibold text-secondary">Inicio Fase Nacional</p>
+                        <p className="text-lg font-bold text-america-blue">1 de Junio 2025</p>
                       </div>
                     </div>
                   </div>
