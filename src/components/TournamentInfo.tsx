@@ -234,49 +234,6 @@ export const TournamentInfo = () => {
             </CardContent>
           </Card>
 
-          {/* Cómo Inscribirse */}
-          <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Play className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-2xl font-bold text-secondary">¿Cómo Inscribirse?</h3>
-              </div>
-              {/* Pasos de Inscripción */}
-              <div className="space-y-4">
-                <h4 className="font-bold text-secondary mb-4">Pasos para inscribirte:</h4>
-                {[
-                  { step: 1, title: "Crea tu cuenta", desc: "Regístrate en la plataforma con tus datos básicos." },
-                  { step: 2, title: "Registra los datos del equipo", desc: "Ingresa la información de tu equipo y entrenadores." },
-                  { step: 3, title: "Registra a tus jugadores", desc: "Captura los datos de cada jugador de tu equipo." },
-                  { step: 4, title: "Completa documentación", desc: "Adjunta los documentos requeridos para cada jugador." },
-                  { step: 5, title: "Confirmación", desc: "Recibirás tu confirmación por email una vez validada tu inscripción." }
-                ].map((item) => (
-                  <div key={item.step} className="flex items-start gap-4 bg-background rounded-lg p-4 border border-border">
-                    <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0 text-white font-bold">
-                      {item.step}
-                    </div>
-                    <div className="flex-1">
-                      <h5 className="font-semibold text-secondary mb-1">{item.title}</h5>
-                      <p className="text-sm text-muted-foreground text-justify">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <Button 
-                className="w-full mt-6 bg-accent hover:bg-accent/90 text-white font-extrabold text-lg py-6 rounded-full" 
-                size="lg" 
-                onClick={() => {
-                  navigate("/register");
-                  window.scrollTo(0, 0);
-                }}
-              >
-                Comenzar Inscripción Ahora
-              </Button>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </section>
