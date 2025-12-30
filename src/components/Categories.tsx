@@ -1,10 +1,8 @@
 import { Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import categoryFemenil2012 from "@/assets/category-femenil-2012.jpg";
-import categoryVaronil2008 from "@/assets/category-varonil-2008.jpg";
-import categoryJuvenil2009 from "@/assets/category-juvenil-2009.jpg";
-import categoryJuvenil2010 from "@/assets/category-juvenil-2010.jpg";
-import categoryJuvenil2011 from "@/assets/category-juvenil-2011.jpg";
+import categoryVaronil from "@/assets/category-varonil-telmex.jpg";
+import categoryJuvenil from "@/assets/category-juvenil-telmex.jpg";
+import categoryFemenil from "@/assets/category-femenil-telmex.jpg";
 
 export const Categories = () => {
   const categories = [
@@ -14,7 +12,7 @@ export const Categories = () => {
       format: "Fútbol 11",
       description: "Categoría Femenil",
       maxPlayers: 22,
-      image: categoryFemenil2012
+      image: categoryFemenil
     },
     {
       year: "2011",
@@ -22,7 +20,7 @@ export const Categories = () => {
       format: "Fútbol 11",
       description: "Categoría Juvenil",
       maxPlayers: 22,
-      image: categoryJuvenil2011
+      image: categoryJuvenil
     },
     {
       year: "2010",
@@ -30,7 +28,7 @@ export const Categories = () => {
       format: "Fútbol 11",
       description: "Categoría Juvenil",
       maxPlayers: 22,
-      image: categoryJuvenil2010
+      image: categoryJuvenil
     },
     {
       year: "2009",
@@ -38,7 +36,7 @@ export const Categories = () => {
       format: "Fútbol 11",
       description: "Categoría Juvenil",
       maxPlayers: 22,
-      image: categoryJuvenil2009
+      image: categoryJuvenil
     },
     {
       year: "2008",
@@ -46,7 +44,7 @@ export const Categories = () => {
       format: "Fútbol 11",
       description: "Categoría Varonil",
       maxPlayers: 22,
-      image: categoryVaronil2008
+      image: categoryVaronil
     }
   ];
 
