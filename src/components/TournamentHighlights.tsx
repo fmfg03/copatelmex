@@ -40,7 +40,7 @@ export const TournamentHighlights = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-20">
             <p className="text-america-blue text-sm font-bold uppercase tracking-wider mb-3">
-              Fútbol 5 y Fútbol 7
+              Fútbol 11
             </p>
             <h2 className="text-4xl md:text-5xl font-extrabold text-secondary mb-6 tracking-tight">
               Lo que Incluye tu Inscripción
