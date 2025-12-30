@@ -140,49 +140,49 @@ const Contact = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       
-      <main className="pt-24 pb-16">
+      <main className="pt-20 sm:pt-24 pb-12 sm:pb-16">
         <div className="container mx-auto px-4">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <div className="text-center mb-8 sm:mb-12">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
               Contáctanos
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
               ¿Tienes alguna duda, queja o sugerencia? Escríbenos y te responderemos a la brevedad.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
             {/* Contact Info & FAQ */}
-            <div className="lg:col-span-1 space-y-6">
-              <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
-                <h2 className="text-xl font-bold text-foreground mb-6">
+            <div className="lg:col-span-1 space-y-4 sm:space-y-6 order-2 lg:order-1">
+              <div className="bg-card rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-lg border border-border">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground mb-4 sm:mb-6">
                   Información de Contacto
                 </h2>
                 
                 <div className="space-y-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-5 h-5 text-primary" />
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium text-foreground">Teléfono</p>
+                      <p className="font-medium text-foreground text-sm sm:text-base">Teléfono</p>
                       <a 
                         href="tel:+525555555555" 
-                        className="text-muted-foreground hover:text-primary transition-colors"
+                        className="text-muted-foreground hover:text-primary transition-colors text-sm"
                       >
                         +52 55 5555 5555
                       </a>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-5 h-5 text-primary" />
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium text-foreground">Ubicación</p>
-                      <p className="text-muted-foreground">
+                      <p className="font-medium text-foreground text-sm sm:text-base">Ubicación</p>
+                      <p className="text-muted-foreground text-sm">
                         Ciudad de México, México
                       </p>
                     </div>
@@ -190,11 +190,11 @@ const Contact = () => {
                 </div>
               </div>
 
-              <div className="bg-secondary rounded-2xl p-6 shadow-lg">
-                <h3 className="text-lg font-bold text-white mb-3">
+              <div className="bg-secondary rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-lg">
+                <h3 className="text-base sm:text-lg font-bold text-white mb-2 sm:mb-3">
                   Horario de Atención
                 </h3>
-                <div className="space-y-2 text-white/80">
+                <div className="space-y-1.5 sm:space-y-2 text-white/80 text-sm">
                   <p>Lunes a Viernes: 9:00 - 18:00</p>
                   <p>Sábados: 9:00 - 14:00</p>
                   <p>Domingos: Cerrado</p>
@@ -202,18 +202,18 @@ const Contact = () => {
               </div>
 
               {/* FAQ Section */}
-              <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
-                <div className="flex items-center gap-2 mb-4">
-                  <HelpCircle className="w-5 h-5 text-primary" />
-                  <h3 className="text-lg font-bold text-foreground">Preguntas Frecuentes</h3>
+              <div className="bg-card rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-lg border border-border">
+                <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                  <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                  <h3 className="text-base sm:text-lg font-bold text-foreground">Preguntas Frecuentes</h3>
                 </div>
                 <Accordion type="single" collapsible className="w-full">
                   {FAQS.map((faq, index) => (
                     <AccordionItem key={index} value={`item-${index}`}>
-                      <AccordionTrigger className="text-left text-sm">
+                      <AccordionTrigger className="text-left text-xs sm:text-sm">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground text-sm">
+                      <AccordionContent className="text-muted-foreground text-xs sm:text-sm">
                         {faq.answer}
                       </AccordionContent>
                     </AccordionItem>
@@ -223,16 +223,16 @@ const Contact = () => {
             </div>
 
             {/* Contact Form */}
-            <div className="lg:col-span-2">
-              <div className="bg-card rounded-2xl p-6 md:p-8 shadow-lg border border-border">
-                <h2 className="text-xl font-bold text-foreground mb-6">
+            <div className="lg:col-span-2 order-1 lg:order-2">
+              <div className="bg-card rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg border border-border">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground mb-4 sm:mb-6">
                   Envíanos un Mensaje
                 </h2>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="nombre">Nombre Completo *</Label>
+                      <Label htmlFor="nombre" className="text-sm">Nombre Completo *</Label>
                       <Input
                         id="nombre"
                         name="nombre"
@@ -240,11 +240,12 @@ const Contact = () => {
                         onChange={handleChange}
                         placeholder="Tu nombre completo"
                         required
+                        className="text-sm sm:text-base"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="telefono">Teléfono *</Label>
+                      <Label htmlFor="telefono" className="text-sm">Teléfono *</Label>
                       <Input
                         id="telefono"
                         name="telefono"
@@ -253,20 +254,21 @@ const Contact = () => {
                         onChange={handleChange}
                         placeholder="10 dígitos"
                         required
+                        className="text-sm sm:text-base"
                       />
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="estado">Estado *</Label>
+                      <Label htmlFor="estado" className="text-sm">Estado *</Label>
                       <Select value={formData.estado} onValueChange={handleEstadoChange} required>
-                        <SelectTrigger>
+                        <SelectTrigger className="text-sm sm:text-base">
                           <SelectValue placeholder="Selecciona tu estado" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-popover max-h-[300px]">
                           {ESTADOS_MEXICO.map((estado) => (
-                            <SelectItem key={estado} value={estado}>
+                            <SelectItem key={estado} value={estado} className="text-sm">
                               {estado}
                             </SelectItem>
                           ))}
@@ -275,7 +277,7 @@ const Contact = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="municipio">Municipio/Alcaldía *</Label>
+                      <Label htmlFor="municipio" className="text-sm">Municipio/Alcaldía *</Label>
                       <Input
                         id="municipio"
                         name="municipio"
@@ -283,12 +285,13 @@ const Contact = () => {
                         onChange={handleChange}
                         placeholder="Tu municipio o alcaldía"
                         required
+                        className="text-sm sm:text-base"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="correo">Correo Electrónico *</Label>
+                    <Label htmlFor="correo" className="text-sm">Correo Electrónico *</Label>
                     <Input
                       id="correo"
                       name="correo"
@@ -297,25 +300,27 @@ const Contact = () => {
                       onChange={handleChange}
                       placeholder="tu@correo.com"
                       required
+                      className="text-sm sm:text-base"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="mensaje">Mensaje *</Label>
+                    <Label htmlFor="mensaje" className="text-sm">Mensaje *</Label>
                     <Textarea
                       id="mensaje"
                       name="mensaje"
                       value={formData.mensaje}
                       onChange={handleChange}
                       placeholder="Escribe tu mensaje, duda, queja o sugerencia..."
-                      rows={5}
+                      rows={4}
                       required
+                      className="text-sm sm:text-base"
                     />
                   </div>
 
                   <Button
                     type="submit"
-                    className="w-full"
+                    className="w-full text-sm sm:text-base"
                     size="lg"
                     disabled={isSubmitting}
                   >
