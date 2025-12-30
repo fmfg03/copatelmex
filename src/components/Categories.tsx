@@ -7,44 +7,28 @@ import categoryFemenil from "@/assets/category-femenil-telmex.jpg";
 export const Categories = () => {
   const categories = [
     {
-      year: "2012",
-      type: "Femenil",
-      format: "Fútbol 11",
-      description: "Categoría Femenil",
-      maxPlayers: 22,
-      image: categoryFemenil
-    },
-    {
-      year: "2011",
-      type: "Juvenil",
-      format: "Fútbol 11",
-      description: "Categoría Juvenil",
-      maxPlayers: 22,
-      image: categoryJuvenil
-    },
-    {
-      year: "2010",
-      type: "Juvenil",
-      format: "Fútbol 11",
-      description: "Categoría Juvenil",
-      maxPlayers: 22,
-      image: categoryJuvenil
-    },
-    {
-      year: "2009",
-      type: "Juvenil",
-      format: "Fútbol 11",
-      description: "Categoría Juvenil",
-      maxPlayers: 22,
-      image: categoryJuvenil
-    },
-    {
       year: "2008",
       type: "Varonil",
       format: "Fútbol 11",
       description: "Categoría Varonil",
       maxPlayers: 22,
       image: categoryVaronil
+    },
+    {
+      year: "2009, 2010, 2011",
+      type: "Juvenil",
+      format: "Fútbol 11",
+      description: "Categoría Juvenil",
+      maxPlayers: 22,
+      image: categoryJuvenil
+    },
+    {
+      year: "2012",
+      type: "Femenil",
+      format: "Fútbol 11",
+      description: "Categoría Femenil",
+      maxPlayers: 22,
+      image: categoryFemenil
     }
   ];
 
@@ -62,7 +46,7 @@ export const Categories = () => {
               Todas las categorías juegan <strong className="text-primary">Fútbol 11</strong>
             </p>
             <Badge variant="outline" className="text-sm sm:text-base md:text-lg px-4 sm:px-5 md:px-6 py-2 md:py-3 border-2 border-primary text-primary font-semibold">
-              Cinco Categorías Disponibles
+              Tres Categorías Disponibles
             </Badge>
           </div>
 
