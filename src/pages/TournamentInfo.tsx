@@ -50,7 +50,7 @@ export default function TournamentInfo() {
               </p>
             </div>
             <div className="aspect-video bg-muted rounded-xl shadow-2xl overflow-hidden">
-              <iframe className="w-full h-full" src="https://www.youtube.com/embed/sfURTls58CU" title="Video de Bienvenida" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+              <iframe className="w-full h-full" src="https://www.youtube.com/embed/eic4VntNlXw?rel=0&start=74" title="Final Copa Telmex Telcel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
             </div>
             <div className="mt-8 text-center">
               <Card className="max-w-3xl mx-auto">
