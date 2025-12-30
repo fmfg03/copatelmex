@@ -145,9 +145,9 @@ export const Navbar = () => {
               asChild
               className="bg-accent hover:bg-accent/90 text-white shadow-lg"
             >
-              <a href="/cedula-inscripcion.pdf" download>
+              <a href="/bases-torneo.pdf" download>
                 <Download className="w-4 h-4 mr-2" />
-                Cédula de Inscripción
+                Descargar Convocatoria
               </a>
             </Button>
             <ThemeToggle />
@@ -261,9 +261,9 @@ export const Navbar = () => {
                 asChild
                 className="bg-accent hover:bg-accent/90 text-white w-full"
               >
-                <a href="/cedula-inscripcion.pdf" download onClick={() => setIsOpen(false)}>
+                <a href="/bases-torneo.pdf" download onClick={() => setIsOpen(false)}>
                   <Download className="w-4 h-4 mr-2" />
-                  Cédula de Inscripción
+                  Descargar Convocatoria
                 </a>
               </Button>
               {user && (
