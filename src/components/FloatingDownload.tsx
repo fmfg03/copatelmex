@@ -1,20 +1,16 @@
 import { Download } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export const FloatingDownload = () => {
   return (
     <a
       href="/bases-torneo.pdf"
       download
-      className="fixed right-4 bottom-24 z-40 group"
+      className="fixed bottom-8 right-8 z-40 bg-accent hover:bg-accent/90 text-white rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 flex items-center gap-2 group"
     >
-      <Button
-        size="lg"
-        className="bg-accent hover:bg-accent/90 text-white shadow-xl rounded-full h-14 px-5 flex items-center gap-2 transition-all duration-300 hover:scale-105"
-      >
-        <Download className="w-5 h-5" />
-        <span className="hidden sm:inline font-semibold">Descargar Convocatoria</span>
-      </Button>
+      <Download className="w-6 h-6" />
+      <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap font-semibold">
+        Descargar Convocatoria
+      </span>
     </a>
   );
 };
