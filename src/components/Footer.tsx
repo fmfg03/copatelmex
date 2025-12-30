@@ -7,15 +7,15 @@ export const Footer = () => {
   
   return (
     <footer id="contacto" className="bg-secondary dark:bg-secondary/90 text-white border-t border-transparent dark:border-border">
-      <div className="container mx-auto px-4 py-16 md:py-20">
+      <div className="container mx-auto px-4 py-10 sm:py-12 md:py-16 lg:py-20">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 mb-10 sm:mb-12 md:mb-16">
             {/* Brand */}
-            <div>
+            <div className="sm:col-span-2 lg:col-span-1">
               <div className="flex items-center space-x-3 mb-4">
-                <img src={copaTelmexLogo} alt="Copa Telmex Telcel" className="w-12 h-12 object-contain" />
+                <img src={copaTelmexLogo} alt="Copa Telmex Telcel" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
                 <div>
-                  <h3 className="font-bold text-lg">COPA TELMEX TELCEL</h3>
+                  <h3 className="font-bold text-base sm:text-lg">COPA TELMEX TELCEL</h3>
                   <p className="text-xs text-white/70">26ª Edición</p>
                 </div>
               </div>
@@ -23,13 +23,13 @@ export const Footer = () => {
                 El torneo aficionado más grande del mundo, impulsando la asistencia social mediante el deporte.
               </p>
               <div className="mt-4">
-                <img src={fundacionLogo} alt="Fundación Telmex, A.C." className="h-8 object-contain opacity-80" />
+                <img src={fundacionLogo} alt="Fundación Telmex, A.C." className="h-7 sm:h-8 object-contain opacity-80" />
               </div>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-bold text-lg mb-4">Enlaces Rápidos</h4>
+              <h4 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Enlaces Rápidos</h4>
               <ul className="space-y-2">
                 {[
                   { name: "Inicio", href: "#inicio" },
@@ -47,11 +47,11 @@ export const Footer = () => {
 
             {/* Contact */}
             <div>
-              <h4 className="font-bold text-lg mb-4">Contacto</h4>
+              <h4 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Contacto</h4>
               <ul className="space-y-3">
                 <li className="flex items-center space-x-3 text-sm">
                   <Mail className="w-4 h-4 text-primary flex-shrink-0" />
-                  <a href="mailto:quejas@plataformasports.com" className="text-white/80 hover:text-primary transition-colors">
+                  <a href="mailto:quejas@plataformasports.com" className="text-white/80 hover:text-primary transition-colors break-all">
                     quejas@plataformasports.com
                   </a>
                 </li>
@@ -66,60 +66,60 @@ export const Footer = () => {
 
             {/* Social Media */}
             <div>
-              <h4 className="font-bold text-lg mb-4">Síguenos</h4>
-              <div className="flex flex-wrap gap-3">
+              <h4 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Síguenos</h4>
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 <a 
                   href="https://www.facebook.com/oficialCopaTelmex" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
                   title="Facebook"
                 >
-                  <Facebook className="w-5 h-5 text-white group-hover:text-white" />
+                  <Facebook className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:text-white" />
                 </a>
                 <a 
                   href="https://www.instagram.com/copatelmextelcel_oficial" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
                   title="Instagram"
                 >
-                  <Instagram className="w-5 h-5 text-white group-hover:text-white" />
+                  <Instagram className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:text-white" />
                 </a>
                 <a 
                   href="https://x.com/Copatelmex" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
                   title="X (Twitter)"
                 >
-                  <Twitter className="w-5 h-5 text-white group-hover:text-white" />
+                  <Twitter className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:text-white" />
                 </a>
                 <a 
                   href="https://www.youtube.com/@CopaTelmexTelcelFutbol" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-primary transition-colors flex items-center justify-center group border border-white/20"
                   title="YouTube"
                 >
-                  <Youtube className="w-5 h-5 text-white group-hover:text-white" />
+                  <Youtube className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:text-white" />
                 </a>
               </div>
-              <p className="text-white/60 text-xs mt-4 text-justify">
+              <p className="text-white/60 text-xs mt-3 sm:mt-4 text-justify">
                 Mantente actualizado con las últimas noticias del torneo.
               </p>
             </div>
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-white/20 pt-8 text-center">
-            <p className="text-white/60 text-sm">
+          <div className="border-t border-white/20 pt-6 sm:pt-8 text-center">
+            <p className="text-white/60 text-xs sm:text-sm">
               © {currentYear} Copa Telmex Telcel. Todos los derechos reservados.
             </p>
             <p className="text-white/40 text-xs mt-2">
               Operado por <a href="https://www.plataformasports.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white/60 transition-colors underline">Plataforma Sports</a>.
             </p>
-            <div className="mt-4">
+            <div className="mt-3 sm:mt-4">
               <a href="/privacy" className="text-white/60 hover:text-primary text-xs transition-colors">
                 Aviso de Privacidad
               </a>
