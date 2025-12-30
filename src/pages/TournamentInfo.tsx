@@ -111,7 +111,7 @@ export default function TournamentInfo() {
                     <Trophy className="w-6 h-6 text-america-blue" />
                   </div>
                   <h3 className="font-bold text-lg mb-2">Formato</h3>
-                  <p className="text-muted-foreground">Fútbol 5 y 7</p>
+                  <p className="text-muted-foreground">Fútbol 11</p>
                 </CardContent>
               </Card>
             </div>
@@ -243,15 +243,11 @@ export default function TournamentInfo() {
                   <ul className="space-y-3 text-muted-foreground">
                     <li className="flex items-start gap-3">
                       <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Formato Fútbol 5 para categorías 2020, 2019 y 2018 (cinco jugadores en campo incluido portero)</span>
+                      <span>Formato Fútbol 11 para todas las categorías (once jugadores en campo incluido portero)</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Formato Fútbol 7 para categorías 2017, 2016, 2015 y 2014 (siete jugadores en campo incluido portero)</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Registro mínimo de 7 jugadores y máximo 16 jugadores por equipo</span>
+                      <span>Registro mínimo de 7 jugadores y máximo 22 jugadores por equipo</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
@@ -259,7 +255,7 @@ export default function TournamentInfo() {
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Reglas de Juego generales del Fútbol 5 y Fútbol 7</span>
+                      <span>Reglas de Juego generales del Fútbol 11</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
@@ -397,45 +393,45 @@ export default function TournamentInfo() {
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-secondary mb-4">Categorías Varoniles</h2>
               <div className="w-24 h-1 bg-america-blue mx-auto mb-6"></div>
-              <p className="text-muted-foreground">Siete categorías diferentes - Fútbol 5 (2020-2018) y Fútbol 7 (2017-2014)</p>
+              <p className="text-muted-foreground">Siete categorías diferentes - Fútbol 11</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[{
               name: "Categoría 2020",
-              max: 16,
+              max: 22,
               age: "Sub-5",
-              format: "Fútbol 5"
+              format: "Fútbol 11"
             }, {
               name: "Categoría 2019",
-              max: 16,
+              max: 22,
               age: "Sub-6",
-              format: "Fútbol 5"
+              format: "Fútbol 11"
             }, {
               name: "Categoría 2018",
-              max: 16,
+              max: 22,
               age: "Sub-7",
-              format: "Fútbol 5"
+              format: "Fútbol 11"
             }, {
               name: "Categoría 2017",
-              max: 16,
+              max: 22,
               age: "Sub-8",
-              format: "Fútbol 7"
+              format: "Fútbol 11"
             }, {
               name: "Categoría 2016",
-              max: 16,
+              max: 22,
               age: "Sub-9",
-              format: "Fútbol 7"
+              format: "Fútbol 11"
             }, {
               name: "Categoría 2015",
-              max: 16,
+              max: 22,
               age: "Sub-10",
-              format: "Fútbol 7"
+              format: "Fútbol 11"
             }, {
               name: "Categoría 2014",
-              max: 16,
+              max: 22,
               age: "Sub-11",
-              format: "Fútbol 7"
+              format: "Fútbol 11"
             }].map((category, index) => <Card key={category.name} className="group border-2 hover:border-primary hover:-translate-y-2 transition-all duration-300 hover:shadow-xl cursor-pointer animate-fade-in overflow-hidden relative" style={{
               animationDelay: `${index * 0.1}s`
             }}>
@@ -540,7 +536,7 @@ export default function TournamentInfo() {
                       <ul className="space-y-2 text-muted-foreground">
                         <li className="flex items-center gap-2">
                           <CheckCircle className="w-4 h-4 text-america-blue" />
-                          <span>8 Canchas de Fútbol 7</span>
+                          <span>8 Canchas de Fútbol 11</span>
                         </li>
                         <li className="flex items-center gap-2">
                           <CheckCircle className="w-4 h-4 text-america-blue" />
