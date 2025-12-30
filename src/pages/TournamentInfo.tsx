@@ -391,46 +391,26 @@ export default function TournamentInfo() {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-secondary mb-4">Categorías Varoniles</h2>
-              <div className="w-24 h-1 bg-america-blue mx-auto mb-6"></div>
-              <p className="text-muted-foreground">Siete categorías diferentes - Fútbol 11</p>
+              <h2 className="text-4xl font-bold text-secondary mb-4">Categorías del Torneo</h2>
+              <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
+              <p className="text-muted-foreground">Tres categorías - Fútbol 11</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[{
-              name: "Categoría 2020",
+              name: "Categoría Varonil",
+              years: "2008",
               max: 22,
-              age: "Sub-5",
               format: "Fútbol 11"
             }, {
-              name: "Categoría 2019",
+              name: "Categoría Juvenil",
+              years: "2009, 2010, 2011",
               max: 22,
-              age: "Sub-6",
               format: "Fútbol 11"
             }, {
-              name: "Categoría 2018",
+              name: "Categoría Femenil",
+              years: "2012",
               max: 22,
-              age: "Sub-7",
-              format: "Fútbol 11"
-            }, {
-              name: "Categoría 2017",
-              max: 22,
-              age: "Sub-8",
-              format: "Fútbol 11"
-            }, {
-              name: "Categoría 2016",
-              max: 22,
-              age: "Sub-9",
-              format: "Fútbol 11"
-            }, {
-              name: "Categoría 2015",
-              max: 22,
-              age: "Sub-10",
-              format: "Fútbol 11"
-            }, {
-              name: "Categoría 2014",
-              max: 22,
-              age: "Sub-11",
               format: "Fútbol 11"
             }].map((category, index) => <Card key={category.name} className="group border-2 hover:border-primary hover:-translate-y-2 transition-all duration-300 hover:shadow-xl cursor-pointer animate-fade-in overflow-hidden relative" style={{
               animationDelay: `${index * 0.1}s`
@@ -438,26 +418,26 @@ export default function TournamentInfo() {
                   {/* Shimmer Effect */}
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-primary/10 to-transparent"></div>
                   
-                  {/* Age Badge */}
-                  <div className="absolute top-3 right-3 bg-america-blue px-3 py-1 rounded-full shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-white font-bold text-xs">{category.age}</span>
+                  {/* Year Badge */}
+                  <div className="absolute top-3 right-3 bg-accent px-3 py-1 rounded-full shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                    <span className="text-white font-bold text-xs">{category.years}</span>
                   </div>
                   
                   <CardContent className="p-6 relative z-10">
                     <div className="text-center">
-                      <div className="w-16 h-16 rounded-xl bg-america-blue/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-america-blue/20 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-                        <Trophy className="w-8 h-8 text-america-blue group-hover:scale-110 transition-transform duration-300" />
+                      <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+                        <Trophy className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
                       </div>
-                      <h3 className="text-xl font-bold text-secondary mb-2 group-hover:text-america-blue transition-colors duration-300">{category.name}</h3>
+                      <h3 className="text-xl font-bold text-secondary mb-2 group-hover:text-primary transition-colors duration-300">{category.name}</h3>
                       <div className="space-y-2 text-sm text-muted-foreground">
                         <p className="flex items-center justify-center gap-2 group-hover:translate-x-1 transition-transform duration-300">
-                          <Users className="w-4 h-4 text-america-blue group-hover:scale-125 transition-transform duration-300" />
+                          <Users className="w-4 h-4 text-primary group-hover:scale-125 transition-transform duration-300" />
                           Máximo {category.max} jugadores
                         </p>
                         <p className="flex items-center justify-center gap-2 group-hover:translate-x-1 transition-transform duration-300" style={{
                       transitionDelay: '50ms'
                     }}>
-                          <Shield className="w-4 h-4 text-america-blue group-hover:scale-125 transition-transform duration-300" />
+                          <Shield className="w-4 h-4 text-primary group-hover:scale-125 transition-transform duration-300" />
                           Formato {category.format}
                         </p>
                       </div>
@@ -465,7 +445,7 @@ export default function TournamentInfo() {
                   </CardContent>
                   
                   {/* Bottom Accent Line */}
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-america-blue scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                 </Card>)}
             </div>
           </div>
