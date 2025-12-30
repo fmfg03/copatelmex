@@ -38,7 +38,7 @@ export const Hero = () => {
         <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
           <div className="max-w-6xl mx-auto space-y-8 md:space-y-12">
             {/* Logos */}
-            <div className="flex justify-center items-center gap-8 md:gap-12 mb-8 md:mb-12">
+            <div className="flex justify-center items-center gap-4 sm:gap-8 md:gap-12 mb-6 md:mb-12">
               <img 
                 src={copaTelmexLogo} 
                 alt="Copa Telmex Telcel" 
@@ -46,7 +46,7 @@ export const Hero = () => {
                 width="280" 
                 height="280" 
                 fetchPriority="high" 
-                className="w-48 h-auto md:w-64 object-contain drop-shadow-2xl animate-fade-in" 
+                className="w-32 sm:w-40 md:w-48 lg:w-64 h-auto object-contain drop-shadow-2xl animate-fade-in" 
               />
               <img 
                 src={fundacionLogo} 
@@ -55,43 +55,43 @@ export const Hero = () => {
                 width="280" 
                 height="280" 
                 fetchPriority="high" 
-                className="w-48 h-auto md:w-64 object-contain drop-shadow-2xl animate-fade-in" 
+                className="w-32 sm:w-40 md:w-48 lg:w-64 h-auto object-contain drop-shadow-2xl animate-fade-in" 
               />
             </div>
 
             {/* Main Title */}
-            <div className="text-center mb-16 md:mb-20 space-y-6">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight font-display tracking-tight">
+            <div className="text-center mb-10 md:mb-16 lg:mb-20 space-y-4 md:space-y-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white mb-4 md:mb-6 leading-tight font-display tracking-tight">
                 COPA TELMEX TELCEL
               </h1>
-              <p className="text-white text-xl md:text-2xl max-w-4xl mx-auto font-bold mb-4 leading-relaxed text-center">
+              <p className="text-white text-lg sm:text-xl md:text-2xl max-w-4xl mx-auto font-bold mb-3 md:mb-4 leading-relaxed text-center px-2">
                 El torneo aficionado más grande del mundo
               </p>
-              <p className="text-white/90 text-lg md:text-xl max-w-3xl mx-auto font-medium leading-relaxed text-center">
+              <p className="text-white/90 text-base sm:text-lg md:text-xl max-w-3xl mx-auto font-medium leading-relaxed text-center px-2">
                 Vigésimo sexta edición impulsando la asistencia social mediante el deporte
               </p>
             </div>
 
             {/* Key Info Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-16 md:mb-20">
-              <div className="bg-white/15 backdrop-blur-md rounded-xl p-8 border-2 border-white/80 shadow-lg">
-                <Calendar className="w-8 h-8 text-white mb-4" />
-                <h3 className="text-white font-bold text-lg mb-3 tracking-wide">Formato</h3>
-                <ul className="text-white/95 font-medium text-sm space-y-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-10 md:mb-16 lg:mb-20">
+              <div className="bg-white/15 backdrop-blur-md rounded-xl p-5 md:p-8 border-2 border-white/80 shadow-lg">
+                <Calendar className="w-6 h-6 md:w-8 md:h-8 text-white mb-3 md:mb-4" />
+                <h3 className="text-white font-bold text-base md:text-lg mb-2 md:mb-3 tracking-wide">Formato</h3>
+                <ul className="text-white/95 font-medium text-xs md:text-sm space-y-1">
                   <li>• Fase Colectiva</li>
                   <li>• Fase Estatal</li>
                   <li>• Fase Nacional</li>
                 </ul>
               </div>
-              <div className="bg-white/15 backdrop-blur-md rounded-xl p-8 border-2 border-white/80 shadow-lg">
-                <Users className="w-8 h-8 text-white mb-4" />
-                <h3 className="text-white font-bold text-lg mb-3 tracking-wide">Categorías</h3>
-                <p className="text-white/95 text-sm font-medium">Femenil 2012, Juvenil 2009-2011, Varonil 2008</p>
+              <div className="bg-white/15 backdrop-blur-md rounded-xl p-5 md:p-8 border-2 border-white/80 shadow-lg">
+                <Users className="w-6 h-6 md:w-8 md:h-8 text-white mb-3 md:mb-4" />
+                <h3 className="text-white font-bold text-base md:text-lg mb-2 md:mb-3 tracking-wide">Categorías</h3>
+                <p className="text-white/95 text-xs md:text-sm font-medium">Femenil 2012, Juvenil 2009-2011, Varonil 2008</p>
               </div>
-              <div className="bg-white/15 backdrop-blur-md rounded-xl p-8 border-2 border-white/80 shadow-lg">
-                <Trophy className="w-8 h-8 text-white mb-4" />
-                <h3 className="text-white font-bold text-lg mb-3 tracking-wide">Premiación</h3>
-                <ul className="text-white/95 font-medium text-sm space-y-1">
+              <div className="bg-white/15 backdrop-blur-md rounded-xl p-5 md:p-8 border-2 border-white/80 shadow-lg sm:col-span-2 md:col-span-1">
+                <Trophy className="w-6 h-6 md:w-8 md:h-8 text-white mb-3 md:mb-4" />
+                <h3 className="text-white font-bold text-base md:text-lg mb-2 md:mb-3 tracking-wide">Premiación</h3>
+                <ul className="text-white/95 font-medium text-xs md:text-sm space-y-1">
                   <li>• Trofeos y medallas</li>
                   <li>• Reconocimientos MVP</li>
                   <li>• Viaje de Campeones</li>
@@ -100,20 +100,20 @@ export const Hero = () => {
             </div>
 
             {/* Countdown Timers */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 mb-10 md:mb-16">
               <CountdownTimer targetDate={registrationStartDate} label="Inicio de Inscripciones" accentColor="white" />
               <CountdownTimer targetDate={tournamentStartDate} label="Fase Nacional" accentColor="white" />
             </div>
 
             {/* Download Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center px-2">
               <Button 
                 size="lg" 
                 asChild
-                className="bg-accent hover:bg-accent/90 text-white font-bold text-lg px-8 py-6 w-full sm:w-auto rounded-full shadow-lg"
+                className="bg-accent hover:bg-accent/90 text-white font-bold text-sm md:text-lg px-6 md:px-8 py-5 md:py-6 w-full sm:w-auto rounded-full shadow-lg"
               >
                 <a href="/convocatoria.pdf" download>
-                  <Download className="w-5 h-5 mr-2" />
+                  <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                   Descarga Convocatoria
                 </a>
               </Button>
@@ -121,10 +121,10 @@ export const Hero = () => {
                 size="lg" 
                 variant="outline"
                 asChild
-                className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-secondary font-bold text-lg px-8 py-6 w-full sm:w-auto rounded-full"
+                className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-secondary font-bold text-sm md:text-lg px-6 md:px-8 py-5 md:py-6 w-full sm:w-auto rounded-full"
               >
                 <a href="/cedula-inscripcion.pdf" download>
-                  <Download className="w-5 h-5 mr-2" />
+                  <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                   Cédula de Inscripción
                 </a>
               </Button>
