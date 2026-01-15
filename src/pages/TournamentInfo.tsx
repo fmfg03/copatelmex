@@ -389,7 +389,7 @@ export default function TournamentInfo() {
               format: "Fútbol 11"
             }, {
               name: "Categoría Femenil",
-              years: "2011 o anteriores",
+              years: "2012 y anteriores",
               max: 22,
               format: "Fútbol 11"
             }].map((category, index) => <Card key={category.name} className="group border-2 hover:border-primary hover:-translate-y-2 transition-all duration-300 hover:shadow-xl cursor-pointer animate-fade-in overflow-hidden relative" style={{
