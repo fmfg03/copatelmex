@@ -98,54 +98,6 @@ export const TournamentInfo = () => {
             </CardContent>
           </Card>
 
-          {/* Convocatoria */}
-          <Card className="border-2 border-border">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-2xl font-bold text-secondary">Convocatoria y Cédula de Inscripción</h3>
-              </div>
-              <p className="text-muted-foreground mb-6 text-justify">
-                Descarga el documento completo con la convocatoria, bases, condiciones y cédula de inscripción oficial del torneo.
-              </p>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button className="w-full sm:w-auto bg-primary hover:bg-primary/90" asChild>
-                      <a href="/convocatoria.pdf" download>
-                        <Download className="w-4 h-4 mr-2" />
-                        Descargar Convocatoria (PDF)
-                      </a>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Haz clic para descargar el archivo PDF con la convocatoria oficial</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <Separator className="my-6" />
-              <div className="space-y-3">
-                <h4 className="font-semibold text-secondary">Formato del Torneo:</h4>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span>Fase Colectiva</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span>Fase Estatal</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span>Fase Nacional</span>
-                  </li>
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Fechas Clave */}
           <Card className="border-2 border-border bg-gradient-to-br from-secondary/5 to-primary/5">
             <CardContent className="p-8">
