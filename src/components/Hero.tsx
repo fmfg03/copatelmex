@@ -30,8 +30,8 @@ export const Hero = () => {
   const [current, setCurrent] = useState(0);
 
   // Key dates for Copa Telmex
-  const registrationStartDate = new Date("2026-01-01T00:00:00");
-  const tournamentStartDate = new Date("2026-06-01T12:00:00"); // TBD
+  const registrationEndDate = new Date("2026-04-30T23:59:59");
+  const tournamentStartDate = new Date("2026-06-01T12:00:00");
 
   // YouTube video ID
   const youtubeVideoId = "eic4VntNlXw";
@@ -159,7 +159,7 @@ export const Hero = () => {
 
             {/* Countdown Timers */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 mb-10 md:mb-16">
-              <CountdownTimer targetDate={registrationStartDate} label="Inicio de Inscripciones" accentColor="white" />
+              <CountdownTimer targetDate={registrationEndDate} label="Cierre de Inscripciones" accentColor="white" />
               <CountdownTimer targetDate={tournamentStartDate} label="Fase Nacional" accentColor="white" />
             </div>
 
