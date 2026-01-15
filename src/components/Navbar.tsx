@@ -141,14 +141,6 @@ export const Navbar = () => {
 
           {/* User Menu */}
           <div className="hidden md:flex items-center space-x-3">
-            <img 
-              src={fundacionLogo} 
-              alt="Fundación Telmex, A.C."
-              title="Fundación Telmex, A.C."
-              width="120"
-              height="40"
-              className="h-10 w-auto object-contain"
-            />
             <Button
               onClick={() => navigate("/inscripcion")}
               className="bg-white text-secondary hover:bg-white/90 font-bold"
@@ -204,6 +196,14 @@ export const Navbar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
+            <img 
+              src={fundacionLogo} 
+              alt="Fundación Telmex, A.C."
+              title="Fundación Telmex, A.C."
+              width="120"
+              height="40"
+              className="h-10 w-auto object-contain"
+            />
           </div>
 
           {/* Mobile Menu Button */}
