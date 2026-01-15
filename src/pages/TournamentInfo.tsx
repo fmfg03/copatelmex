@@ -1,11 +1,10 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
-import { Calendar, Trophy, Shield, Users, FileText, MapPin, Clock, Award, CheckCircle, Star, Download, Hotel, Bed, Car, ExternalLink, Camera } from "lucide-react";
+import { Calendar, Trophy, Shield, Users, FileText, Clock, Award, CheckCircle, Star, Download, Camera } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import cecapFacilities from "@/assets/cecap-facilities.jpg";
 import galleryGoalCelebration from "@/assets/gallery-goal-celebration.jpg";
 import galleryGoalkeeperSave from "@/assets/gallery-goalkeeper-save.jpg";
 import galleryMatchAction from "@/assets/gallery-match-action.jpg";
