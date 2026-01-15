@@ -1,13 +1,33 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { CountdownTimer } from "./CountdownTimer";
 import { Calendar, Trophy, Users, Download } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import heroImage from "@/assets/hero-copa-telmex.jpg";
+import heroAmericaFans from "@/assets/hero-america-fans-new.jpg";
+import tournamentCeremony from "@/assets/tournament-ceremony.jpg";
+import tournamentField from "@/assets/tournament-field.jpg";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
 import fundacionLogo from "@/assets/fundacion-telmex-logo-white.png";
 
+const heroSlides = [
+  { image: heroImage, alt: "Copa Telmex Telcel" },
+  { image: heroAmericaFans, alt: "Aficionados Copa Telmex" },
+  { image: tournamentCeremony, alt: "Ceremonia del Torneo" },
+  { image: tournamentField, alt: "Campo del Torneo" },
+];
+
 export const Hero = () => {
   const navigate = useNavigate();
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
 
   // Key dates for Copa Telmex
   const registrationStartDate = new Date("2026-01-01T00:00:00");
@@ -16,22 +36,78 @@ export const Hero = () => {
   // YouTube video ID
   const youtubeVideoId = "eic4VntNlXw";
   const videoStartTime = 74;
+
+  const onSelect = useCallback(() => {
+    if (!api) return;
+    setCurrent(api.selectedScrollSnap());
+  }, [api]);
+
+  useEffect(() => {
+    if (!api) return;
+    onSelect();
+    api.on("select", onSelect);
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api, onSelect]);
+
+  const scrollTo = useCallback((index: number) => {
+    api?.scrollTo(index);
+  }, [api]);
   
   return (
     <>
       <section id="inicio" className="relative min-h-screen flex items-center pt-20">
-        {/* Background Image with Overlay */}
+        {/* Background Slider */}
         <div className="absolute inset-0 overflow-hidden">
-          <img 
-            src={heroImage} 
-            alt="Copa Telmex Telcel" 
-            title="El torneo aficionado más grande del mundo" 
-            fetchPriority="high" 
-            width="1920" 
-            height="1080" 
-            className="w-full h-full object-cover" 
-          />
-          <div className="absolute inset-0 bg-gradient-hero opacity-70" />
+          <Carousel
+            setApi={setApi}
+            opts={{
+              loop: true,
+              align: "start",
+            }}
+            plugins={[
+              Autoplay({
+                delay: 5000,
+                stopOnInteraction: false,
+                stopOnMouseEnter: true,
+              }),
+            ]}
+            className="w-full h-full"
+          >
+            <CarouselContent className="h-full ml-0">
+              {heroSlides.map((slide, index) => (
+                <CarouselItem key={index} className="h-full pl-0">
+                  <img 
+                    src={slide.image} 
+                    alt={slide.alt} 
+                    title="El torneo aficionado más grande del mundo" 
+                    fetchPriority={index === 0 ? "high" : "low"}
+                    width="1920" 
+                    height="1080" 
+                    className="w-full h-full object-cover min-h-screen" 
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+          <div className="absolute inset-0 bg-gradient-hero opacity-70 pointer-events-none" />
+          
+          {/* Slide Indicators */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+            {heroSlides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollTo(index)}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  current === index 
+                    ? "bg-white w-8" 
+                    : "bg-white/50 hover:bg-white/80"
+                }`}
+                aria-label={`Ir a slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Content */}
