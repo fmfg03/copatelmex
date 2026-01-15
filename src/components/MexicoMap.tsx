@@ -159,7 +159,7 @@ export const MexicoMap = memo(({ onStateHover, onStateClick, hoveredState }: Mex
         <div
           className="transition-transform duration-500 ease-out"
           style={{
-            transform: "rotateX(15deg)",
+            transform: "rotateX(25deg)",
             transformStyle: "preserve-3d",
           }}
         >
