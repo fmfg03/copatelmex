@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
-import fundacionLogo from "@/assets/fundacion-telmex-logo.png";
+import fundacionLogo from "@/assets/fundacion-telmex-logo-white.png";
 
 export const Navbar = () => {
   const navigate = useNavigate();
