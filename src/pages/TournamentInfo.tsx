@@ -89,7 +89,7 @@ export default function TournamentInfo() {
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="text-center border-2 hover:border-primary transition-all duration-300 hover:shadow-lg bg-gradient-card hover:-translate-y-1">
                 <CardContent className="pt-6">
                   <div className="w-12 h-12 rounded-xl bg-america-blue/10 flex items-center justify-center mx-auto mb-4">
@@ -98,16 +98,6 @@ export default function TournamentInfo() {
                   <h3 className="font-bold text-lg mb-2">Fechas</h3>
                   <p className="text-muted-foreground">1 de Junio 2025</p>
                   <p className="text-muted-foreground text-sm">Inicio Fase Nacional</p>
-                </CardContent>
-              </Card>
-              <Card className="text-center border-2 hover:border-primary transition-all duration-300 hover:shadow-lg bg-gradient-card hover:-translate-y-1">
-                <CardContent className="pt-6">
-                  <div className="w-12 h-12 rounded-xl bg-america-blue/10 flex items-center justify-center mx-auto mb-4">
-                    <MapPin className="w-6 h-6 text-america-blue" />
-                  </div>
-                  <h3 className="font-bold text-lg mb-2">Sede</h3>
-                  <p className="text-muted-foreground">Sede Nacional</p>
-                  <p className="text-muted-foreground text-sm">Por definir</p>
                 </CardContent>
               </Card>
               <Card className="text-center border-2 hover:border-primary transition-all duration-300 hover:shadow-lg bg-gradient-card hover:-translate-y-1">
