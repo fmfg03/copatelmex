@@ -70,10 +70,10 @@ const StateOperators = () => {
           </div>
 
           {/* Map Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-8 items-start">
             {/* Map */}
-            <div className="lg:col-span-2">
-              <div className="bg-card rounded-2xl p-4 md:p-8 shadow-lg border">
+            <div className="xl:col-span-3">
+              <div className="bg-card rounded-2xl p-4 md:p-6 shadow-lg border">
                 <MexicoMap 
                   onStateHover={setHoveredState}
                   onStateClick={(stateId) => {
@@ -89,7 +89,7 @@ const StateOperators = () => {
             </div>
 
             {/* Info Panel */}
-            <div className="lg:col-span-1">
+            <div className="xl:col-span-1">
               <Card className={`transition-all duration-300 ${selectedState || hoveredState ? 'opacity-100 translate-y-0' : 'opacity-50'}`}>
                 <CardContent className="p-6">
                   {(selectedState || (hoveredState && stateOperators[hoveredState])) ? (
