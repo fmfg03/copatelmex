@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { CountdownTimer } from "./CountdownTimer";
-import { Calendar, Trophy, Users, Download } from "lucide-react";
+import { Calendar, Users, Download } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -140,10 +140,10 @@ export const Hero = () => {
             </div>
 
             {/* Key Info Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-10 md:mb-16 lg:mb-20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 lg:gap-8 mb-10 md:mb-16 lg:mb-20 max-w-2xl mx-auto">
               <div className="bg-white/15 backdrop-blur-md rounded-xl p-5 md:p-8 border-2 border-white/80 shadow-lg">
                 <Calendar className="w-6 h-6 md:w-8 md:h-8 text-white mb-3 md:mb-4" />
-                <h3 className="text-white font-bold text-base md:text-lg mb-2 md:mb-3 tracking-wide">Formato</h3>
+                <h3 className="text-white font-bold text-base md:text-lg mb-2 md:mb-3 tracking-wide">Fases</h3>
                 <ul className="text-white/95 font-medium text-xs md:text-sm space-y-1">
                   <li>• Fase Colectiva</li>
                   <li>• Fase Estatal</li>
@@ -154,15 +154,6 @@ export const Hero = () => {
                 <Users className="w-6 h-6 md:w-8 md:h-8 text-white mb-3 md:mb-4" />
                 <h3 className="text-white font-bold text-base md:text-lg mb-2 md:mb-3 tracking-wide">Categorías</h3>
                 <p className="text-white/95 text-xs md:text-sm font-medium">Femenil 2012, Juvenil 2009-2011, Varonil 2008</p>
-              </div>
-              <div className="bg-white/15 backdrop-blur-md rounded-xl p-5 md:p-8 border-2 border-white/80 shadow-lg sm:col-span-2 md:col-span-1">
-                <Trophy className="w-6 h-6 md:w-8 md:h-8 text-white mb-3 md:mb-4" />
-                <h3 className="text-white font-bold text-base md:text-lg mb-2 md:mb-3 tracking-wide">Premiación</h3>
-                <ul className="text-white/95 font-medium text-xs md:text-sm space-y-1">
-                  <li>• Trofeos y medallas</li>
-                  <li>• Reconocimientos MVP</li>
-                  <li>• Viaje de Campeones</li>
-                </ul>
               </div>
             </div>
 
