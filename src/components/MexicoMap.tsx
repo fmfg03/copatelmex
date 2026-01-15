@@ -101,14 +101,14 @@ export const MexicoMap = memo(({ onStateHover, onStateClick, hoveredState }: Mex
       {/* Tooltip flotante */}
       {tooltipContent && (
         <div
-          className="fixed z-50 px-3 py-2 text-sm font-semibold text-white bg-secondary rounded-lg shadow-lg pointer-events-none transform -translate-x-1/2 -translate-y-full"
+          className="fixed z-50 px-4 py-2 text-sm font-bold text-white bg-primary rounded-lg shadow-2xl pointer-events-none transform -translate-x-1/2 -translate-y-full animate-fade-in"
           style={{
             left: tooltipPosition.x,
-            top: tooltipPosition.y - 10,
+            top: tooltipPosition.y - 15,
           }}
         >
           {tooltipContent}
-          <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-secondary" />
+          <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-transparent border-t-primary" />
         </div>
       )}
 
@@ -147,82 +147,164 @@ export const MexicoMap = memo(({ onStateHover, onStateClick, hoveredState }: Mex
         Zoom: {Math.round(zoom * 100)}%
       </div>
 
-      <ComposableMap
-        projection="geoMercator"
-        projectionConfig={{
-          scale: 1200,
-          center: [-102, 23],
+      {/* Contenedor 3D con perspectiva */}
+      <div 
+        className="relative"
+        style={{
+          perspective: "1000px",
+          perspectiveOrigin: "50% 50%",
         }}
-        className="w-full h-auto"
-        style={{ width: "100%", height: "auto" }}
       >
-        <ZoomableGroup
-          center={center}
-          zoom={zoom}
-          minZoom={1}
-          maxZoom={8}
-          onMoveEnd={handleMoveEnd}
-          translateExtent={[
-            [-200, -100],
-            [800, 500],
-          ]}
+        {/* Mapa con efecto 3D */}
+        <div
+          className="transition-transform duration-500 ease-out"
+          style={{
+            transform: "rotateX(15deg)",
+            transformStyle: "preserve-3d",
+          }}
         >
-          <Geographies geography={MEXICO_TOPO_URL}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
-                const stateId = getStateId(geo.properties);
-                const stateName = getStateName(geo.properties);
-                const isHovered = hoveredState === stateId;
+          {/* Sombra base del mapa */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20 rounded-2xl pointer-events-none"
+            style={{
+              transform: "translateZ(-20px) translateY(30px)",
+              filter: "blur(20px)",
+            }}
+          />
+          
+          <ComposableMap
+            projection="geoMercator"
+            projectionConfig={{
+              scale: 1200,
+              center: [-102, 23],
+            }}
+            className="w-full h-auto drop-shadow-2xl"
+            style={{ 
+              width: "100%", 
+              height: "auto",
+            }}
+          >
+            <ZoomableGroup
+              center={center}
+              zoom={zoom}
+              minZoom={1}
+              maxZoom={8}
+              onMoveEnd={handleMoveEnd}
+              translateExtent={[
+                [-200, -100],
+                [800, 500],
+              ]}
+            >
+              {/* Capa de sombra para estados */}
+              <Geographies geography={MEXICO_TOPO_URL}>
+                {({ geographies }) =>
+                  geographies.map((geo) => {
+                    const stateId = getStateId(geo.properties);
+                    const isHovered = hoveredState === stateId;
 
-                return (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    onMouseEnter={(event) => {
-                      onStateHover(stateId);
-                      handleMouseMove(event as unknown as React.MouseEvent, stateName);
-                    }}
-                    onMouseMove={(event) => {
-                      handleMouseMove(event as unknown as React.MouseEvent, stateName);
-                    }}
-                    onMouseLeave={() => {
-                      onStateHover(null);
-                      handleMouseLeave();
-                    }}
-                    onClick={() => onStateClick(stateId)}
-                    style={{
-                      default: {
-                        fill: isHovered ? "hsl(var(--primary))" : "hsl(var(--secondary) / 0.2)",
-                        stroke: isHovered ? "hsl(var(--primary) / 0.8)" : "hsl(var(--secondary) / 0.4)",
-                        strokeWidth: isHovered ? 1.5 : 0.5,
-                        outline: "none",
-                        cursor: "pointer",
-                        transition: "all 0.2s ease-in-out",
-                      },
-                      hover: {
-                        fill: "hsl(var(--primary) / 0.7)",
-                        stroke: "hsl(var(--primary))",
-                        strokeWidth: 1.5,
-                        outline: "none",
-                        cursor: "pointer",
-                      },
-                      pressed: {
-                        fill: "hsl(var(--primary))",
-                        stroke: "hsl(var(--primary))",
-                        strokeWidth: 2,
-                        outline: "none",
-                      },
-                    }}
-                  />
-                );
-              })
-            }
-          </Geographies>
-        </ZoomableGroup>
-      </ComposableMap>
+                    return (
+                      <Geography
+                        key={`shadow-${geo.rsmKey}`}
+                        geography={geo}
+                        style={{
+                          default: {
+                            fill: "rgba(0,0,0,0.3)",
+                            stroke: "none",
+                            transform: isHovered 
+                              ? "translate(4px, 6px)" 
+                              : "translate(2px, 3px)",
+                            transition: "all 0.3s ease-out",
+                            filter: isHovered ? "blur(4px)" : "blur(2px)",
+                          },
+                          hover: {
+                            fill: "rgba(0,0,0,0.4)",
+                            stroke: "none",
+                            transform: "translate(4px, 6px)",
+                            filter: "blur(4px)",
+                          },
+                          pressed: {
+                            fill: "rgba(0,0,0,0.4)",
+                            stroke: "none",
+                          },
+                        }}
+                      />
+                    );
+                  })
+                }
+              </Geographies>
+
+              {/* Capa principal de estados */}
+              <Geographies geography={MEXICO_TOPO_URL}>
+                {({ geographies }) =>
+                  geographies.map((geo) => {
+                    const stateId = getStateId(geo.properties);
+                    const stateName = getStateName(geo.properties);
+                    const isHovered = hoveredState === stateId;
+
+                    return (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        onMouseEnter={(event) => {
+                          onStateHover(stateId);
+                          handleMouseMove(event as unknown as React.MouseEvent, stateName);
+                        }}
+                        onMouseMove={(event) => {
+                          handleMouseMove(event as unknown as React.MouseEvent, stateName);
+                        }}
+                        onMouseLeave={() => {
+                          onStateHover(null);
+                          handleMouseLeave();
+                        }}
+                        onClick={() => onStateClick(stateId)}
+                        style={{
+                          default: {
+                            fill: isHovered 
+                              ? "hsl(var(--primary))" 
+                              : "hsl(var(--secondary) / 0.15)",
+                            stroke: isHovered 
+                              ? "hsl(var(--primary))" 
+                              : "hsl(var(--secondary) / 0.5)",
+                            strokeWidth: isHovered ? 2 : 0.75,
+                            outline: "none",
+                            cursor: "pointer",
+                            transform: isHovered 
+                              ? "translate(-3px, -5px)" 
+                              : "translate(0, 0)",
+                            transition: "all 0.3s ease-out",
+                            filter: isHovered 
+                              ? "drop-shadow(3px 5px 4px rgba(0,0,0,0.3))" 
+                              : "none",
+                          },
+                          hover: {
+                            fill: "hsl(var(--primary))",
+                            stroke: "hsl(var(--primary))",
+                            strokeWidth: 2,
+                            outline: "none",
+                            cursor: "pointer",
+                            transform: "translate(-3px, -5px)",
+                            filter: "drop-shadow(3px 5px 4px rgba(0,0,0,0.3))",
+                          },
+                          pressed: {
+                            fill: "hsl(var(--primary))",
+                            stroke: "hsl(var(--primary))",
+                            strokeWidth: 2.5,
+                            outline: "none",
+                            transform: "translate(-1px, -2px)",
+                          },
+                        }}
+                      />
+                    );
+                  })
+                }
+              </Geographies>
+            </ZoomableGroup>
+          </ComposableMap>
+        </div>
+      </div>
 
       {/* Instrucciones */}
-      <p className="text-center text-xs text-muted-foreground mt-2">
+      <p className="text-center text-xs text-muted-foreground mt-4">
         Usa la rueda del mouse o los botones para hacer zoom • Arrastra para mover el mapa
       </p>
     </div>
