@@ -14,6 +14,11 @@ import galleryTrophyCelebration from "@/assets/gallery-trophy-celebration.jpg";
 import tournamentCeremony from "@/assets/tournament-ceremony.jpg";
 import tournamentField from "@/assets/tournament-field.jpg";
 import tournamentTeams from "@/assets/tournament-teams.jpg";
+import sponsorKeuka from "@/assets/sponsor-keuka.png";
+import sponsorZucaritas from "@/assets/sponsor-zucaritas.png";
+import sponsorPowerade from "@/assets/sponsor-powerade.png";
+import sponsorPlataformaSports from "@/assets/sponsor-plataforma-sports.png";
+import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
 export default function TournamentInfo() {
   const navigate = useNavigate();
   return <div className="min-h-screen">
@@ -630,7 +635,40 @@ export default function TournamentInfo() {
         </div>
       </section>
 
-      <Footer />
+      {/* Patrocinadores */}
+      <section className="py-16 bg-muted">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-secondary mb-4">Nuestros Patrocinadores</h2>
+              <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
+              <p className="text-muted-foreground text-lg">Gracias a quienes hacen posible este torneo</p>
+            </div>
+
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+              {[
+                { src: sponsorKeuka, alt: "Keuka", name: "Keuka" },
+                { src: sponsorZucaritas, alt: "Zucaritas", name: "Zucaritas", dark: true },
+                { src: sponsorPowerade, alt: "Powerade", name: "Powerade" },
+                { src: sponsorPlataformaSports, alt: "Plataforma Sports", name: "Plataforma Sports" },
+                { src: sponsorClaroSports, alt: "Claro Sports", name: "Claro Sports" },
+              ].map((sponsor, index) => (
+                <div 
+                  key={index}
+                  className={`group p-6 rounded-xl transition-all duration-300 hover:scale-110 ${sponsor.dark ? 'bg-secondary' : 'bg-white'} shadow-md hover:shadow-xl`}
+                >
+                  <img 
+                    src={sponsor.src} 
+                    alt={sponsor.alt}
+                    className="h-12 md:h-16 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <FloatingWhatsApp />
     </div>;
 }
