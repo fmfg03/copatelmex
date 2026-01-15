@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { TournamentInfo } from "@/components/TournamentInfo";
-import { TournamentHighlights } from "@/components/TournamentHighlights";
+
 import { Categories } from "@/components/Categories";
 import { Footer } from "@/components/Footer";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
@@ -12,7 +12,7 @@ const Index = () => {
       <Navbar />
       <Hero />
       <TournamentInfo />
-      <TournamentHighlights />
+      
       <Categories />
       <Footer />
       <FloatingWhatsApp />
