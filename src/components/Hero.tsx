@@ -178,13 +178,10 @@ export const Hero = () => {
               <Button 
                 size="lg" 
                 variant="outline"
-                asChild
+                onClick={() => navigate("/register")}
                 className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-secondary font-bold text-sm md:text-lg px-6 md:px-8 py-5 md:py-6 w-full sm:w-auto rounded-full"
               >
-                <a href="/cedula-inscripcion.pdf" download>
-                  <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                  Cédula de Inscripción
-                </a>
+                Quiero Inscribir a mi Equipo
               </Button>
             </div>
           </div>
