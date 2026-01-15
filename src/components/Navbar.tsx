@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, X, LogOut, User, Users, ChevronDown, Shield, Key, Download } from "lucide-react";
+import { Menu, X, LogOut, User, Users, ChevronDown, Shield, Key } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
+import fundacionLogo from "@/assets/fundacion-telmex-logo.png";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -139,17 +140,15 @@ export const Navbar = () => {
           </div>
 
           {/* User Menu */}
-          <div className="hidden md:flex items-center space-x-2">
-            <Button
-              variant="default"
-              asChild
-              className="bg-accent hover:bg-accent/90 text-white shadow-lg"
-            >
-              <a href="/bases-torneo.pdf" download>
-                <Download className="w-4 h-4 mr-2" />
-                Descargar Convocatoria
-              </a>
-            </Button>
+          <div className="hidden md:flex items-center space-x-3">
+            <img 
+              src={fundacionLogo} 
+              alt="Fundación Telmex, A.C."
+              title="Fundación Telmex, A.C."
+              width="120"
+              height="40"
+              className="h-10 w-auto object-contain"
+            />
             <ThemeToggle />
             {user && (
               <DropdownMenu>
@@ -256,16 +255,16 @@ export const Navbar = () => {
               <div className="px-4 py-2">
                 <ThemeToggle />
               </div>
-              <Button
-                variant="default"
-                asChild
-                className="bg-accent hover:bg-accent/90 text-white w-full"
-              >
-                <a href="/bases-torneo.pdf" download onClick={() => setIsOpen(false)}>
-                  <Download className="w-4 h-4 mr-2" />
-                  Descargar Convocatoria
-                </a>
-              </Button>
+              <div className="flex justify-center py-2">
+                <img 
+                  src={fundacionLogo} 
+                  alt="Fundación Telmex, A.C."
+                  title="Fundación Telmex, A.C."
+                  width="120"
+                  height="40"
+                  className="h-10 w-auto object-contain"
+                />
+              </div>
               {user && (
                 <>
                   <div className="px-4 py-2 text-white font-medium border-t border-white/20 mt-2 pt-4">
