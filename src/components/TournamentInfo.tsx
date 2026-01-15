@@ -124,40 +124,6 @@ export const TournamentInfo = () => {
             </CardContent>
           </Card>
 
-          {/* Premiación */}
-          <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Trophy className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-2xl font-bold text-secondary">Premiación</h3>
-              </div>
-              <div className="grid sm:grid-cols-3 gap-4">
-                <div className="bg-background rounded-lg p-6 border border-border text-center">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                    <Trophy className="w-6 h-6 text-primary" />
-                  </div>
-                  <h4 className="font-bold text-secondary mb-2">Trofeo y Medallas</h4>
-                  <p className="text-sm text-muted-foreground">Campeón y Subcampeón</p>
-                </div>
-                <div className="bg-background rounded-lg p-6 border border-border text-center">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                    <Star className="w-6 h-6 text-primary" />
-                  </div>
-                  <h4 className="font-bold text-secondary mb-2">Reconocimientos</h4>
-                  <p className="text-sm text-muted-foreground">MVP y Mejor Portero (Zucaritas)</p>
-                </div>
-                <div className="bg-background rounded-lg p-6 border border-border text-center">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                    <Award className="w-6 h-6 text-primary" />
-                  </div>
-                  <h4 className="font-bold text-secondary mb-2">Viaje de Campeones</h4>
-                  <p className="text-sm text-muted-foreground">A una playa nacional</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
 
         </div>
