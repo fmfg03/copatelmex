@@ -149,6 +149,12 @@ export const Navbar = () => {
               height="40"
               className="h-10 w-auto object-contain"
             />
+            <Button
+              onClick={() => navigate("/inscripcion")}
+              className="bg-white text-secondary hover:bg-white/90 font-bold"
+            >
+              Quiero inscribir a mi equipo
+            </Button>
             <ThemeToggle />
             {user && (
               <DropdownMenu>
