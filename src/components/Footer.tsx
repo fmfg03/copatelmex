@@ -22,7 +22,7 @@ export const Footer = () => {
               <p className="text-white/80 text-sm leading-relaxed text-justify">
                 El torneo aficionado más grande del mundo, impulsando la asistencia social mediante el deporte.
               </p>
-              <div className="mt-4">
+              <div className="mt-4 flex justify-center sm:justify-start">
                 <img src={fundacionLogo} alt="Fundación Telmex, A.C." className="h-7 sm:h-8 object-contain opacity-80" />
               </div>
             </div>
