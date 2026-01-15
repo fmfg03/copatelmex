@@ -26,8 +26,8 @@ export const SponsorsCarousel = () => {
       </div>
       
       {/* Infinite Carousel */}
-      <div className="relative">
-        <div className="flex animate-scroll-x">
+      <div className="relative group">
+        <div className="flex animate-scroll-x group-hover:[animation-play-state:paused]">
           {duplicatedSponsors.map((sponsor, index) => (
             <div
               key={index}
