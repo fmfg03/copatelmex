@@ -89,7 +89,7 @@ const StateOperators = () => {
             </div>
 
             {/* Info Panel */}
-            <div className="xl:col-span-1">
+            <div className="xl:col-span-1 xl:sticky xl:top-24">
               <Card className={`transition-all duration-300 ${selectedState || hoveredState ? 'opacity-100 translate-y-0' : 'opacity-50'}`}>
                 <CardContent className="p-6">
                   {(selectedState || (hoveredState && stateOperators[hoveredState])) ? (
