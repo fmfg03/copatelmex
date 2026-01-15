@@ -317,6 +317,9 @@ const Contact = () => {
                       maxLength={300}
                       className="text-sm sm:text-base"
                     />
+                    <p className="text-xs text-muted-foreground text-right">
+                      {formData.mensaje.length}/300 caracteres
+                    </p>
                   </div>
 
                   <Button
