@@ -22,7 +22,7 @@ export const TournamentInfo = () => {
     {
       icon: Users,
       title: "Impacto en Liga MX Femenil",
-      description: "Más del 75% de las futbolistas activas de la Liga MX Femenil participaron en Copa Telmex Telcel."
+      description: "Gran parte de las futbolistas activas de la Liga MX Femenil participaron en Copa Telmex Telcel."
     },
     {
       icon: Shield,
