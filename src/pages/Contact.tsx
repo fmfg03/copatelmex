@@ -314,6 +314,7 @@ const Contact = () => {
                       placeholder="Escribe tu mensaje, duda, queja o sugerencia..."
                       rows={4}
                       required
+                      maxLength={300}
                       className="text-sm sm:text-base"
                     />
                   </div>
