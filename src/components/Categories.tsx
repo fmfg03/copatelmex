@@ -106,21 +106,21 @@ export const Categories = () => {
 
             {/* Video Feed - Takes 1 column on xl */}
             <div className="xl:col-span-1">
-              <div className="sticky top-24">
-                <div className="bg-card rounded-2xl shadow-xl overflow-hidden border border-border">
+              <div className="sticky top-24 max-w-[280px] mx-auto">
+                <div className="bg-card rounded-xl shadow-xl overflow-hidden border border-border">
                   {/* Video Header */}
-                  <div className="bg-secondary p-4 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                      <Play className="w-5 h-5 text-primary" />
+                  <div className="bg-secondary p-3 flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                      <Play className="w-4 h-4 text-primary" />
                     </div>
                     <div>
-                      <h3 className="text-white font-bold text-lg">Copa Telmex Telcel</h3>
-                      <p className="text-white/70 text-sm">Lo mejor del torneo</p>
+                      <h3 className="text-white font-bold text-sm">Copa Telmex Telcel</h3>
+                      <p className="text-white/70 text-xs">Lo mejor del torneo</p>
                     </div>
                   </div>
                   
                   {/* Video Container */}
-                  <div className="relative aspect-[9/16] bg-black">
+                  <div className="relative aspect-[9/16] bg-black max-h-[400px]">
                     <video
                       src={tournamentFeed}
                       className="w-full h-full object-cover"
@@ -132,9 +132,9 @@ export const Categories = () => {
                   </div>
 
                   {/* Video Footer */}
-                  <div className="p-4 bg-card">
-                    <p className="text-muted-foreground text-sm text-center">
-                      ¡Únete a la 26ª edición del torneo más grande del mundo!
+                  <div className="p-3 bg-card">
+                    <p className="text-muted-foreground text-xs text-center">
+                      ¡Únete a la 26ª edición!
                     </p>
                   </div>
                 </div>
