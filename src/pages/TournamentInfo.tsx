@@ -379,17 +379,17 @@ export default function TournamentInfo() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[{
               name: "Categoría Varonil",
-              years: "2008",
+              years: "2008 o anteriores",
               max: 22,
               format: "Fútbol 11"
             }, {
-              name: "Categoría Juvenil",
+              name: "Categoría Varonil Juvenil",
               years: "2009, 2010, 2011",
               max: 22,
               format: "Fútbol 11"
             }, {
               name: "Categoría Femenil",
-              years: "2012",
+              years: "2011 o anteriores",
               max: 22,
               format: "Fútbol 11"
             }].map((category, index) => <Card key={category.name} className="group border-2 hover:border-primary hover:-translate-y-2 transition-all duration-300 hover:shadow-xl cursor-pointer animate-fade-in overflow-hidden relative" style={{
