@@ -7,7 +7,7 @@ import categoryFemenil from "@/assets/category-femenil-telmex.jpg";
 export const Categories = () => {
   const categories = [
     {
-      year: "2008",
+      year: "2008 y Anteriores",
       type: "Varonil",
       format: "Fútbol 11",
       description: "Categoría Varonil",
