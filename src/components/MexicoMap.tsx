@@ -115,30 +115,30 @@ export const MexicoMap = memo(({ onStateHover, onStateClick, hoveredState }: Mex
       {/* Controles de zoom */}
       <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
         <Button
-          variant="secondary"
+          variant="outline"
           size="icon"
           onClick={handleZoomIn}
           disabled={zoom >= 8}
-          className="bg-white/90 hover:bg-white shadow-md"
+          className="bg-white hover:bg-gray-100 shadow-md border-gray-200"
         >
-          <ZoomIn className="w-4 h-4" />
+          <ZoomIn className="w-4 h-4 text-secondary" />
         </Button>
         <Button
-          variant="secondary"
+          variant="outline"
           size="icon"
           onClick={handleZoomOut}
           disabled={zoom <= 1}
-          className="bg-white/90 hover:bg-white shadow-md"
+          className="bg-white hover:bg-gray-100 shadow-md border-gray-200"
         >
-          <ZoomOut className="w-4 h-4" />
+          <ZoomOut className="w-4 h-4 text-secondary" />
         </Button>
         <Button
-          variant="secondary"
+          variant="outline"
           size="icon"
           onClick={handleReset}
-          className="bg-white/90 hover:bg-white shadow-md"
+          className="bg-white hover:bg-gray-100 shadow-md border-gray-200"
         >
-          <RotateCcw className="w-4 h-4" />
+          <RotateCcw className="w-4 h-4 text-secondary" />
         </Button>
       </div>
 
