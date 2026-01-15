@@ -178,7 +178,7 @@ export const Hero = () => {
               <Button 
                 size="lg" 
                 variant="outline"
-                onClick={() => navigate("/register")}
+                onClick={() => navigate("/inscripcion")}
                 className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-secondary font-bold text-sm md:text-lg px-6 md:px-8 py-5 md:py-6 w-full sm:w-auto rounded-full"
               >
                 Quiero Inscribir a mi Equipo
