@@ -76,7 +76,6 @@ export const Navbar = () => {
     { name: "Información", href: "/tournament-info", disabled: false },
     { name: "Calendario", href: "/schedule", disabled: true },
     { name: "Multimedia", href: "/media", disabled: true },
-    { name: "Sede", href: "/#sedes", disabled: false },
     { name: "Contacto", href: "/contacto", disabled: false },
   ];
 
