@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Mail, Phone, MessageCircle, Twitter, Youtube } from "lucide-react";
+import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
 import fundacionLogo from "@/assets/fundacion-telmex-logo-white.png";
 
@@ -9,9 +9,9 @@ export const Footer = () => {
     <footer id="contacto" className="bg-secondary dark:bg-secondary/90 text-white border-t border-transparent dark:border-border">
       <div className="container mx-auto px-4 py-10 sm:py-12 md:py-16 lg:py-20">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 mb-10 sm:mb-12 md:mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 mb-10 sm:mb-12 md:mb-16">
             {/* Brand */}
-            <div className="sm:col-span-2 lg:col-span-1">
+            <div>
               <div className="flex items-center space-x-3 mb-4">
                 <img src={copaTelmexLogo} alt="Copa Telmex Telcel" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
                 <div>
@@ -22,7 +22,7 @@ export const Footer = () => {
               <p className="text-white/80 text-sm leading-relaxed text-justify">
                 El torneo aficionado más grande del mundo, impulsando la asistencia social mediante el deporte.
               </p>
-              <div className="mt-4 flex justify-center sm:justify-start">
+              <div className="mt-4 flex justify-center">
                 <img src={fundacionLogo} alt="Fundación Telmex, A.C." className="h-7 sm:h-8 object-contain opacity-80" />
               </div>
             </div>
@@ -42,25 +42,6 @@ export const Footer = () => {
                     </a>
                   </li>
                 ))}
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h4 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Contacto</h4>
-              <ul className="space-y-3">
-                <li className="flex items-center space-x-3 text-sm">
-                  <Mail className="w-4 h-4 text-primary flex-shrink-0" />
-                  <a href="mailto:quejas@plataformasports.com" className="text-white/80 hover:text-primary transition-colors break-all">
-                    quejas@plataformasports.com
-                  </a>
-                </li>
-                <li className="flex items-center space-x-3 text-sm">
-                  <Phone className="w-4 h-4 text-primary flex-shrink-0" />
-                  <a href="tel:+525555555555" className="text-white/80 hover:text-primary transition-colors">
-                    +52 55 5555 5555
-                  </a>
-                </li>
               </ul>
             </div>
 
