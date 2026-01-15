@@ -148,7 +148,7 @@ const Contact = () => {
               Contáctanos
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
-              ¿Tienes alguna duda, queja o sugerencia? Escríbenos y te responderemos a la brevedad.
+              ¿Tienes alguna duda, queja o sugerencia? Contacta con nuestro Director General y te responderá a la brevedad.
             </p>
           </div>
 
