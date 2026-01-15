@@ -438,48 +438,6 @@ export default function TournamentInfo() {
       </section>
 
 
-      {/* Estacionamiento */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <Card className="border-2 border-america-blue/20">
-              <CardContent className="p-8">
-                <div className="flex items-start gap-6">
-                  <div className="w-16 h-16 rounded-xl bg-america-blue/10 flex items-center justify-center flex-shrink-0">
-                    <Car className="w-8 h-8 text-america-blue" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-secondary mb-4">Estacionamiento</h3>
-                    <p className="text-muted-foreground mb-4">
-                      Las instalaciones de CECAP cuentan con amplio estacionamiento gratuito para todos los participantes, 
-                      padres de familia y espectadores.
-                    </p>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-america-blue" />
-                        <span>Estacionamiento gratuito</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-america-blue" />
-                        <span>El estacionamiento se encuentra a 800m de la sede, en la puerta 4 del Estadio Banorte</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-america-blue" />
-                        <span>Estacionamiento con vigilancia</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-america-blue" />
-                        <span>Amplia capacidad</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
 
       {/* Registration Requirements */}
       <section className="py-16 bg-background">
