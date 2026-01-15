@@ -15,7 +15,7 @@ import heroAmericaFans from "@/assets/hero-america-fans-new.jpg";
 import tournamentCeremony from "@/assets/tournament-ceremony.jpg";
 import tournamentField from "@/assets/tournament-field.jpg";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
-import fundacionLogo from "@/assets/fundacion-telmex-logo-white.png";
+
 
 const heroSlides = [
   { image: heroImage, alt: "Copa Telmex Telcel" },
@@ -113,8 +113,8 @@ export const Hero = () => {
         {/* Content */}
         <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
           <div className="max-w-6xl mx-auto space-y-8 md:space-y-12">
-            {/* Logos */}
-            <div className="flex justify-center items-center gap-4 sm:gap-8 md:gap-12 mb-6 md:mb-12">
+            {/* Logo */}
+            <div className="flex justify-center items-center mb-6 md:mb-12">
               <img 
                 src={copaTelmexLogo} 
                 alt="Copa Telmex Telcel" 
@@ -122,16 +122,7 @@ export const Hero = () => {
                 width="280" 
                 height="280" 
                 fetchPriority="high" 
-                className="w-32 sm:w-40 md:w-48 lg:w-64 h-auto object-contain drop-shadow-2xl animate-fade-in" 
-              />
-              <img 
-                src={fundacionLogo} 
-                alt="Fundación Telmex, A.C." 
-                title="Fundación Telmex, A.C."
-                width="280" 
-                height="280" 
-                fetchPriority="high" 
-                className="w-32 sm:w-40 md:w-48 lg:w-64 h-auto object-contain drop-shadow-2xl animate-fade-in" 
+                className="w-40 sm:w-48 md:w-56 lg:w-72 h-auto object-contain drop-shadow-2xl animate-fade-in" 
               />
             </div>
 
