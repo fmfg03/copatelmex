@@ -1,11 +1,19 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
-import { Calendar, Trophy, Shield, Users, FileText, MapPin, Clock, Award, CheckCircle, Star, Download, Hotel, Bed, Car, ExternalLink } from "lucide-react";
+import { Calendar, Trophy, Shield, Users, FileText, MapPin, Clock, Award, CheckCircle, Star, Download, Hotel, Bed, Car, ExternalLink, Camera } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import cecapFacilities from "@/assets/cecap-facilities.jpg";
+import galleryGoalCelebration from "@/assets/gallery-goal-celebration.jpg";
+import galleryGoalkeeperSave from "@/assets/gallery-goalkeeper-save.jpg";
+import galleryMatchAction from "@/assets/gallery-match-action.jpg";
+import galleryTeamPhoto from "@/assets/gallery-team-photo.jpg";
+import galleryTrophyCelebration from "@/assets/gallery-trophy-celebration.jpg";
+import tournamentCeremony from "@/assets/tournament-ceremony.jpg";
+import tournamentField from "@/assets/tournament-field.jpg";
+import tournamentTeams from "@/assets/tournament-teams.jpg";
 export default function TournamentInfo() {
   const navigate = useNavigate();
   return <div className="min-h-screen">
@@ -312,6 +320,51 @@ export default function TournamentInfo() {
         </div>
       </section>
 
+
+      {/* Galería de Torneos Anteriores */}
+      <section className="py-16 bg-gradient-to-br from-secondary via-secondary/95 to-secondary text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(252,211,77,0.1),transparent_50%)]"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <Camera className="w-8 h-8 text-primary" />
+                <h2 className="text-4xl font-bold">Galería de Torneos Anteriores</h2>
+              </div>
+              <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
+              <p className="text-white/80 text-lg">Revive los mejores momentos de ediciones pasadas</p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { src: galleryTrophyCelebration, alt: "Celebración del campeón", title: "Campeones 2024" },
+                { src: galleryTeamPhoto, alt: "Foto de equipo", title: "Equipos participantes" },
+                { src: galleryMatchAction, alt: "Acción del partido", title: "Jugadas memorables" },
+                { src: galleryGoalkeeperSave, alt: "Atajada del portero", title: "Grandes atajadas" },
+                { src: galleryGoalCelebration, alt: "Celebración de gol", title: "Festejos de gol" },
+                { src: tournamentCeremony, alt: "Ceremonia del torneo", title: "Ceremonia inaugural" },
+                { src: tournamentField, alt: "Campo del torneo", title: "Instalaciones" },
+                { src: tournamentTeams, alt: "Equipos del torneo", title: "Competencia" },
+              ].map((photo, index) => (
+                <div 
+                  key={index}
+                  className="group relative overflow-hidden rounded-xl aspect-square cursor-pointer animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <img 
+                    src={photo.src} 
+                    alt={photo.alt}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                    <p className="text-white font-semibold p-4">{photo.title}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Categorías del Torneo */}
       <section className="py-16 bg-background">
