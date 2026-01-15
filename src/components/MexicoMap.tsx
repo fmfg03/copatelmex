@@ -159,7 +159,7 @@ export const MexicoMap = memo(({ onStateHover, onStateClick, hoveredState }: Mex
         <div
           className="transition-transform duration-500 ease-out"
           style={{
-            transform: "rotateX(25deg)",
+            transform: "rotateX(30deg)",
             transformStyle: "preserve-3d",
           }}
         >
@@ -260,11 +260,9 @@ export const MexicoMap = memo(({ onStateHover, onStateClick, hoveredState }: Mex
                         style={{
                           default: {
                             fill: isHovered 
-                              ? "hsl(var(--primary))" 
-                              : "hsl(var(--secondary) / 0.15)",
-                            stroke: isHovered 
-                              ? "hsl(var(--primary))" 
-                              : "hsl(var(--secondary) / 0.5)",
+                              ? "#6B7280" 
+                              : "#00A0E1",
+                            stroke: "#FFFFFF",
                             strokeWidth: isHovered ? 2 : 0.75,
                             outline: "none",
                             cursor: "pointer",
@@ -277,8 +275,8 @@ export const MexicoMap = memo(({ onStateHover, onStateClick, hoveredState }: Mex
                               : "none",
                           },
                           hover: {
-                            fill: "hsl(var(--primary))",
-                            stroke: "hsl(var(--primary))",
+                            fill: "#6B7280",
+                            stroke: "#FFFFFF",
                             strokeWidth: 2,
                             outline: "none",
                             cursor: "pointer",
@@ -286,8 +284,8 @@ export const MexicoMap = memo(({ onStateHover, onStateClick, hoveredState }: Mex
                             filter: "drop-shadow(3px 5px 4px rgba(0,0,0,0.3))",
                           },
                           pressed: {
-                            fill: "hsl(var(--primary))",
-                            stroke: "hsl(var(--primary))",
+                            fill: "#4B5563",
+                            stroke: "#FFFFFF",
                             strokeWidth: 2.5,
                             outline: "none",
                             transform: "translate(-1px, -2px)",
