@@ -23,7 +23,7 @@ export const Categories = () => {
       image: categoryJuvenil
     },
     {
-      year: "2012",
+      year: "2012 y Anteriores",
       type: "Femenil",
       format: "Fútbol 11",
       description: "Categoría Femenil",
