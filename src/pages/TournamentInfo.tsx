@@ -131,69 +131,94 @@ export default function TournamentInfo() {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-secondary mb-4">Fase del Torneo</h2>
+              <h2 className="text-4xl font-bold text-secondary mb-4">Fases del Torneo</h2>
               <div className="w-24 h-1 bg-primary mx-auto"></div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card>
-                <CardContent className="p-8">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-america-blue/10 flex items-center justify-center flex-shrink-0">
-                      <Trophy className="w-6 h-6 text-america-blue" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="border-2 hover:border-primary transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+                      <span className="text-2xl font-bold text-primary">1</span>
                     </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-secondary mb-3">FASE DE CLASIFICACIÓN</h3>
-                      <ul className="space-y-2 text-muted-foreground">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-america-blue mt-0.5 flex-shrink-0" />
-                          <span>Todos los equipos participan</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-america-blue mt-0.5 flex-shrink-0" />
-                          <span>Mínimo 4 partidos garantizados</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-america-blue mt-0.5 flex-shrink-0" />
-                          <span>Sistema de puntos: victoria 3 pts, empate 1 pt</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-america-blue mt-0.5 flex-shrink-0" />
-                          <span>Clasifican los mejores 16 equipos por categoría según orden de la tabla general      </span>
-                        </li>
-                      </ul>
-                    </div>
+                    <h3 className="text-xl font-bold text-secondary mb-3">FASE COLECTIVA</h3>
+                    <ul className="space-y-2 text-muted-foreground text-sm">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
+                        <span>Registro de equipos</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
+                        <span>Conformación de grupos</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
+                        <span>Partidos locales</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
+                        <span>Clasificación a fase estatal</span>
+                      </li>
+                    </ul>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardContent className="p-8">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-america-blue/10 flex items-center justify-center flex-shrink-0">
-                      <Award className="w-6 h-6 text-america-blue" />
+              <Card className="border-2 hover:border-primary transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+                      <span className="text-2xl font-bold text-primary">2</span>
                     </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-secondary mb-3">FASE DE LIGUILLA</h3>
-                      <ul className="space-y-2 text-muted-foreground">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-america-blue mt-0.5 flex-shrink-0" />
-                          <span>Cuatro grupos de cuatro equipos por orden de la tabla general      </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-america-blue mt-0.5 flex-shrink-0" />
-                          <span>Semifinales: 1 vs 4 y 2 vs 3</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-america-blue mt-0.5 flex-shrink-0" />
-                          <span>Perdedores juegan por el 3er lugar</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-america-blue mt-0.5 flex-shrink-0" />
-                          <span>Ganadores juegan por el campeonato</span>
-                        </li>
-                      </ul>
+                    <h3 className="text-xl font-bold text-secondary mb-3">FASE ESTATAL</h3>
+                    <ul className="space-y-2 text-muted-foreground text-sm">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
+                        <span>Competencia a nivel estado</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
+                        <span>Los mejores equipos de cada zona</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
+                        <span>Sistema de eliminación</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
+                        <span>Clasificación a fase nacional</span>
+                      </li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 hover:border-primary transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+                      <span className="text-2xl font-bold text-primary">3</span>
                     </div>
+                    <h3 className="text-xl font-bold text-secondary mb-3">FASE NACIONAL</h3>
+                    <ul className="space-y-2 text-muted-foreground text-sm">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
+                        <span>Los mejores equipos del país</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
+                        <span>Sede: León, Guanajuato</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
+                        <span>Finales por categoría</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
+                        <span>Coronación de campeones</span>
+                      </li>
+                    </ul>
                   </div>
                 </CardContent>
               </Card>
@@ -207,17 +232,26 @@ export default function TournamentInfo() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-secondary mb-3">Duración de Partidos</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-muted-foreground">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-muted-foreground">
                       <div>
-                        <p className="font-semibold text-secondary mb-2">FASE DE CLASIFICACIÓN:</p>
-                        <ul className="list-disc list-inside space-y-1">
-                          <li>2 tiempos de 20 mins con descanso intermedio de 5 mins</li>
+                        <p className="font-semibold text-secondary mb-2">FASE COLECTIVA:</p>
+                        <ul className="list-disc list-inside space-y-1 text-sm">
+                          <li>2 tiempos de 20 mins</li>
+                          <li>Descanso de 5 mins</li>
                         </ul>
                       </div>
                       <div>
-                        <p className="font-semibold text-secondary mb-2">FASE DE LIGUILLA:</p>
-                        <ul className="list-disc list-inside space-y-1">
-                          <li>2 tiempos de 20 minutos y descanso intermedio de 5 minutos, en caso de empate se ejecutarán penales de desempate</li>
+                        <p className="font-semibold text-secondary mb-2">FASE ESTATAL:</p>
+                        <ul className="list-disc list-inside space-y-1 text-sm">
+                          <li>2 tiempos de 20 mins</li>
+                          <li>Descanso de 5 mins</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-secondary mb-2">FASE NACIONAL:</p>
+                        <ul className="list-disc list-inside space-y-1 text-sm">
+                          <li>2 tiempos de 20 mins</li>
+                          <li>Penales en caso de empate</li>
                         </ul>
                       </div>
                     </div>
