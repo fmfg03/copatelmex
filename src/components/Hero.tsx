@@ -83,6 +83,8 @@ export const Hero = () => {
                     alt={slide.alt} 
                     title="El torneo aficionado más grande del mundo" 
                     fetchPriority={index === 0 ? "high" : "low"}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    decoding={index === 0 ? "sync" : "async"}
                     width="1920" 
                     height="1080" 
                     className="w-full h-full object-cover min-h-screen" 
