@@ -23,7 +23,7 @@ export const VideoFeedSection = () => {
             </h2>
             <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
             <p className="text-white/80 text-lg max-w-2xl mx-auto">
-              El torneo de fútbol infantil y juvenil más grande de México
+              El torneo amateur más grande del mundo
             </p>
           </div>
 
