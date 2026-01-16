@@ -11,17 +11,17 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import heroImage from "@/assets/hero-copa-telmex.jpg";
-import heroAmericaFans from "@/assets/hero-america-fans-new.jpg";
-import tournamentCeremony from "@/assets/tournament-ceremony.jpg";
-import tournamentField from "@/assets/tournament-field.jpg";
+import heroChampions1 from "@/assets/hero-champions-1.jpg";
+import heroChampions2 from "@/assets/hero-champions-2.jpg";
+import heroChampions3 from "@/assets/hero-champions-3.jpg";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
 
 
 const heroSlides = [
   { image: heroImage, alt: "Copa Telmex Telcel" },
-  { image: heroAmericaFans, alt: "Aficionados Copa Telmex" },
-  { image: tournamentCeremony, alt: "Ceremonia del Torneo" },
-  { image: tournamentField, alt: "Campo del Torneo" },
+  { image: heroChampions1, alt: "Campeones Varonil" },
+  { image: heroChampions2, alt: "Campeonas Femenil" },
+  { image: heroChampions3, alt: "Campeones Juvenil" },
 ];
 
 export const Hero = () => {
