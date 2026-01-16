@@ -22,9 +22,6 @@ export const Footer = () => {
               <p className="text-white/80 text-sm leading-relaxed text-justify">
                 El torneo aficionado más grande del mundo, impulsando la asistencia social mediante el deporte.
               </p>
-              <div className="mt-4 w-full text-center">
-                <img src={fundacionLogo} alt="Fundación Telmex, A.C." className="h-7 sm:h-8 object-contain opacity-80 mx-auto" />
-              </div>
             </div>
 
             {/* Quick Links */}
@@ -90,6 +87,11 @@ export const Footer = () => {
                 Mantente actualizado con las últimas noticias del torneo.
               </p>
             </div>
+          </div>
+
+          {/* Fundación Logo - Full Width Centered */}
+          <div className="mt-8 sm:mt-10 text-center">
+            <img src={fundacionLogo} alt="Fundación Telmex, A.C." className="h-8 sm:h-10 object-contain opacity-80 mx-auto" />
           </div>
 
           {/* Bottom Bar */}
