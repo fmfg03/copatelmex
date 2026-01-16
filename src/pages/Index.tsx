@@ -3,6 +3,7 @@ import { Hero } from "@/components/Hero";
 import { TournamentInfo } from "@/components/TournamentInfo";
 import { SponsorsCarousel } from "@/components/SponsorsCarousel";
 import { Categories } from "@/components/Categories";
+import { VideoFeedSection } from "@/components/VideoFeedSection";
 import { Footer } from "@/components/Footer";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 
@@ -14,6 +15,7 @@ const Index = () => {
       <TournamentInfo />
       <SponsorsCarousel />
       <Categories />
+      <VideoFeedSection />
       <Footer />
       <FloatingWhatsApp />
     </div>
