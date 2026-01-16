@@ -74,6 +74,7 @@ export const Navbar = () => {
   const navLinks = [
     { name: "Inicio", href: "/", disabled: false },
     { name: "Información", href: "/tournament-info", disabled: false },
+    { name: "Reglamento", href: "/reglamento", disabled: true },
     { name: "Calendario", href: "/schedule", disabled: true },
     { name: "Multimedia", href: "/media", disabled: true },
     { name: "Contacto", href: "/contacto", disabled: false },
