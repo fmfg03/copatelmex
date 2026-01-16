@@ -194,8 +194,11 @@ export const Hero = () => {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-5xl font-black text-white mb-4 font-display">
-                El torneo amateur más grande del mundo
+                ¡Bienvenido Jugador!
               </h2>
+              <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto">
+                Revive los mejores momentos de la Final Copa Telmex Telcel
+              </p>
             </div>
             
             {/* YouTube Video Embed */}
