@@ -85,8 +85,9 @@ export const VideoFeedSection = () => {
                   y juvenil más importante de México, reuniendo a miles de equipos de todo el país.
                 </p>
                 <p className="text-lg leading-relaxed">
-                  Con <strong className="text-primary">3 fases</strong> (Colectiva, Estatal y Nacional), 
-                  ofrecemos una experiencia competitiva única que promueve el desarrollo deportivo y los valores del fair play.
+                  Ofrecemos una experiencia competitiva y única, que promueve el desarrollo deportivo como una alternativa 
+                  para alejar a los jóvenes de la calle y de los vicios, y así se comprometan a continuar entrenando dentro 
+                  de las canchas, y con ello, piensen en ser mejores todos los días.
                 </p>
               </div>
 
