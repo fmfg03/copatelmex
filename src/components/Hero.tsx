@@ -12,7 +12,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import heroImage from "@/assets/hero-copa-telmex.jpg";
 import heroChampions1 from "@/assets/hero-champions-1.jpg";
-import heroChampions2 from "@/assets/hero-champions-2.jpg";
+import heroChampions2 from "@/assets/hero-champions-new.jpg";
 import heroChampions3 from "@/assets/hero-champions-3.jpg";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
 
