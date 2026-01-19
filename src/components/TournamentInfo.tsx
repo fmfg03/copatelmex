@@ -16,7 +16,7 @@ export const TournamentInfo = () => {
     },
     {
       icon: Star,
-      title: "Vitrina de Talentos",
+      title: "Visorías de Talentos",
       description: "Principal vitrina de talentos juveniles y femeniles para el fútbol profesional de México."
     },
     {
