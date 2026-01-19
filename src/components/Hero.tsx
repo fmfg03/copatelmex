@@ -155,7 +155,11 @@ export const Hero = () => {
               <div className="bg-white/15 backdrop-blur-md rounded-xl p-5 md:p-8 border-2 border-white/80 shadow-lg">
                 <Users className="w-6 h-6 md:w-8 md:h-8 text-white mb-3 md:mb-4" />
                 <h3 className="text-white font-bold text-base md:text-lg mb-2 md:mb-3 tracking-wide">Categorías</h3>
-                <p className="text-white/95 text-xs md:text-sm font-medium">Femenil 2012, Juvenil 2009-2011, Varonil 2008</p>
+                <ul className="text-white/95 font-medium text-xs md:text-sm space-y-1">
+                  <li>• Femenil 2012</li>
+                  <li>• Juvenil 2009-2011</li>
+                  <li>• Varonil 2008</li>
+                </ul>
               </div>
             </div>
 
