@@ -81,7 +81,7 @@ export const TournamentInfo = () => {
           {/* Por qué es el más grande */}
           <Card className="border-2 border-primary/20 bg-gradient-to-br from-background to-primary/5 animate-scale-in">
             <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-secondary mb-6 text-center">¿Por qué es el torneo aficionado más grande y mejor del mundo?</h3>
+              <h3 className="text-2xl font-bold text-secondary mb-6 text-center">¿Por qué es el mejor torneo y el más grande del mundo?</h3>
               <div className="grid md:grid-cols-2 gap-6">
                 {features.map((feature, index) => (
                   <div key={index} className="flex items-start gap-4">
