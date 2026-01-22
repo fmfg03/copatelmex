@@ -221,41 +221,6 @@ export default function TournamentInfo() {
               </Card>
             </div>
 
-            <Card className="mt-8 border-2 border-america-blue/20">
-              <CardContent className="p-8">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-america-blue/10 flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-6 h-6 text-america-blue" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-secondary mb-3">Duración de Partidos</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-muted-foreground">
-                      <div>
-                        <p className="font-semibold text-secondary mb-2">FASE COLECTIVA:</p>
-                        <ul className="list-disc list-inside space-y-1 text-sm">
-                          <li>2 tiempos de 20 mins</li>
-                          <li>Descanso de 5 mins</li>
-                        </ul>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-secondary mb-2">FASE ESTATAL:</p>
-                        <ul className="list-disc list-inside space-y-1 text-sm">
-                          <li>2 tiempos de 20 mins</li>
-                          <li>Descanso de 5 mins</li>
-                        </ul>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-secondary mb-2">FASE NACIONAL:</p>
-                        <ul className="list-disc list-inside space-y-1 text-sm">
-                          <li>2 tiempos de 20 mins</li>
-                          <li>Penales en caso de empate</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </section>
