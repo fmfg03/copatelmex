@@ -71,14 +71,11 @@ export default function TournamentInfo() {
               <Card className="max-w-3xl mx-auto">
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold text-secondary mb-4">Una Oportunidad Única</h3>
-                  <p className="text-muted-foreground mb-4">
-                    La Copa Telmex Telcel es más que un torneo: es una experiencia formativa donde jóvenes talentos 
-                    tienen la oportunidad de desarrollar sus habilidades en un ambiente competitivo y profesional.
+                  <p className="text-muted-foreground mb-4 text-justify">
+                    Copa Telmex Telcel es un torneo que tiene como principales objetivos la asistencia social a personas, sectores y regiones de escasos recursos, comunidades indígenas y grupos vulnerables.
                   </p>
-                  <p className="text-muted-foreground">
-                    Nuestro torneo ofrece instalaciones de primer nivel, arbitraje profesional certificado, 
-                    y la oportunidad de competir contra los mejores equipos de la región. Es el escenario perfecto 
-                    para que los jugadores demuestren su talento y continúen su desarrollo futbolístico.
+                  <p className="text-muted-foreground text-justify">
+                    Impulsa la asistencia social a personas y comunidades de escasos recursos mediante el deporte. Incluye a grupos vulnerables para fomentar la activación física y la integración social, previniendo problemas de carácter social que afectan a la población mexicana.
                   </p>
                 </CardContent>
               </Card>
