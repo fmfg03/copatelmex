@@ -40,12 +40,12 @@ export default function TournamentInfo() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button size="lg" onClick={() => navigate("/auth")} className="bg-primary hover:bg-primary/90 text-secondary font-bold shadow-yellow">
-                Inscribirse Ahora
+                Quiero Inscribirme
               </Button>
               <Button size="lg" variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-secondary" asChild>
                 <a href="/bases-torneo.pdf" download>
                   <Download className="w-5 h-5 mr-2" />
-                  Descargar Bases (PDF)
+                  Descargar Convocatoria
                 </a>
               </Button>
             </div>
