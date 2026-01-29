@@ -137,7 +137,7 @@ export const Hero = () => {
                 El torneo aficionado más grande del mundo
               </p>
               <p className="text-white/90 text-base sm:text-lg md:text-xl max-w-3xl mx-auto font-medium leading-relaxed text-center px-2">
-                Vigésimo sexta edición impulsando la asistencia social mediante el deporte
+                Vigésimo sexta edición reuniendo a miles de equipos de todo el país
               </p>
             </div>
 
@@ -147,7 +147,7 @@ export const Hero = () => {
                 <Calendar className="w-6 h-6 md:w-8 md:h-8 text-white mb-3 md:mb-4" />
                 <h3 className="text-white font-bold text-base md:text-lg mb-2 md:mb-3 tracking-wide">Fases</h3>
                 <ul className="text-white/95 font-medium text-xs md:text-sm space-y-1">
-                  <li>• Fase Colectiva</li>
+                  <li>• Inscripciones</li>
                   <li>• Fase Estatal</li>
                   <li>• Fase Nacional</li>
                 </ul>
