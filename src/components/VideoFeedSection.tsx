@@ -96,10 +96,10 @@ export const VideoFeedSection = () => {
                   🏆 Fase Nacional en León
                 </span>
                 <span className="px-4 py-2 bg-white/10 rounded-full text-white font-semibold text-sm">
-                  ⚽ Fútbol 11
+                  👥 3 Categorías
                 </span>
                 <span className="px-4 py-2 bg-white/10 rounded-full text-white font-semibold text-sm">
-                  👥 3 Categorías
+                  🗺️ 34 Entidades
                 </span>
               </div>
             </div>

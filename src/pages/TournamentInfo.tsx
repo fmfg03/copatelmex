@@ -114,8 +114,8 @@ export default function TournamentInfo() {
                   <div className="w-12 h-12 rounded-xl bg-america-blue/10 flex items-center justify-center mx-auto mb-4">
                     <Trophy className="w-6 h-6 text-america-blue" />
                   </div>
-                  <h3 className="font-bold text-lg mb-2">Formato</h3>
-                  <p className="text-muted-foreground">Fútbol 11</p>
+                  <h3 className="font-bold text-lg mb-2">Entidades</h3>
+                  <p className="text-muted-foreground">34 participantes</p>
                 </CardContent>
               </Card>
             </div>
@@ -139,7 +139,7 @@ export default function TournamentInfo() {
                     <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
                       <span className="text-2xl font-bold text-primary">1</span>
                     </div>
-                    <h3 className="text-xl font-bold text-secondary mb-3">FASE COLECTIVA</h3>
+                    <h3 className="text-xl font-bold text-secondary mb-3">INSCRIPCIONES</h3>
                     <ul className="space-y-2 text-muted-foreground text-sm">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
@@ -225,94 +225,6 @@ export default function TournamentInfo() {
         </div>
       </section>
 
-      {/* Rules Section */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-secondary mb-4">Reglas del Torneo</h2>
-              <div className="w-24 h-1 bg-primary mx-auto"></div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card>
-                <CardContent className="p-8">
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-america-blue/10 flex items-center justify-center flex-shrink-0">
-                      <Shield className="w-6 h-6 text-america-blue" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-secondary">Reglas Generales</h3>
-                  </div>
-                  <ul className="space-y-3 text-muted-foreground">
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Formato Fútbol 11 para todas las categorías (once jugadores en campo incluido portero)</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Registro mínimo de 7 jugadores y máximo 22 jugadores por equipo</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Sustituciones ilimitadas</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Reglas de Juego generales del Fútbol 11</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>No aplica el fuera de juego en ninguna categoría</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Uniforme completo obligatorio (jersey, short, medias) y uso de espinilleras obligatorio</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Prohibido el uso de calzado de futbol de tachones</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-8">
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-america-blue/10 flex items-center justify-center flex-shrink-0">
-                      <FileText className="w-6 h-6 text-america-blue" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-secondary">Fair Play</h3>
-                  </div>
-                  <ul className="space-y-3 text-muted-foreground">
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Torneo que promueve el respeto, valores deportivos y juego limpio</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Arbitraje preventivo</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Penalización por conducta antideportiva</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Tarjeta amarilla: advertencia al jugador</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-america-blue rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Tarjeta roja: 1 partido de suspensión (mínimo)</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
-
 
       {/* Galería de Torneos Anteriores */}
       <section className="py-16 bg-gradient-to-br from-secondary via-secondary/95 to-secondary text-white relative overflow-hidden">
@@ -371,67 +283,45 @@ export default function TournamentInfo() {
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-secondary mb-4">Categorías del Torneo</h2>
               <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
-              <p className="text-muted-foreground">Tres categorías - Fútbol 11</p>
+              <p className="text-muted-foreground">Tres categorías - Máximo 22 jugadores por equipo</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[{
-              name: "Categoría Varonil",
-              years: "2008 o anteriores",
-              max: 22,
-              format: "Fútbol 11"
-            }, {
-              name: "Categoría Varonil Juvenil",
-              years: "2009, 2010, 2011",
-              max: 22,
-              format: "Fútbol 11"
-            }, {
-              name: "Categoría Femenil",
-              years: "2012 y anteriores",
-              max: 22,
-              format: "Fútbol 11"
-            }].map((category, index) => <Card key={category.name} className="group border-2 hover:border-primary hover:-translate-y-2 transition-all duration-300 hover:shadow-xl cursor-pointer animate-fade-in overflow-hidden relative" style={{
-              animationDelay: `${index * 0.1}s`
-            }}>
-                  {/* Shimmer Effect */}
+                name: "Categoría Varonil",
+                years: "2008 o anteriores",
+                max: 22,
+                ageInfo: "18+ años"
+              }, {
+                name: "Categoría Varonil Juvenil",
+                years: "2009, 2010, 2011",
+                max: 22,
+                ageInfo: "Sub-17"
+              }, {
+                name: "Categoría Femenil",
+                years: "2012 y anteriores",
+                max: 22,
+                ageInfo: "14+ años"
+              }].map((category, index) => (
+                <Card key={category.name} className="group border-2 hover:border-primary hover:-translate-y-2 transition-all duration-300 hover:shadow-xl cursor-pointer animate-fade-in overflow-hidden relative" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-primary/10 to-transparent"></div>
-                  
-                  {/* Year Badge */}
                   <div className="absolute top-3 right-3 bg-accent px-3 py-1 rounded-full shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-white font-bold text-xs">{category.years}</span>
+                    <span className="text-white text-sm font-bold">{category.years}</span>
                   </div>
-                  
-                  <CardContent className="p-6 relative z-10">
-                    <div className="text-center">
-                      <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-                        <Trophy className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
-                      </div>
-                      <h3 className="text-xl font-bold text-secondary mb-2 group-hover:text-primary transition-colors duration-300">{category.name}</h3>
-                      <div className="space-y-2 text-sm text-muted-foreground">
-                        <p className="flex items-center justify-center gap-2 group-hover:translate-x-1 transition-transform duration-300">
-                          <Users className="w-4 h-4 text-primary group-hover:scale-125 transition-transform duration-300" />
-                          Máximo {category.max} jugadores
-                        </p>
-                        <p className="flex items-center justify-center gap-2 group-hover:translate-x-1 transition-transform duration-300" style={{
-                      transitionDelay: '50ms'
-                    }}>
-                          <Shield className="w-4 h-4 text-primary group-hover:scale-125 transition-transform duration-300" />
-                          Formato {category.format}
-                        </p>
-                      </div>
+                  <CardContent className="pt-12 pb-8 px-6 text-center relative">
+                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                      <Users className="w-8 h-8 text-primary" />
                     </div>
+                    <h3 className="text-xl font-bold text-secondary mb-3 group-hover:text-primary transition-colors duration-300">{category.name}</h3>
+                    <p className="text-muted-foreground text-sm mb-2">{category.ageInfo}</p>
+                    <p className="text-muted-foreground text-sm">Máximo {category.max} jugadores por equipo</p>
                   </CardContent>
-                  
-                  {/* Bottom Accent Line */}
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                </Card>)}
+                </Card>
+              ))}
             </div>
           </div>
         </div>
       </section>
-
-
-
 
       {/* Patrocinadores */}
       <section className="py-16 bg-muted">
