@@ -14,6 +14,7 @@ import heroImage from "@/assets/hero-copa-telmex.jpg";
 import heroChampions1 from "@/assets/hero-champions-1.jpg";
 import heroChampions2 from "@/assets/hero-champions-ceremony.jpg";
 import heroChampions3 from "@/assets/hero-champions-3.jpg";
+import heroFemenilChampions from "@/assets/hero-femenil-champions.jpeg";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
 
 
@@ -22,6 +23,7 @@ const heroSlides = [
   { image: heroChampions1, alt: "Campeones Varonil" },
   { image: heroChampions2, alt: "Campeonas Femenil" },
   { image: heroChampions3, alt: "Campeones Juvenil" },
+  { image: heroFemenilChampions, alt: "Campeonas Femenil Copa Telmex" },
 ];
 
 export const Hero = () => {
