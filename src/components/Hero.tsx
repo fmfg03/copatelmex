@@ -30,8 +30,8 @@ export const Hero = () => {
   const [current, setCurrent] = useState(0);
 
   // Key dates for Copa Telmex
-  const registrationEndDate = new Date("2026-04-30T23:59:59");
-  const tournamentStartDate = new Date("2026-06-01T12:00:00");
+  const registrationEndDate = new Date("2026-06-30T23:59:59");
+  const tournamentStartDate = new Date("2026-11-29T12:00:00");
 
   // YouTube video ID
   const youtubeVideoId = "eic4VntNlXw";

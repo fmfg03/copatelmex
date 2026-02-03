@@ -114,11 +114,11 @@ export const TournamentInfo = () => {
                 </div>
                 <div className="bg-background rounded-lg p-4 border border-border">
                   <p className="text-sm text-muted-foreground mb-1">Cierre de Inscripciones</p>
-                  <p className="text-xl font-bold text-secondary">Por Definir</p>
+                  <p className="text-xl font-bold text-secondary">30 Junio 2026</p>
                 </div>
                 <div className="bg-background rounded-lg p-4 border border-border">
                   <p className="text-sm text-muted-foreground mb-1">Inicio Fase Nacional</p>
-                  <p className="text-xl font-bold text-secondary">Por Definir</p>
+                  <p className="text-xl font-bold text-secondary">29 Noviembre 2026</p>
                 </div>
               </div>
             </CardContent>
