@@ -147,6 +147,7 @@ export const Hero = () => {
                 <Calendar className="w-6 h-6 md:w-8 md:h-8 text-white mb-3 md:mb-4" />
                 <h3 className="text-white font-bold text-base md:text-lg mb-2 md:mb-3 tracking-wide">Fases</h3>
                 <ul className="text-white/95 font-medium text-xs md:text-sm space-y-1">
+                  <li>• Inscripciones</li>
                   <li>• Fase Colectiva</li>
                   <li>• Fase Estatal</li>
                   <li>• Fase Nacional</li>
