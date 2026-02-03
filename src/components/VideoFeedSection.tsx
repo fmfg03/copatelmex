@@ -6,7 +6,7 @@ export const VideoFeedSection = () => {
   const stats = [
     { icon: Trophy, value: "26", label: "Ediciones" },
     { icon: Users, value: "12,000+", label: "Equipos" },
-    { icon: Star, value: "32", label: "Estados" },
+    { icon: Star, value: "34", label: "Entidades" },
   ];
 
   return (
