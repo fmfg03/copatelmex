@@ -1,6 +1,5 @@
 import { Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import categoryVaronil from "@/assets/category-varonil-telmex.jpg";
 import categoryJuvenil from "@/assets/category-juvenil-telmex.jpg";
 import categoryFemenil from "@/assets/category-femenil-telmex.jpg";
@@ -9,6 +8,7 @@ export const Categories = () => {
   const categories = [
     {
       year: "2008 y Anteriores",
+      hoverText: "Varonil +18 años",
       type: "Varonil",
       ageInfo: "18+ años",
       description: "Categoría Varonil",
@@ -17,6 +17,7 @@ export const Categories = () => {
     },
     {
       year: "2009, 2010, 2011",
+      hoverText: "15-17 años",
       type: "Juvenil",
       ageInfo: "Sub-17",
       description: "Categoría Juvenil",
@@ -25,6 +26,7 @@ export const Categories = () => {
     },
     {
       year: "2012 y Anteriores",
+      hoverText: "Femenil +14 años",
       type: "Femenil",
       ageInfo: "14+ años",
       description: "Categoría Femenil",
@@ -80,27 +82,20 @@ export const Categories = () => {
                   {/* Content */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 md:p-6 text-white">
                     <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div className="bg-accent text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-bold text-xl sm:text-2xl shadow-lg cursor-help">
-                            {category.year}
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="bg-secondary text-white font-semibold">
-                          {category.ageInfo}
-                        </TooltipContent>
-                      </Tooltip>
+                      <div className="bg-accent text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-bold text-xl sm:text-2xl shadow-lg relative overflow-hidden min-w-[180px] sm:min-w-[220px]">
+                        {/* Year text - visible by default, hidden on hover */}
+                        <span className="block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-full">
+                          {category.year}
+                        </span>
+                        {/* Age info - hidden by default, visible on hover */}
+                        <span className="absolute inset-0 flex items-center justify-center px-3 sm:px-4 transition-all duration-300 opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0">
+                          {category.hoverText}
+                        </span>
+                      </div>
                     </div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <p className="text-base sm:text-lg text-white font-semibold mb-1 sm:mb-2 cursor-help inline-block">
-                          {category.type}
-                        </p>
-                      </TooltipTrigger>
-                      <TooltipContent side="right" className="bg-secondary text-white font-semibold">
-                        {category.ageInfo}
-                      </TooltipContent>
-                    </Tooltip>
+                    <p className="text-base sm:text-lg text-white font-semibold mb-1 sm:mb-2">
+                      {category.type}
+                    </p>
                     <div className="flex items-center gap-2 text-white/80 font-medium text-xs sm:text-sm">
                       <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       <span>Máximo {category.maxPlayers} jugadores por equipo</span>
