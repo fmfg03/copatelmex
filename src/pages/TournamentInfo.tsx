@@ -93,7 +93,7 @@ export default function TournamentInfo() {
                     <Calendar className="w-6 h-6 text-america-blue" />
                   </div>
                   <h3 className="font-bold text-lg mb-2">Fechas</h3>
-                  <p className="text-muted-foreground">1 de Junio 2025</p>
+                  <p className="text-muted-foreground">29 Noviembre 2026</p>
                   <p className="text-muted-foreground text-sm">Inicio Fase Nacional</p>
                 </CardContent>
               </Card>
