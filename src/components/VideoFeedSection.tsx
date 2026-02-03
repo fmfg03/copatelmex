@@ -5,7 +5,7 @@ import tournamentFeed from "@/assets/tournament-feed.mp4";
 export const VideoFeedSection = () => {
   const stats = [
     { icon: Trophy, value: "26", label: "Ediciones" },
-    { icon: Users, value: "10,000+", label: "Equipos" },
+    { icon: Users, value: "12,000+", label: "Equipos" },
     { icon: Star, value: "32", label: "Estados" },
   ];
 
