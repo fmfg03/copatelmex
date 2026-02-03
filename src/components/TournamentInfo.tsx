@@ -43,7 +43,7 @@ export const TournamentInfo = () => {
             </h2>
             <div className="w-24 h-1 bg-primary mx-auto mb-8"></div>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto font-medium leading-relaxed text-justify">
-              Copa Telmex Telcel es un torneo que tiene como principales objetivos la asistencia social a personas, sectores y regiones de escasos recursos, comunidades indígenas y grupos vulnerables.
+              La Copa Telmex Telcel es el torneo de fútbol infantil y juvenil más importante de México, reuniendo a miles de equipos de todo el país. Ofrecemos una experiencia competitiva y única, que promueve el desarrollo deportivo como una alternativa para alejar a los jóvenes de la calle y de los vicios, y así se comprometan a continuar entrenando dentro de las canchas, y con ello, piensen en ser mejores todos los días.
             </p>
           </div>
 
