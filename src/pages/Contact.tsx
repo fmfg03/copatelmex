@@ -19,7 +19,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useToast } from "@/hooks/use-toast";
-import { Phone, MapPin, Send, HelpCircle } from "lucide-react";
+import { Send, HelpCircle } from "lucide-react";
 
 const FAQS = [
   {
@@ -153,55 +153,8 @@ const Contact = () => {
           </div>
 
           <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
-            {/* Contact Info & FAQ */}
+            {/* FAQ Section */}
             <div className="lg:col-span-1 space-y-4 sm:space-y-6 order-2 lg:order-1">
-              <div className="bg-card rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-lg border border-border">
-                <h2 className="text-lg sm:text-xl font-bold text-foreground mb-4 sm:mb-6">
-                  Información de Contacto
-                </h2>
-                
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground text-sm sm:text-base">Teléfono</p>
-                      <a 
-                        href="tel:+525555555555" 
-                        className="text-muted-foreground hover:text-primary transition-colors text-sm"
-                      >
-                        +52 55 5555 5555
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground text-sm sm:text-base">Ubicación</p>
-                      <p className="text-muted-foreground text-sm">
-                        Ciudad de México, México
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-secondary rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-lg">
-                <h3 className="text-base sm:text-lg font-bold text-white mb-2 sm:mb-3">
-                  Horario de Atención
-                </h3>
-                <div className="space-y-1.5 sm:space-y-2 text-white/80 text-sm">
-                  <p>Lunes a Viernes: 9:00 - 18:00</p>
-                  <p>Sábados: 9:00 - 14:00</p>
-                  <p>Domingos: Cerrado</p>
-                </div>
-              </div>
-
-              {/* FAQ Section */}
               <div className="bg-card rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-lg border border-border">
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">
                   <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
