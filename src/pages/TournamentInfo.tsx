@@ -74,9 +74,7 @@ export default function TournamentInfo() {
                   <p className="text-muted-foreground mb-4 text-justify">
                     Copa Telmex Telcel es un torneo que tiene como principales objetivos la asistencia social a personas, sectores y regiones de escasos recursos, comunidades indígenas y grupos vulnerables.
                   </p>
-                  <p className="text-muted-foreground text-justify">
-                    Impulsa la asistencia social a personas y comunidades de escasos recursos mediante el deporte. Incluye a grupos vulnerables para fomentar la activación física y la integración social, previniendo problemas de carácter social que afectan a la población mexicana.
-                  </p>
+                  <p className="text-muted-foreground text-justify">Impulsa la inclusión de personas y comunidades de escasos recursos mediante el deporte. Incluye a grupos vulnerables para fomentar la activación física y la integración social, previniendo problemas de carácter social que afectan a la población mexicana.</p>
                 </CardContent>
               </Card>
             </div>
@@ -139,7 +137,7 @@ export default function TournamentInfo() {
                     <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
                       <span className="text-2xl font-bold text-primary">1</span>
                     </div>
-                    <h3 className="text-xl font-bold text-secondary mb-3">INSCRIPCIONES</h3>
+                    <h3 className="text-xl font-bold text-secondary mb-3">INSCRIPCIONES / FASE COLECTIVA</h3>
                     <ul className="space-y-2 text-muted-foreground text-sm">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
@@ -241,36 +239,58 @@ export default function TournamentInfo() {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { src: galleryTrophyCelebration, alt: "Celebración del campeón", title: "Campeones Varonil" },
-                { src: galleryTeamPhoto, alt: "Foto de equipo", title: "Equipos participantes" },
-                { src: galleryMatchAction, alt: "Campeonas Femenil", title: "Campeonas Femenil" },
-                { src: galleryGoalCelebration, alt: "Equipo Femenil", title: "Categoría Femenil" },
-                { src: galleryGoalkeeperSave, alt: "Subcampeonas", title: "Subcampeonas Femenil" },
-                { src: galleryFemenil1, alt: "Medallistas Femenil", title: "Medallistas Femenil" },
-                { src: galleryVaronil1, alt: "Equipo Varonil", title: "Categoría Varonil" },
-                { src: galleryJuvenil1, alt: "Equipo Juvenil", title: "Categoría Juvenil" },
-                { src: tournamentCeremony, alt: "Ceremonia del torneo", title: "Ceremonia inaugural" },
-                { src: tournamentField, alt: "Campo del torneo", title: "Instalaciones" },
-                { src: tournamentTeams, alt: "Equipos del torneo", title: "Competencia" },
-              ].map((photo, index) => (
-                <div 
-                  key={index}
-                  className="group relative overflow-hidden rounded-xl aspect-square cursor-pointer animate-fade-in"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <img 
-                    src={photo.src} 
-                    alt={photo.alt}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+              {[{
+              src: galleryTrophyCelebration,
+              alt: "Celebración del campeón",
+              title: "Campeones Varonil"
+            }, {
+              src: galleryTeamPhoto,
+              alt: "Foto de equipo",
+              title: "Equipos participantes"
+            }, {
+              src: galleryMatchAction,
+              alt: "Campeonas Femenil",
+              title: "Campeonas Femenil"
+            }, {
+              src: galleryGoalCelebration,
+              alt: "Equipo Femenil",
+              title: "Categoría Femenil"
+            }, {
+              src: galleryGoalkeeperSave,
+              alt: "Subcampeonas",
+              title: "Subcampeonas Femenil"
+            }, {
+              src: galleryFemenil1,
+              alt: "Medallistas Femenil",
+              title: "Medallistas Femenil"
+            }, {
+              src: galleryVaronil1,
+              alt: "Equipo Varonil",
+              title: "Categoría Varonil"
+            }, {
+              src: galleryJuvenil1,
+              alt: "Equipo Juvenil",
+              title: "Categoría Juvenil"
+            }, {
+              src: tournamentCeremony,
+              alt: "Ceremonia del torneo",
+              title: "Ceremonia inaugural"
+            }, {
+              src: tournamentField,
+              alt: "Campo del torneo",
+              title: "Instalaciones"
+            }, {
+              src: tournamentTeams,
+              alt: "Equipos del torneo",
+              title: "Competencia"
+            }].map((photo, index) => <div key={index} className="group relative overflow-hidden rounded-xl aspect-square cursor-pointer animate-fade-in" style={{
+              animationDelay: `${index * 100}ms`
+            }}>
+                  <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                     <p className="text-white font-semibold p-4">{photo.title}</p>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </div>
@@ -288,22 +308,23 @@ export default function TournamentInfo() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[{
-                name: "Categoría Varonil",
-                years: "2008 o anteriores",
-                max: 22,
-                ageInfo: "18+ años"
-              }, {
-                name: "Categoría Varonil Juvenil",
-                years: "2009, 2010, 2011",
-                max: 22,
-                ageInfo: "Sub-17"
-              }, {
-                name: "Categoría Femenil",
-                years: "2012 y anteriores",
-                max: 22,
-                ageInfo: "14+ años"
-              }].map((category, index) => (
-                <Card key={category.name} className="group border-2 hover:border-primary hover:-translate-y-2 transition-all duration-300 hover:shadow-xl cursor-pointer animate-fade-in overflow-hidden relative" style={{ animationDelay: `${index * 0.1}s` }}>
+              name: "Categoría Varonil",
+              years: "2008 o anteriores",
+              max: 22,
+              ageInfo: "18+ años"
+            }, {
+              name: "Categoría Varonil Juvenil",
+              years: "2009, 2010, 2011",
+              max: 22,
+              ageInfo: "Sub-17"
+            }, {
+              name: "Categoría Femenil",
+              years: "2012 y anteriores",
+              max: 22,
+              ageInfo: "14+ años"
+            }].map((category, index) => <Card key={category.name} className="group border-2 hover:border-primary hover:-translate-y-2 transition-all duration-300 hover:shadow-xl cursor-pointer animate-fade-in overflow-hidden relative" style={{
+              animationDelay: `${index * 0.1}s`
+            }}>
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-primary/10 to-transparent"></div>
                   <div className="absolute top-3 right-3 bg-accent px-3 py-1 rounded-full shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                     <span className="text-white text-sm font-bold">{category.years}</span>
@@ -316,8 +337,7 @@ export default function TournamentInfo() {
                     <p className="text-muted-foreground text-sm mb-2">{category.ageInfo}</p>
                     <p className="text-muted-foreground text-sm">Máximo {category.max} jugadores por equipo</p>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
         </div>
@@ -334,24 +354,30 @@ export default function TournamentInfo() {
             </div>
 
             <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-              {[
-                { src: sponsorKeuka, alt: "Keuka", name: "Keuka" },
-                { src: sponsorZucaritas, alt: "Zucaritas", name: "Zucaritas", dark: true },
-                { src: sponsorPowerade, alt: "Powerade", name: "Powerade" },
-                { src: sponsorPlataformaSports, alt: "Plataforma Sports", name: "Plataforma Sports" },
-                { src: sponsorClaroSports, alt: "Claro Sports", name: "Claro Sports" },
-              ].map((sponsor, index) => (
-                <div 
-                  key={index}
-                  className={`group p-6 rounded-xl transition-all duration-300 hover:scale-110 ${sponsor.dark ? 'bg-secondary' : 'bg-white'} shadow-md hover:shadow-xl`}
-                >
-                  <img 
-                    src={sponsor.src} 
-                    alt={sponsor.alt}
-                    className="h-12 md:h-16 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
-                  />
-                </div>
-              ))}
+              {[{
+              src: sponsorKeuka,
+              alt: "Keuka",
+              name: "Keuka"
+            }, {
+              src: sponsorZucaritas,
+              alt: "Zucaritas",
+              name: "Zucaritas",
+              dark: true
+            }, {
+              src: sponsorPowerade,
+              alt: "Powerade",
+              name: "Powerade"
+            }, {
+              src: sponsorPlataformaSports,
+              alt: "Plataforma Sports",
+              name: "Plataforma Sports"
+            }, {
+              src: sponsorClaroSports,
+              alt: "Claro Sports",
+              name: "Claro Sports"
+            }].map((sponsor, index) => <div key={index} className={`group p-6 rounded-xl transition-all duration-300 hover:scale-110 ${sponsor.dark ? 'bg-secondary' : 'bg-white'} shadow-md hover:shadow-xl`}>
+                  <img src={sponsor.src} alt={sponsor.alt} className="h-12 md:h-16 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300" />
+                </div>)}
             </div>
           </div>
         </div>
