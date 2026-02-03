@@ -8,7 +8,7 @@ export const Categories = () => {
   const categories = [
     {
       year: "2008 y Anteriores",
-      hoverText: "Varonil +18 años",
+      hoverText: "18+ (año 2008 y anteriores)",
       type: "Varonil",
       ageInfo: "18+ años",
       description: "Categoría Varonil",
@@ -17,7 +17,7 @@ export const Categories = () => {
     },
     {
       year: "2009, 2010, 2011",
-      hoverText: "15-17 años",
+      hoverText: "Sub-17 (años 2009, 2010 y 2011)",
       type: "Juvenil",
       ageInfo: "Sub-17",
       description: "Categoría Juvenil",
@@ -26,7 +26,7 @@ export const Categories = () => {
     },
     {
       year: "2012 y Anteriores",
-      hoverText: "Femenil +14 años",
+      hoverText: "14+ (año 2012 y anteriores)",
       type: "Femenil",
       ageInfo: "14+ años",
       description: "Categoría Femenil",
