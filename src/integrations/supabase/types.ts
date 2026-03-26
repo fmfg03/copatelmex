@@ -239,6 +239,53 @@ export type Database = {
           },
         ]
       }
+      match_cedulas: {
+        Row: {
+          created_at: string
+          file_url: string | null
+          id: string
+          match_id: string
+          notes: string | null
+          parsed_data: Json | null
+          referee_name: string | null
+          status: string
+          updated_at: string
+          uploaded_by: string
+        }
+        Insert: {
+          created_at?: string
+          file_url?: string | null
+          id?: string
+          match_id: string
+          notes?: string | null
+          parsed_data?: Json | null
+          referee_name?: string | null
+          status?: string
+          updated_at?: string
+          uploaded_by: string
+        }
+        Update: {
+          created_at?: string
+          file_url?: string | null
+          id?: string
+          match_id?: string
+          notes?: string | null
+          parsed_data?: Json | null
+          referee_name?: string | null
+          status?: string
+          updated_at?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_cedulas_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: true
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       matches: {
         Row: {
           away_score: number | null
@@ -648,6 +695,145 @@ export type Database = {
         }
         Relationships: []
       }
+      statistics_pdf_reports: {
+        Row: {
+          category_id: string
+          created_at: string
+          file_name: string
+          file_path: string
+          id: string
+          jornada_number: number
+          notes: string | null
+          report_date: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          file_name: string
+          file_path: string
+          id?: string
+          jornada_number: number
+          notes?: string | null
+          report_date: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          id?: string
+          jornada_number?: number
+          notes?: string | null
+          report_date?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "statistics_pdf_reports_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      statistics_uploads: {
+        Row: {
+          category_id: string
+          excel_file_name: string | null
+          excel_file_path: string | null
+          file_name: string | null
+          id: string
+          notes: string | null
+          records_updated: number | null
+          uploaded_at: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          category_id: string
+          excel_file_name?: string | null
+          excel_file_path?: string | null
+          file_name?: string | null
+          id?: string
+          notes?: string | null
+          records_updated?: number | null
+          uploaded_at?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          category_id?: string
+          excel_file_name?: string | null
+          excel_file_path?: string | null
+          file_name?: string | null
+          id?: string
+          notes?: string | null
+          records_updated?: number | null
+          uploaded_at?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "statistics_uploads_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: true
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      survey_responses: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          feedback: string | null
+          id: string
+          phone_number: string | null
+          rating: number
+          respondent_name: string | null
+          survey_type: string
+          team_id: string | null
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          feedback?: string | null
+          id?: string
+          phone_number?: string | null
+          rating: number
+          respondent_name?: string | null
+          survey_type?: string
+          team_id?: string | null
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          feedback?: string | null
+          id?: string
+          phone_number?: string | null
+          rating?: number
+          respondent_name?: string | null
+          survey_type?: string
+          team_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "survey_responses_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "survey_responses_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_managers: {
         Row: {
           created_at: string | null
@@ -809,6 +995,84 @@ export type Database = {
           team_name?: string
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      tournament_config: {
+        Row: {
+          bank_account_name: string | null
+          bank_account_number: string | null
+          bank_clabe: string | null
+          bank_name: string | null
+          created_at: string
+          early_bird_deadline: string | null
+          early_bird_discount: number | null
+          id: string
+          max_players_per_team: number | null
+          max_teams_per_category: number | null
+          min_players_per_team: number | null
+          payment_enabled: boolean | null
+          payment_instructions: string | null
+          payment_methods: Json | null
+          registration_enabled: boolean | null
+          registration_fee: number | null
+          require_birth_certificate: boolean | null
+          require_curp: boolean | null
+          require_medical_certificate: boolean | null
+          require_photo: boolean | null
+          send_confirmation_email: boolean | null
+          send_payment_reminder: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_clabe?: string | null
+          bank_name?: string | null
+          created_at?: string
+          early_bird_deadline?: string | null
+          early_bird_discount?: number | null
+          id?: string
+          max_players_per_team?: number | null
+          max_teams_per_category?: number | null
+          min_players_per_team?: number | null
+          payment_enabled?: boolean | null
+          payment_instructions?: string | null
+          payment_methods?: Json | null
+          registration_enabled?: boolean | null
+          registration_fee?: number | null
+          require_birth_certificate?: boolean | null
+          require_curp?: boolean | null
+          require_medical_certificate?: boolean | null
+          require_photo?: boolean | null
+          send_confirmation_email?: boolean | null
+          send_payment_reminder?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_clabe?: string | null
+          bank_name?: string | null
+          created_at?: string
+          early_bird_deadline?: string | null
+          early_bird_discount?: number | null
+          id?: string
+          max_players_per_team?: number | null
+          max_teams_per_category?: number | null
+          min_players_per_team?: number | null
+          payment_enabled?: boolean | null
+          payment_instructions?: string | null
+          payment_methods?: Json | null
+          registration_enabled?: boolean | null
+          registration_fee?: number | null
+          require_birth_certificate?: boolean | null
+          require_curp?: boolean | null
+          require_medical_certificate?: boolean | null
+          require_photo?: boolean | null
+          send_confirmation_email?: boolean | null
+          send_payment_reminder?: boolean | null
+          updated_at?: string
         }
         Relationships: []
       }
