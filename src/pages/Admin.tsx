@@ -137,6 +137,7 @@ const Admin = () => {
               <TabsTrigger value="capture" className="flex items-center gap-2">
                 <Gamepad2 className="w-4 h-4" />
                 <span className="hidden sm:inline">Captura</span>
+              </TabsTrigger>
               <TabsTrigger value="gallery" className="flex items-center gap-2">
                 <Image className="w-4 h-4" />
                 <span className="hidden sm:inline">Galería</span>
