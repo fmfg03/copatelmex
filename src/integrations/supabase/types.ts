@@ -116,6 +116,78 @@ export type Database = {
         }
         Relationships: []
       }
+      email_inbox: {
+        Row: {
+          attachments: Json | null
+          created_at: string
+          from_email: string
+          from_name: string | null
+          html_content: string | null
+          id: string
+          is_read: boolean
+          replied_at: string | null
+          subject: string | null
+          text_content: string | null
+          to_email: string
+        }
+        Insert: {
+          attachments?: Json | null
+          created_at?: string
+          from_email: string
+          from_name?: string | null
+          html_content?: string | null
+          id?: string
+          is_read?: boolean
+          replied_at?: string | null
+          subject?: string | null
+          text_content?: string | null
+          to_email: string
+        }
+        Update: {
+          attachments?: Json | null
+          created_at?: string
+          from_email?: string
+          from_name?: string | null
+          html_content?: string | null
+          id?: string
+          is_read?: boolean
+          replied_at?: string | null
+          subject?: string | null
+          text_content?: string | null
+          to_email?: string
+        }
+        Relationships: []
+      }
+      email_send_log: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          recipient_count: number
+          sent_by: string
+          status: string
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          recipient_count?: number
+          sent_by: string
+          status?: string
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          recipient_count?: number
+          sent_by?: string
+          status?: string
+          subject?: string | null
+        }
+        Relationships: []
+      }
       featured_videos: {
         Row: {
           category_id: string | null
@@ -194,6 +266,71 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      invitation_uses: {
+        Row: {
+          id: string
+          invitation_id: string
+          used_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          invitation_id: string
+          used_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          invitation_id?: string
+          used_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invitation_uses_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: false
+            referencedRelation: "invitations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invitations: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string | null
+          current_uses: number | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          max_uses: number | null
+          notes: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_by?: string | null
+          current_uses?: number | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_uses?: number | null
+          notes?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          current_uses?: number | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_uses?: number | null
+          notes?: string | null
+        }
+        Relationships: []
       }
       live_streams: {
         Row: {
@@ -692,6 +829,51 @@ export type Database = {
           new_role?: Database["public"]["Enums"]["app_role"] | null
           previous_role?: Database["public"]["Enums"]["app_role"] | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      scheduled_emails: {
+        Row: {
+          created_at: string
+          created_by: string
+          error_message: string | null
+          html_content: string
+          id: string
+          recipients: Json
+          scheduled_at: string
+          sent_at: string | null
+          status: string
+          subject: string
+          text_content: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          error_message?: string | null
+          html_content: string
+          id?: string
+          recipients: Json
+          scheduled_at: string
+          sent_at?: string | null
+          status?: string
+          subject: string
+          text_content?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          error_message?: string | null
+          html_content?: string
+          id?: string
+          recipients?: Json
+          scheduled_at?: string
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          text_content?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
