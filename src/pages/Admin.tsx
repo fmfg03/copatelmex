@@ -137,10 +137,11 @@ const Admin = () => {
                 <Image className="w-4 h-4" />
                 <span className="hidden sm:inline">Galería</span>
               </TabsTrigger>
-              <TabsTrigger value="payments" className="flex items-center gap-2">
+              {/* Pagos oculto - este torneo es gratuito */}
+              {/* <TabsTrigger value="payments" className="flex items-center gap-2">
                 <DollarSign className="w-4 h-4" />
                 <span className="hidden sm:inline">Pagos</span>
-              </TabsTrigger>
+              </TabsTrigger> */}
               <TabsTrigger value="email" className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
                 <span className="hidden sm:inline">Correo</span>
