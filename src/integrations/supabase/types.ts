@@ -423,6 +423,140 @@ export type Database = {
           },
         ]
       }
+      match_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          match_id: string
+          minute: number | null
+          notes: string | null
+          player_id: string
+          related_player_id: string | null
+          team_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          match_id: string
+          minute?: number | null
+          notes?: string | null
+          player_id: string
+          related_player_id?: string | null
+          team_id: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          match_id?: string
+          minute?: number | null
+          notes?: string | null
+          player_id?: string
+          related_player_id?: string | null
+          team_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_events_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_events_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_events_related_player_id_fkey"
+            columns: ["related_player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_events_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_events_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      match_lineups: {
+        Row: {
+          created_at: string
+          id: string
+          is_starter: boolean
+          jersey_number: number | null
+          match_id: string
+          player_id: string
+          position: string | null
+          team_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_starter?: boolean
+          jersey_number?: number | null
+          match_id: string
+          player_id: string
+          position?: string | null
+          team_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_starter?: boolean
+          jersey_number?: number | null
+          match_id?: string
+          player_id?: string
+          position?: string | null
+          team_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_lineups_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_lineups_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_lineups_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_lineups_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       matches: {
         Row: {
           away_score: number | null
