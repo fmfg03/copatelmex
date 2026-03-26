@@ -63,6 +63,7 @@ export type Database = {
           id: string
           max_players_per_team: number | null
           name: string
+          registration_closed: boolean
           year_born: string | null
         }
         Insert: {
@@ -71,6 +72,7 @@ export type Database = {
           id?: string
           max_players_per_team?: number | null
           name: string
+          registration_closed?: boolean
           year_born?: string | null
         }
         Update: {
@@ -79,6 +81,7 @@ export type Database = {
           id?: string
           max_players_per_team?: number | null
           name?: string
+          registration_closed?: boolean
           year_born?: string | null
         }
         Relationships: []
@@ -110,6 +113,78 @@ export type Database = {
           message?: string
           name?: string
           phone?: string | null
+        }
+        Relationships: []
+      }
+      email_inbox: {
+        Row: {
+          attachments: Json | null
+          created_at: string
+          from_email: string
+          from_name: string | null
+          html_content: string | null
+          id: string
+          is_read: boolean
+          replied_at: string | null
+          subject: string | null
+          text_content: string | null
+          to_email: string
+        }
+        Insert: {
+          attachments?: Json | null
+          created_at?: string
+          from_email: string
+          from_name?: string | null
+          html_content?: string | null
+          id?: string
+          is_read?: boolean
+          replied_at?: string | null
+          subject?: string | null
+          text_content?: string | null
+          to_email: string
+        }
+        Update: {
+          attachments?: Json | null
+          created_at?: string
+          from_email?: string
+          from_name?: string | null
+          html_content?: string | null
+          id?: string
+          is_read?: boolean
+          replied_at?: string | null
+          subject?: string | null
+          text_content?: string | null
+          to_email?: string
+        }
+        Relationships: []
+      }
+      email_send_log: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          recipient_count: number
+          sent_by: string
+          status: string
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          recipient_count?: number
+          sent_by: string
+          status?: string
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          recipient_count?: number
+          sent_by?: string
+          status?: string
+          subject?: string | null
         }
         Relationships: []
       }
@@ -192,6 +267,71 @@ export type Database = {
           },
         ]
       }
+      invitation_uses: {
+        Row: {
+          id: string
+          invitation_id: string
+          used_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          invitation_id: string
+          used_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          invitation_id?: string
+          used_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invitation_uses_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: false
+            referencedRelation: "invitations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invitations: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string | null
+          current_uses: number | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          max_uses: number | null
+          notes: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_by?: string | null
+          current_uses?: number | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_uses?: number | null
+          notes?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          current_uses?: number | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_uses?: number | null
+          notes?: string | null
+        }
+        Relationships: []
+      }
       live_streams: {
         Row: {
           created_at: string | null
@@ -231,6 +371,53 @@ export type Database = {
             foreignKeyName: "live_streams_match_id_fkey"
             columns: ["match_id"]
             isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      match_cedulas: {
+        Row: {
+          created_at: string
+          file_url: string | null
+          id: string
+          match_id: string
+          notes: string | null
+          parsed_data: Json | null
+          referee_name: string | null
+          status: string
+          updated_at: string
+          uploaded_by: string
+        }
+        Insert: {
+          created_at?: string
+          file_url?: string | null
+          id?: string
+          match_id: string
+          notes?: string | null
+          parsed_data?: Json | null
+          referee_name?: string | null
+          status?: string
+          updated_at?: string
+          uploaded_by: string
+        }
+        Update: {
+          created_at?: string
+          file_url?: string | null
+          id?: string
+          match_id?: string
+          notes?: string | null
+          parsed_data?: Json | null
+          referee_name?: string | null
+          status?: string
+          updated_at?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_cedulas_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: true
             referencedRelation: "matches"
             referencedColumns: ["id"]
           },
@@ -285,6 +472,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "matches_away_team_id_fkey"
+            columns: ["away_team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "matches_category_id_fkey"
             columns: ["category_id"]
             isOneToOne: false
@@ -296,6 +490,13 @@ export type Database = {
             columns: ["home_team_id"]
             isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_home_team_id_fkey"
+            columns: ["home_team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
             referencedColumns: ["id"]
           },
         ]
@@ -471,6 +672,7 @@ export type Database = {
           photo_url: string | null
           position: string | null
           registration_id: string
+          responsiva_url: string | null
           unique_player_id: string | null
           verification_notes: string | null
         }
@@ -493,6 +695,7 @@ export type Database = {
           photo_url?: string | null
           position?: string | null
           registration_id: string
+          responsiva_url?: string | null
           unique_player_id?: string | null
           verification_notes?: string | null
         }
@@ -515,6 +718,7 @@ export type Database = {
           photo_url?: string | null
           position?: string | null
           registration_id?: string
+          responsiva_url?: string | null
           unique_player_id?: string | null
           verification_notes?: string | null
         }
@@ -563,9 +767,11 @@ export type Database = {
           notes: string | null
           payment_amount: number | null
           payment_date: string | null
+          payment_receipt_url: string | null
           payment_reference: string | null
           payment_status: string | null
           registration_date: string | null
+          responsiva_url: string | null
           team_id: string
         }
         Insert: {
@@ -575,9 +781,11 @@ export type Database = {
           notes?: string | null
           payment_amount?: number | null
           payment_date?: string | null
+          payment_receipt_url?: string | null
           payment_reference?: string | null
           payment_status?: string | null
           registration_date?: string | null
+          responsiva_url?: string | null
           team_id: string
         }
         Update: {
@@ -587,9 +795,11 @@ export type Database = {
           notes?: string | null
           payment_amount?: number | null
           payment_date?: string | null
+          payment_receipt_url?: string | null
           payment_reference?: string | null
           payment_status?: string | null
           registration_date?: string | null
+          responsiva_url?: string | null
           team_id?: string
         }
         Relationships: [
@@ -605,6 +815,13 @@ export type Database = {
             columns: ["team_id"]
             isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "registrations_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
             referencedColumns: ["id"]
           },
         ]
@@ -635,6 +852,197 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      scheduled_emails: {
+        Row: {
+          created_at: string
+          created_by: string
+          error_message: string | null
+          html_content: string
+          id: string
+          recipients: Json
+          scheduled_at: string
+          sent_at: string | null
+          status: string
+          subject: string
+          text_content: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          error_message?: string | null
+          html_content: string
+          id?: string
+          recipients: Json
+          scheduled_at: string
+          sent_at?: string | null
+          status?: string
+          subject: string
+          text_content?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          error_message?: string | null
+          html_content?: string
+          id?: string
+          recipients?: Json
+          scheduled_at?: string
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          text_content?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      statistics_pdf_reports: {
+        Row: {
+          category_id: string
+          created_at: string
+          file_name: string
+          file_path: string
+          id: string
+          jornada_number: number
+          notes: string | null
+          report_date: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          file_name: string
+          file_path: string
+          id?: string
+          jornada_number: number
+          notes?: string | null
+          report_date: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          id?: string
+          jornada_number?: number
+          notes?: string | null
+          report_date?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "statistics_pdf_reports_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      statistics_uploads: {
+        Row: {
+          category_id: string
+          excel_file_name: string | null
+          excel_file_path: string | null
+          file_name: string | null
+          id: string
+          notes: string | null
+          records_updated: number | null
+          uploaded_at: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          category_id: string
+          excel_file_name?: string | null
+          excel_file_path?: string | null
+          file_name?: string | null
+          id?: string
+          notes?: string | null
+          records_updated?: number | null
+          uploaded_at?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          category_id?: string
+          excel_file_name?: string | null
+          excel_file_path?: string | null
+          file_name?: string | null
+          id?: string
+          notes?: string | null
+          records_updated?: number | null
+          uploaded_at?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "statistics_uploads_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: true
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      survey_responses: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          feedback: string | null
+          id: string
+          phone_number: string | null
+          rating: number
+          respondent_name: string | null
+          survey_type: string
+          team_id: string | null
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          feedback?: string | null
+          id?: string
+          phone_number?: string | null
+          rating: number
+          respondent_name?: string | null
+          survey_type?: string
+          team_id?: string | null
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          feedback?: string | null
+          id?: string
+          phone_number?: string | null
+          rating?: number
+          respondent_name?: string | null
+          survey_type?: string
+          team_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "survey_responses_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "survey_responses_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "survey_responses_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       team_managers: {
         Row: {
@@ -676,6 +1084,13 @@ export type Database = {
             columns: ["team_id"]
             isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_managers_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
             referencedColumns: ["id"]
           },
         ]
@@ -741,17 +1156,26 @@ export type Database = {
             referencedRelation: "teams"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "team_standings_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       teams: {
         Row: {
           academy_name: string | null
+          country: string
           created_at: string | null
           facebook_url: string | null
           id: string
           instagram_url: string | null
           phone_country_code: string | null
           phone_number: string
+          postal_code: string | null
           rejection_reason: string | null
           shield_url: string | null
           state: string
@@ -762,12 +1186,14 @@ export type Database = {
         }
         Insert: {
           academy_name?: string | null
+          country?: string
           created_at?: string | null
           facebook_url?: string | null
           id?: string
           instagram_url?: string | null
           phone_country_code?: string | null
           phone_number: string
+          postal_code?: string | null
           rejection_reason?: string | null
           shield_url?: string | null
           state: string
@@ -778,12 +1204,14 @@ export type Database = {
         }
         Update: {
           academy_name?: string | null
+          country?: string
           created_at?: string | null
           facebook_url?: string | null
           id?: string
           instagram_url?: string | null
           phone_country_code?: string | null
           phone_number?: string
+          postal_code?: string | null
           rejection_reason?: string | null
           shield_url?: string | null
           state?: string
@@ -791,6 +1219,84 @@ export type Database = {
           team_name?: string
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      tournament_config: {
+        Row: {
+          bank_account_name: string | null
+          bank_account_number: string | null
+          bank_clabe: string | null
+          bank_name: string | null
+          created_at: string
+          early_bird_deadline: string | null
+          early_bird_discount: number | null
+          id: string
+          max_players_per_team: number | null
+          max_teams_per_category: number | null
+          min_players_per_team: number | null
+          payment_enabled: boolean | null
+          payment_instructions: string | null
+          payment_methods: Json | null
+          registration_enabled: boolean | null
+          registration_fee: number | null
+          require_birth_certificate: boolean | null
+          require_curp: boolean | null
+          require_medical_certificate: boolean | null
+          require_photo: boolean | null
+          send_confirmation_email: boolean | null
+          send_payment_reminder: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_clabe?: string | null
+          bank_name?: string | null
+          created_at?: string
+          early_bird_deadline?: string | null
+          early_bird_discount?: number | null
+          id?: string
+          max_players_per_team?: number | null
+          max_teams_per_category?: number | null
+          min_players_per_team?: number | null
+          payment_enabled?: boolean | null
+          payment_instructions?: string | null
+          payment_methods?: Json | null
+          registration_enabled?: boolean | null
+          registration_fee?: number | null
+          require_birth_certificate?: boolean | null
+          require_curp?: boolean | null
+          require_medical_certificate?: boolean | null
+          require_photo?: boolean | null
+          send_confirmation_email?: boolean | null
+          send_payment_reminder?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_clabe?: string | null
+          bank_name?: string | null
+          created_at?: string
+          early_bird_deadline?: string | null
+          early_bird_discount?: number | null
+          id?: string
+          max_players_per_team?: number | null
+          max_teams_per_category?: number | null
+          min_players_per_team?: number | null
+          payment_enabled?: boolean | null
+          payment_instructions?: string | null
+          payment_methods?: Json | null
+          registration_enabled?: boolean | null
+          registration_fee?: number | null
+          require_birth_certificate?: boolean | null
+          require_curp?: boolean | null
+          require_medical_certificate?: boolean | null
+          require_photo?: boolean | null
+          send_confirmation_email?: boolean | null
+          send_payment_reminder?: boolean | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -815,9 +1321,337 @@ export type Database = {
         }
         Relationships: []
       }
+      whatsapp_auto_replies: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          priority: number | null
+          reply_content: string
+          trigger_config: Json | null
+          trigger_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          priority?: number | null
+          reply_content: string
+          trigger_config?: Json | null
+          trigger_type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          priority?: number | null
+          reply_content?: string
+          trigger_config?: Json | null
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      whatsapp_conversation_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          assigned_to: string
+          id: string
+          notes: string | null
+          phone_number: string
+          priority: string | null
+          updated_at: string
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          assigned_to: string
+          id?: string
+          notes?: string | null
+          phone_number: string
+          priority?: string | null
+          updated_at?: string
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          assigned_to?: string
+          id?: string
+          notes?: string | null
+          phone_number?: string
+          priority?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      whatsapp_conversation_tag_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          id: string
+          phone_number: string
+          tag_id: string
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          id?: string
+          phone_number: string
+          tag_id: string
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          id?: string
+          phone_number?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_conversation_tag_assignments_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "whatsapp_conversation_tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_conversation_tags: {
+        Row: {
+          color: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          color?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      whatsapp_message_log: {
+        Row: {
+          created_at: string
+          direction: string
+          id: string
+          is_read: boolean
+          media_filename: string | null
+          media_type: string | null
+          media_url: string | null
+          message_content: string
+          message_sid: string | null
+          message_type: string
+          recipient_name: string | null
+          recipient_phone: string
+          sent_at: string
+          sent_by: string | null
+          status: string | null
+          team_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          direction?: string
+          id?: string
+          is_read?: boolean
+          media_filename?: string | null
+          media_type?: string | null
+          media_url?: string | null
+          message_content: string
+          message_sid?: string | null
+          message_type?: string
+          recipient_name?: string | null
+          recipient_phone: string
+          sent_at?: string
+          sent_by?: string | null
+          status?: string | null
+          team_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          direction?: string
+          id?: string
+          is_read?: boolean
+          media_filename?: string | null
+          media_type?: string | null
+          media_url?: string | null
+          message_content?: string
+          message_sid?: string | null
+          message_type?: string
+          recipient_name?: string | null
+          recipient_phone?: string
+          sent_at?: string
+          sent_by?: string | null
+          status?: string | null
+          team_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_message_log_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "whatsapp_message_log_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_quick_replies: {
+        Row: {
+          category: string | null
+          content: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean | null
+          shortcut: string | null
+          title: string
+          updated_at: string
+          usage_count: number | null
+        }
+        Insert: {
+          category?: string | null
+          content: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          shortcut?: string | null
+          title: string
+          updated_at?: string
+          usage_count?: number | null
+        }
+        Update: {
+          category?: string | null
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          shortcut?: string | null
+          title?: string
+          updated_at?: string
+          usage_count?: number | null
+        }
+        Relationships: []
+      }
+      whatsapp_templates: {
+        Row: {
+          approval_status: string | null
+          approved_at: string | null
+          content: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          language: string | null
+          name: string
+          rejection_reason: string | null
+          slug: string
+          submitted_at: string | null
+          template_type: string | null
+          twilio_content_sid: string | null
+          twilio_template_sid: string | null
+          updated_at: string
+          variables: string[] | null
+        }
+        Insert: {
+          approval_status?: string | null
+          approved_at?: string | null
+          content: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          language?: string | null
+          name: string
+          rejection_reason?: string | null
+          slug: string
+          submitted_at?: string | null
+          template_type?: string | null
+          twilio_content_sid?: string | null
+          twilio_template_sid?: string | null
+          updated_at?: string
+          variables?: string[] | null
+        }
+        Update: {
+          approval_status?: string | null
+          approved_at?: string | null
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          language?: string | null
+          name?: string
+          rejection_reason?: string | null
+          slug?: string
+          submitted_at?: string | null
+          template_type?: string | null
+          twilio_content_sid?: string | null
+          twilio_template_sid?: string | null
+          updated_at?: string
+          variables?: string[] | null
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      teams_public: {
+        Row: {
+          academy_name: string | null
+          country: string | null
+          id: string | null
+          shield_url: string | null
+          state: string | null
+          team_name: string | null
+        }
+        Insert: {
+          academy_name?: string | null
+          country?: string | null
+          id?: string | null
+          shield_url?: string | null
+          state?: string | null
+          team_name?: string | null
+        }
+        Update: {
+          academy_name?: string | null
+          country?: string | null
+          id?: string | null
+          shield_url?: string | null
+          state?: string | null
+          team_name?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       calculate_check_digit: { Args: { id_base: string }; Returns: string }
