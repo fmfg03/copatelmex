@@ -5,7 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { Shield, Users, Calendar, Image, DollarSign, FileText, UserCog, History, BarChart3, FileCheck, Mail, MessageSquare, ClipboardList } from "lucide-react";
+import { Shield, Users, Calendar, Image, DollarSign, FileText, UserCog, History, BarChart3, FileCheck, Mail, MessageSquare, ClipboardList, Gamepad2 } from "lucide-react";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { AdminPlayers } from "@/components/admin/AdminPlayers";
 import { AdminTeams } from "@/components/admin/AdminTeams";
