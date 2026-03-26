@@ -5,7 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { Shield, Users, Calendar, Image, DollarSign, FileText, UserCog, History, BarChart3 } from "lucide-react";
+import { Shield, Users, Calendar, Image, DollarSign, FileText, UserCog, History, BarChart3, FileCheck, Mail, MessageSquare, ClipboardList } from "lucide-react";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { AdminPlayers } from "@/components/admin/AdminPlayers";
 import { AdminTeams } from "@/components/admin/AdminTeams";
@@ -15,6 +15,12 @@ import { AdminPayments } from "@/components/admin/AdminPayments";
 import { AdminReports } from "@/components/admin/AdminReports";
 import { AdminUsers } from "@/components/admin/AdminUsers";
 import { AdminAudit } from "@/components/admin/AdminAudit";
+import { AdminCedulas } from "@/components/admin/AdminCedulas";
+import { AdminStatistics } from "@/components/admin/AdminStatistics";
+import { AdminEmail } from "@/components/admin/AdminEmail";
+import { AdminWhatsApp } from "@/components/admin/AdminWhatsApp";
+import { AdminDocuments } from "@/components/admin/AdminDocuments";
+import { AdminSurveys } from "@/components/admin/AdminSurveys";
 import { toast } from "@/hooks/use-toast";
 
 const Admin = () => {
