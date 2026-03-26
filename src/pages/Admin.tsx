@@ -104,7 +104,7 @@ const Admin = () => {
 
         <Card className="p-6">
           <Tabs defaultValue="dashboard" className="w-full">
-            <TabsList className={`grid w-full ${userRole === 'admin' ? 'grid-cols-3 lg:grid-cols-9' : 'grid-cols-3 lg:grid-cols-7'} gap-2 h-auto`}>
+            <TabsList className="flex flex-wrap gap-2 h-auto justify-start">
               <TabsTrigger value="dashboard" className="flex items-center gap-2">
                 <BarChart3 className="w-4 h-4" />
                 <span className="hidden sm:inline">Dashboard</span>
@@ -117,9 +117,21 @@ const Admin = () => {
                 <Shield className="w-4 h-4" />
                 <span className="hidden sm:inline">Equipos</span>
               </TabsTrigger>
+              <TabsTrigger value="documents" className="flex items-center gap-2">
+                <FileCheck className="w-4 h-4" />
+                <span className="hidden sm:inline">Documentos</span>
+              </TabsTrigger>
+              <TabsTrigger value="cedulas" className="flex items-center gap-2">
+                <FileText className="w-4 h-4" />
+                <span className="hidden sm:inline">Cédulas</span>
+              </TabsTrigger>
               <TabsTrigger value="schedule" className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 <span className="hidden sm:inline">Calendario</span>
+              </TabsTrigger>
+              <TabsTrigger value="statistics" className="flex items-center gap-2">
+                <BarChart3 className="w-4 h-4" />
+                <span className="hidden sm:inline">Estadísticas</span>
               </TabsTrigger>
               <TabsTrigger value="gallery" className="flex items-center gap-2">
                 <Image className="w-4 h-4" />
@@ -128,6 +140,18 @@ const Admin = () => {
               <TabsTrigger value="payments" className="flex items-center gap-2">
                 <DollarSign className="w-4 h-4" />
                 <span className="hidden sm:inline">Pagos</span>
+              </TabsTrigger>
+              <TabsTrigger value="email" className="flex items-center gap-2">
+                <Mail className="w-4 h-4" />
+                <span className="hidden sm:inline">Correo</span>
+              </TabsTrigger>
+              <TabsTrigger value="whatsapp" className="flex items-center gap-2">
+                <MessageSquare className="w-4 h-4" />
+                <span className="hidden sm:inline">WhatsApp</span>
+              </TabsTrigger>
+              <TabsTrigger value="surveys" className="flex items-center gap-2">
+                <ClipboardList className="w-4 h-4" />
+                <span className="hidden sm:inline">Encuestas</span>
               </TabsTrigger>
               <TabsTrigger value="reports" className="flex items-center gap-2">
                 <FileText className="w-4 h-4" />
@@ -147,43 +171,23 @@ const Admin = () => {
               )}
             </TabsList>
 
-            <TabsContent value="dashboard" className="mt-6">
-              <AdminDashboard />
-            </TabsContent>
-
-            <TabsContent value="players" className="mt-6">
-              <AdminPlayers />
-            </TabsContent>
-
-            <TabsContent value="teams" className="mt-6">
-              <AdminTeams />
-            </TabsContent>
-
-            <TabsContent value="schedule" className="mt-6">
-              <AdminSchedule />
-            </TabsContent>
-
-            <TabsContent value="gallery" className="mt-6">
-              <AdminGallery />
-            </TabsContent>
-
-            <TabsContent value="payments" className="mt-6">
-              <AdminPayments />
-            </TabsContent>
-
-            <TabsContent value="reports" className="mt-6">
-              <AdminReports />
-            </TabsContent>
-
+            <TabsContent value="dashboard" className="mt-6"><AdminDashboard /></TabsContent>
+            <TabsContent value="players" className="mt-6"><AdminPlayers /></TabsContent>
+            <TabsContent value="teams" className="mt-6"><AdminTeams /></TabsContent>
+            <TabsContent value="documents" className="mt-6"><AdminDocuments /></TabsContent>
+            <TabsContent value="cedulas" className="mt-6"><AdminCedulas /></TabsContent>
+            <TabsContent value="schedule" className="mt-6"><AdminSchedule /></TabsContent>
+            <TabsContent value="statistics" className="mt-6"><AdminStatistics /></TabsContent>
+            <TabsContent value="gallery" className="mt-6"><AdminGallery /></TabsContent>
+            <TabsContent value="payments" className="mt-6"><AdminPayments /></TabsContent>
+            <TabsContent value="email" className="mt-6"><AdminEmail /></TabsContent>
+            <TabsContent value="whatsapp" className="mt-6"><AdminWhatsApp /></TabsContent>
+            <TabsContent value="surveys" className="mt-6"><AdminSurveys /></TabsContent>
+            <TabsContent value="reports" className="mt-6"><AdminReports /></TabsContent>
             {userRole === 'admin' && (
               <>
-                <TabsContent value="users" className="mt-6">
-                  <AdminUsers />
-                </TabsContent>
-                
-                <TabsContent value="audit" className="mt-6">
-                  <AdminAudit />
-                </TabsContent>
+                <TabsContent value="users" className="mt-6"><AdminUsers /></TabsContent>
+                <TabsContent value="audit" className="mt-6"><AdminAudit /></TabsContent>
               </>
             )}
           </Tabs>
