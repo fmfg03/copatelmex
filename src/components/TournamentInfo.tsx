@@ -109,16 +109,28 @@ export const TournamentInfo = () => {
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="bg-background rounded-lg p-4 border border-border">
-                  <p className="text-sm text-muted-foreground mb-1">Inicio de Inscripciones</p>
-                  <p className="text-xl font-bold text-secondary">01 Enero 2026</p>
+                  <p className="text-sm text-muted-foreground mb-1">Inscripciones</p>
+                  <p className="text-xl font-bold text-secondary">2 Ene – 30 Jun 2026</p>
                 </div>
                 <div className="bg-background rounded-lg p-4 border border-border">
-                  <p className="text-sm text-muted-foreground mb-1">Cierre de Inscripciones</p>
-                  <p className="text-xl font-bold text-secondary">30 Junio 2026</p>
+                  <p className="text-sm text-muted-foreground mb-1">Fase Colectiva</p>
+                  <p className="text-xl font-bold text-secondary">13 Abr – 9 Ago 2026</p>
                 </div>
                 <div className="bg-background rounded-lg p-4 border border-border">
-                  <p className="text-sm text-muted-foreground mb-1">Inicio Fase Nacional</p>
-                  <p className="text-xl font-bold text-secondary">29 Noviembre 2026</p>
+                  <p className="text-sm text-muted-foreground mb-1">Fase Estatal</p>
+                  <p className="text-xl font-bold text-secondary">24 Ago – 25 Oct 2026</p>
+                </div>
+                <div className="bg-background rounded-lg p-4 border border-border">
+                  <p className="text-sm text-muted-foreground mb-1">Sorteo Fase Nacional</p>
+                  <p className="text-xl font-bold text-secondary">10 Nov 2026</p>
+                </div>
+                <div className="bg-background rounded-lg p-4 border border-border">
+                  <p className="text-sm text-muted-foreground mb-1">Fase Nacional (Juvenil/Femenil)</p>
+                  <p className="text-xl font-bold text-secondary">29 Nov – 5 Dic 2026</p>
+                </div>
+                <div className="bg-background rounded-lg p-4 border border-border">
+                  <p className="text-sm text-muted-foreground mb-1">Fase Nacional (Varonil)</p>
+                  <p className="text-xl font-bold text-secondary">7 – 12 Dic 2026</p>
                 </div>
               </div>
             </CardContent>
