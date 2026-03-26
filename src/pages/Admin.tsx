@@ -21,6 +21,7 @@ import { AdminEmail } from "@/components/admin/AdminEmail";
 import { AdminWhatsApp } from "@/components/admin/AdminWhatsApp";
 import { AdminDocuments } from "@/components/admin/AdminDocuments";
 import { AdminSurveys } from "@/components/admin/AdminSurveys";
+import { AdminMatchCapture } from "@/components/admin/AdminMatchCapture";
 import { toast } from "@/hooks/use-toast";
 
 const Admin = () => {
