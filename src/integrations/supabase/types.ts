@@ -472,6 +472,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "matches_away_team_id_fkey"
+            columns: ["away_team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "matches_category_id_fkey"
             columns: ["category_id"]
             isOneToOne: false
@@ -483,6 +490,13 @@ export type Database = {
             columns: ["home_team_id"]
             isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_home_team_id_fkey"
+            columns: ["home_team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
             referencedColumns: ["id"]
           },
         ]
@@ -803,6 +817,13 @@ export type Database = {
             referencedRelation: "teams"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "registrations_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       role_audit_log: {
@@ -1014,6 +1035,13 @@ export type Database = {
             referencedRelation: "teams"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "survey_responses_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       team_managers: {
@@ -1056,6 +1084,13 @@ export type Database = {
             columns: ["team_id"]
             isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_managers_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
             referencedColumns: ["id"]
           },
         ]
@@ -1119,6 +1154,13 @@ export type Database = {
             columns: ["team_id"]
             isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_standings_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
             referencedColumns: ["id"]
           },
         ]
@@ -1279,9 +1321,337 @@ export type Database = {
         }
         Relationships: []
       }
+      whatsapp_auto_replies: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          priority: number | null
+          reply_content: string
+          trigger_config: Json | null
+          trigger_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          priority?: number | null
+          reply_content: string
+          trigger_config?: Json | null
+          trigger_type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          priority?: number | null
+          reply_content?: string
+          trigger_config?: Json | null
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      whatsapp_conversation_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          assigned_to: string
+          id: string
+          notes: string | null
+          phone_number: string
+          priority: string | null
+          updated_at: string
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          assigned_to: string
+          id?: string
+          notes?: string | null
+          phone_number: string
+          priority?: string | null
+          updated_at?: string
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          assigned_to?: string
+          id?: string
+          notes?: string | null
+          phone_number?: string
+          priority?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      whatsapp_conversation_tag_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          id: string
+          phone_number: string
+          tag_id: string
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          id?: string
+          phone_number: string
+          tag_id: string
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          id?: string
+          phone_number?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_conversation_tag_assignments_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "whatsapp_conversation_tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_conversation_tags: {
+        Row: {
+          color: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          color?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      whatsapp_message_log: {
+        Row: {
+          created_at: string
+          direction: string
+          id: string
+          is_read: boolean
+          media_filename: string | null
+          media_type: string | null
+          media_url: string | null
+          message_content: string
+          message_sid: string | null
+          message_type: string
+          recipient_name: string | null
+          recipient_phone: string
+          sent_at: string
+          sent_by: string | null
+          status: string | null
+          team_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          direction?: string
+          id?: string
+          is_read?: boolean
+          media_filename?: string | null
+          media_type?: string | null
+          media_url?: string | null
+          message_content: string
+          message_sid?: string | null
+          message_type?: string
+          recipient_name?: string | null
+          recipient_phone: string
+          sent_at?: string
+          sent_by?: string | null
+          status?: string | null
+          team_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          direction?: string
+          id?: string
+          is_read?: boolean
+          media_filename?: string | null
+          media_type?: string | null
+          media_url?: string | null
+          message_content?: string
+          message_sid?: string | null
+          message_type?: string
+          recipient_name?: string | null
+          recipient_phone?: string
+          sent_at?: string
+          sent_by?: string | null
+          status?: string | null
+          team_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_message_log_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "whatsapp_message_log_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_quick_replies: {
+        Row: {
+          category: string | null
+          content: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean | null
+          shortcut: string | null
+          title: string
+          updated_at: string
+          usage_count: number | null
+        }
+        Insert: {
+          category?: string | null
+          content: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          shortcut?: string | null
+          title: string
+          updated_at?: string
+          usage_count?: number | null
+        }
+        Update: {
+          category?: string | null
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          shortcut?: string | null
+          title?: string
+          updated_at?: string
+          usage_count?: number | null
+        }
+        Relationships: []
+      }
+      whatsapp_templates: {
+        Row: {
+          approval_status: string | null
+          approved_at: string | null
+          content: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          language: string | null
+          name: string
+          rejection_reason: string | null
+          slug: string
+          submitted_at: string | null
+          template_type: string | null
+          twilio_content_sid: string | null
+          twilio_template_sid: string | null
+          updated_at: string
+          variables: string[] | null
+        }
+        Insert: {
+          approval_status?: string | null
+          approved_at?: string | null
+          content: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          language?: string | null
+          name: string
+          rejection_reason?: string | null
+          slug: string
+          submitted_at?: string | null
+          template_type?: string | null
+          twilio_content_sid?: string | null
+          twilio_template_sid?: string | null
+          updated_at?: string
+          variables?: string[] | null
+        }
+        Update: {
+          approval_status?: string | null
+          approved_at?: string | null
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          language?: string | null
+          name?: string
+          rejection_reason?: string | null
+          slug?: string
+          submitted_at?: string | null
+          template_type?: string | null
+          twilio_content_sid?: string | null
+          twilio_template_sid?: string | null
+          updated_at?: string
+          variables?: string[] | null
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      teams_public: {
+        Row: {
+          academy_name: string | null
+          country: string | null
+          id: string | null
+          shield_url: string | null
+          state: string | null
+          team_name: string | null
+        }
+        Insert: {
+          academy_name?: string | null
+          country?: string | null
+          id?: string | null
+          shield_url?: string | null
+          state?: string | null
+          team_name?: string | null
+        }
+        Update: {
+          academy_name?: string | null
+          country?: string | null
+          id?: string | null
+          shield_url?: string | null
+          state?: string | null
+          team_name?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       calculate_check_digit: { Args: { id_base: string }; Returns: string }
