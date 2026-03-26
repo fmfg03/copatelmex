@@ -115,7 +115,7 @@ export const Navbar = () => {
                         const element = document.querySelector(link.href.substring(1));
                         element?.scrollIntoView({ behavior: "smooth" });
                       }, 100);
-                    } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto") {
+                    } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto" || link.href === "/calendario") {
                       e.preventDefault();
                       navigate(link.href);
                     }

@@ -39,6 +39,7 @@ const App = () => (
           <Route path="/documents" element={<DocumentsPortal />} />
           <Route path="/tournament-info" element={<TournamentInfo />} />
           <Route path="/schedule" element={<Schedule />} />
+          <Route path="/calendario" element={<TournamentCalendar />} />
           <Route path="/media" element={<MediaGallery />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/contacto" element={<Contact />} />
