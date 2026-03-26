@@ -134,6 +134,9 @@ const Admin = () => {
                 <BarChart3 className="w-4 h-4" />
                 <span className="hidden sm:inline">Estadísticas</span>
               </TabsTrigger>
+              <TabsTrigger value="capture" className="flex items-center gap-2">
+                <Gamepad2 className="w-4 h-4" />
+                <span className="hidden sm:inline">Captura</span>
               <TabsTrigger value="gallery" className="flex items-center gap-2">
                 <Image className="w-4 h-4" />
                 <span className="hidden sm:inline">Galería</span>
