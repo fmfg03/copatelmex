@@ -63,6 +63,7 @@ export type Database = {
           id: string
           max_players_per_team: number | null
           name: string
+          registration_closed: boolean
           year_born: string | null
         }
         Insert: {
@@ -71,6 +72,7 @@ export type Database = {
           id?: string
           max_players_per_team?: number | null
           name: string
+          registration_closed?: boolean
           year_born?: string | null
         }
         Update: {
@@ -79,6 +81,7 @@ export type Database = {
           id?: string
           max_players_per_team?: number | null
           name?: string
+          registration_closed?: boolean
           year_born?: string | null
         }
         Relationships: []
@@ -471,6 +474,7 @@ export type Database = {
           photo_url: string | null
           position: string | null
           registration_id: string
+          responsiva_url: string | null
           unique_player_id: string | null
           verification_notes: string | null
         }
@@ -493,6 +497,7 @@ export type Database = {
           photo_url?: string | null
           position?: string | null
           registration_id: string
+          responsiva_url?: string | null
           unique_player_id?: string | null
           verification_notes?: string | null
         }
@@ -515,6 +520,7 @@ export type Database = {
           photo_url?: string | null
           position?: string | null
           registration_id?: string
+          responsiva_url?: string | null
           unique_player_id?: string | null
           verification_notes?: string | null
         }
@@ -563,9 +569,11 @@ export type Database = {
           notes: string | null
           payment_amount: number | null
           payment_date: string | null
+          payment_receipt_url: string | null
           payment_reference: string | null
           payment_status: string | null
           registration_date: string | null
+          responsiva_url: string | null
           team_id: string
         }
         Insert: {
@@ -575,9 +583,11 @@ export type Database = {
           notes?: string | null
           payment_amount?: number | null
           payment_date?: string | null
+          payment_receipt_url?: string | null
           payment_reference?: string | null
           payment_status?: string | null
           registration_date?: string | null
+          responsiva_url?: string | null
           team_id: string
         }
         Update: {
@@ -587,9 +597,11 @@ export type Database = {
           notes?: string | null
           payment_amount?: number | null
           payment_date?: string | null
+          payment_receipt_url?: string | null
           payment_reference?: string | null
           payment_status?: string | null
           registration_date?: string | null
+          responsiva_url?: string | null
           team_id?: string
         }
         Relationships: [
@@ -746,12 +758,14 @@ export type Database = {
       teams: {
         Row: {
           academy_name: string | null
+          country: string
           created_at: string | null
           facebook_url: string | null
           id: string
           instagram_url: string | null
           phone_country_code: string | null
           phone_number: string
+          postal_code: string | null
           rejection_reason: string | null
           shield_url: string | null
           state: string
@@ -762,12 +776,14 @@ export type Database = {
         }
         Insert: {
           academy_name?: string | null
+          country?: string
           created_at?: string | null
           facebook_url?: string | null
           id?: string
           instagram_url?: string | null
           phone_country_code?: string | null
           phone_number: string
+          postal_code?: string | null
           rejection_reason?: string | null
           shield_url?: string | null
           state: string
@@ -778,12 +794,14 @@ export type Database = {
         }
         Update: {
           academy_name?: string | null
+          country?: string
           created_at?: string | null
           facebook_url?: string | null
           id?: string
           instagram_url?: string | null
           phone_country_code?: string | null
           phone_number?: string
+          postal_code?: string | null
           rejection_reason?: string | null
           shield_url?: string | null
           state?: string
