@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import DocumentsPortal from "./pages/DocumentsPortal";
 import TournamentInfo from "./pages/TournamentInfo";
 import Schedule from "./pages/Schedule";
+import TournamentCalendar from "./pages/TournamentCalendar";
 import MediaGallery from "./pages/MediaGallery";
 import Privacy from "./pages/Privacy";
 import Contact from "./pages/Contact";
