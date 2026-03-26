@@ -5,7 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { Shield, Users, Calendar, Image, DollarSign, FileText, UserCog, History, BarChart3, FileCheck, Mail, MessageSquare, ClipboardList } from "lucide-react";
+import { Shield, Users, Calendar, Image, DollarSign, FileText, UserCog, History, BarChart3, FileCheck, Mail, MessageSquare, ClipboardList, Gamepad2 } from "lucide-react";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { AdminPlayers } from "@/components/admin/AdminPlayers";
 import { AdminTeams } from "@/components/admin/AdminTeams";
@@ -21,6 +21,7 @@ import { AdminEmail } from "@/components/admin/AdminEmail";
 import { AdminWhatsApp } from "@/components/admin/AdminWhatsApp";
 import { AdminDocuments } from "@/components/admin/AdminDocuments";
 import { AdminSurveys } from "@/components/admin/AdminSurveys";
+import { AdminMatchCapture } from "@/components/admin/AdminMatchCapture";
 import { toast } from "@/hooks/use-toast";
 
 const Admin = () => {
@@ -133,6 +134,10 @@ const Admin = () => {
                 <BarChart3 className="w-4 h-4" />
                 <span className="hidden sm:inline">Estadísticas</span>
               </TabsTrigger>
+              <TabsTrigger value="capture" className="flex items-center gap-2">
+                <Gamepad2 className="w-4 h-4" />
+                <span className="hidden sm:inline">Captura</span>
+              </TabsTrigger>
               <TabsTrigger value="gallery" className="flex items-center gap-2">
                 <Image className="w-4 h-4" />
                 <span className="hidden sm:inline">Galería</span>
@@ -179,6 +184,7 @@ const Admin = () => {
             <TabsContent value="cedulas" className="mt-6"><AdminCedulas /></TabsContent>
             <TabsContent value="schedule" className="mt-6"><AdminSchedule /></TabsContent>
             <TabsContent value="statistics" className="mt-6"><AdminStatistics /></TabsContent>
+            <TabsContent value="capture" className="mt-6"><AdminMatchCapture /></TabsContent>
             <TabsContent value="gallery" className="mt-6"><AdminGallery /></TabsContent>
             <TabsContent value="payments" className="mt-6"><AdminPayments /></TabsContent>
             <TabsContent value="email" className="mt-6"><AdminEmail /></TabsContent>
