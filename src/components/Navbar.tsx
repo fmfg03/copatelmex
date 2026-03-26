@@ -75,7 +75,7 @@ export const Navbar = () => {
     { name: "Inicio", href: "/", disabled: false },
     { name: "Información", href: "/tournament-info", disabled: false },
     { name: "Reglamento", href: "/reglamento", disabled: true },
-    { name: "Calendario", href: "/schedule", disabled: true },
+    { name: "Calendario", href: "/calendario", disabled: false },
     { name: "Multimedia", href: "/media", disabled: true },
     { name: "Contacto", href: "/contacto", disabled: false },
   ];
@@ -115,7 +115,7 @@ export const Navbar = () => {
                         const element = document.querySelector(link.href.substring(1));
                         element?.scrollIntoView({ behavior: "smooth" });
                       }, 100);
-                    } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto") {
+                    } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto" || link.href === "/calendario") {
                       e.preventDefault();
                       navigate(link.href);
                     }
@@ -236,7 +236,7 @@ export const Navbar = () => {
                           const element = document.querySelector(link.href.substring(1));
                           element?.scrollIntoView({ behavior: "smooth" });
                         }, 100);
-                      } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto") {
+                      } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto" || link.href === "/calendario") {
                         e.preventDefault();
                         navigate(link.href);
                       }
