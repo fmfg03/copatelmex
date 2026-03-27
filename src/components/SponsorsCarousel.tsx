@@ -39,11 +39,11 @@ export const SponsorsCarousel = () => {
               </div>
             );
             return sponsor.url ? (
-              <a key={index} href={sponsor.url} target="_blank" rel="noopener noreferrer">
+              <a key={index} href={sponsor.url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
                 {content}
               </a>
             ) : (
-              <div key={index}>{content}</div>
+              <div key={index} className="flex-shrink-0">{content}</div>
             );
           })}
         </div>
