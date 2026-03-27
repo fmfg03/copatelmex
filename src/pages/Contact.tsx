@@ -28,7 +28,7 @@ const FAQS = [
     answer: (
       <span>
         Para inscribirte, debes crear una cuenta en nuestra plataforma, registrar tu equipo y completar el proceso de pago. Una vez confirmado el pago, recibirás un correo de confirmación. También puedes{" "}
-        <Link to="/operadores" className="text-primary underline font-semibold hover:text-primary/80">
+        <Link to="/inscripcion" className="text-primary underline font-semibold hover:text-primary/80">
           contactar al operador local de tu estado
         </Link>.
       </span>
@@ -51,7 +51,7 @@ const FAQS = [
     answer: (
       <span>
         Se requiere acta de nacimiento, CURP, fotografía reciente y carta responsiva firmada por el padre o tutor de cada jugador.{" "}
-        <Link to="/operadores" className="text-primary underline font-semibold hover:text-primary/80">
+        <Link to="/inscripcion" className="text-primary underline font-semibold hover:text-primary/80">
           Consulta con el operador local de tu estado
         </Link>{" "}
         para más detalles.
