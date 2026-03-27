@@ -309,18 +309,18 @@ export default function TournamentInfo() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[{
               name: "Categoría Varonil",
-              years: "2008 o anteriores",
-              max: 22,
-              ageInfo: "18+ años"
+              years: "18 y mayores",
+              max: 35,
+              ageInfo: "Varonil Libre"
             }, {
-              name: "Categoría Varonil Juvenil",
-              years: "2009, 2010, 2011",
-              max: 22,
-              ageInfo: "Sub-17"
+              name: "Categoría Juvenil",
+              years: "15, 16 y 17 años",
+              max: 35,
+              ageInfo: "15-17 años"
             }, {
               name: "Categoría Femenil",
-              years: "2012 y anteriores",
-              max: 22,
+              years: "14 y mayores",
+              max: 35,
               ageInfo: "14+ años"
             }].map((category, index) => <Card key={category.name} className="group border-2 hover:border-primary hover:-translate-y-2 transition-all duration-300 hover:shadow-xl cursor-pointer animate-fade-in overflow-hidden relative" style={{
               animationDelay: `${index * 0.1}s`
