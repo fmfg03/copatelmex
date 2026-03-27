@@ -40,7 +40,7 @@ const FAQS = [
   },
   {
     question: "¿Cuántos jugadores puedo inscribir por equipo?",
-    answer: "Todas las categorías pueden inscribir un máximo de 35 jugadores por equipo.",
+    answer: "Todas las categorías pueden inscribir un mínimo de 16 y un máximo de 35 jugadores por equipo.",
   },
   {
     question: "¿Cuál es la fecha límite de inscripción?",
