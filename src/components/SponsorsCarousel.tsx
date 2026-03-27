@@ -26,18 +26,26 @@ export const SponsorsCarousel = () => {
       {/* Infinite Carousel */}
       <div className="relative group">
         <div className="flex animate-scroll-x group-hover:[animation-play-state:paused]">
-          {duplicatedSponsors.map((sponsor, index) => (
-            <div
-              key={index}
-              className={`flex-shrink-0 mx-6 md:mx-10 p-6 rounded-xl ${sponsor.dark ? 'bg-secondary' : 'bg-white'} shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105`}
-            >
-              <img
-                src={sponsor.src}
-                alt={sponsor.alt}
-                className="h-10 md:h-14 w-auto object-contain"
-              />
-            </div>
-          ))}
+          {duplicatedSponsors.map((sponsor, index) => {
+            const content = (
+              <div
+                className={`flex-shrink-0 mx-6 md:mx-10 p-6 rounded-xl ${sponsor.dark ? 'bg-secondary' : 'bg-white'} shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105`}
+              >
+                <img
+                  src={sponsor.src}
+                  alt={sponsor.alt}
+                  className="h-10 md:h-14 w-auto object-contain"
+                />
+              </div>
+            );
+            return sponsor.url ? (
+              <a key={index} href={sponsor.url} target="_blank" rel="noopener noreferrer">
+                {content}
+              </a>
+            ) : (
+              <div key={index}>{content}</div>
+            );
+          })}
         </div>
       </div>
     </section>
