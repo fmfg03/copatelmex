@@ -15,6 +15,7 @@ const Index = () => {
       <Hero />
       <TournamentInfo />
       <Categories />
+      <NewsSection />
       <SponsorsCarousel />
       <VideoFeedSection />
       <Footer />
