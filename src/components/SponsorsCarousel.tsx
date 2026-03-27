@@ -4,10 +4,10 @@ import sponsorPowerade from "@/assets/sponsor-powerade.png";
 import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
 
 const sponsors = [
-  { src: sponsorKeuka, alt: "Keuka", dark: false },
-  { src: sponsorZucaritas, alt: "Zucaritas", dark: false },
-  { src: sponsorPowerade, alt: "Powerade", dark: false },
-  { src: sponsorClaroSports, alt: "Claro Sports", dark: false },
+  { src: sponsorKeuka, alt: "Keuka", dark: false, url: null },
+  { src: sponsorZucaritas, alt: "Zucaritas", dark: false, url: null },
+  { src: sponsorPowerade, alt: "Powerade", dark: false, url: "https://www.coca-cola.com/mx/es/brands/powerade" },
+  { src: sponsorClaroSports, alt: "Claro Sports", dark: false, url: null },
 ];
 
 // Duplicate sponsors for seamless infinite loop
@@ -26,18 +26,26 @@ export const SponsorsCarousel = () => {
       {/* Infinite Carousel */}
       <div className="relative group">
         <div className="flex animate-scroll-x group-hover:[animation-play-state:paused]">
-          {duplicatedSponsors.map((sponsor, index) => (
-            <div
-              key={index}
-              className={`flex-shrink-0 mx-6 md:mx-10 p-6 rounded-xl ${sponsor.dark ? 'bg-secondary' : 'bg-white'} shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105`}
-            >
-              <img
-                src={sponsor.src}
-                alt={sponsor.alt}
-                className="h-10 md:h-14 w-auto object-contain"
-              />
-            </div>
-          ))}
+          {duplicatedSponsors.map((sponsor, index) => {
+            const content = (
+              <div
+                className={`flex-shrink-0 mx-6 md:mx-10 p-6 rounded-xl ${sponsor.dark ? 'bg-secondary' : 'bg-white'} shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105`}
+              >
+                <img
+                  src={sponsor.src}
+                  alt={sponsor.alt}
+                  className="h-10 md:h-14 w-auto object-contain"
+                />
+              </div>
+            );
+            return sponsor.url ? (
+              <a key={index} href={sponsor.url} target="_blank" rel="noopener noreferrer">
+                {content}
+              </a>
+            ) : (
+              <div key={index}>{content}</div>
+            );
+          })}
         </div>
       </div>
     </section>
