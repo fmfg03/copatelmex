@@ -112,8 +112,8 @@ export default function TournamentInfo() {
                   <div className="w-12 h-12 rounded-xl bg-america-blue/10 flex items-center justify-center mx-auto mb-4">
                     <Trophy className="w-6 h-6 text-america-blue" />
                   </div>
-                  <h3 className="font-bold text-lg mb-2">Entidades</h3>
-                  <p className="text-muted-foreground">34 participantes</p>
+                  <h3 className="font-bold text-lg mb-2">Cobertura</h3>
+                  <p className="text-muted-foreground">Nivel Nacional</p>
                 </CardContent>
               </Card>
             </div>
