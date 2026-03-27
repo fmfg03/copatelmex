@@ -151,9 +151,9 @@ export const Navbar = () => {
             {user && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
+                   <Button
                     variant="outline"
-                    className="text-white hover:bg-primary hover:text-white border-white/30"
+                    className="text-white bg-white/10 hover:bg-primary hover:text-white border-white/30"
                   >
                     <User className="w-4 h-4 mr-2" />
                     ¡Hola, {user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0]}!
