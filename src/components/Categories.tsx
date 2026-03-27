@@ -7,30 +7,30 @@ import categoryFemenil from "@/assets/category-femenil-telmex.jpg";
 export const Categories = () => {
   const categories = [
     {
-      year: "2008 y Anteriores",
-      hoverText: "18+ (año 2008 y anteriores)",
+      year: "18 y mayores",
+      hoverText: "Varonil Libre (18 años y mayores)",
       type: "Varonil",
       ageInfo: "18+ años",
       description: "Categoría Varonil",
-      maxPlayers: 22,
+      maxPlayers: 35,
       image: categoryVaronil
     },
     {
-      year: "2009, 2010, 2011",
-      hoverText: "Sub-17 (años 2009, 2010 y 2011)",
+      year: "15, 16 y 17 años",
+      hoverText: "Juvenil (15, 16 y 17 años)",
       type: "Juvenil",
-      ageInfo: "Sub-17",
+      ageInfo: "15-17 años",
       description: "Categoría Juvenil",
-      maxPlayers: 22,
+      maxPlayers: 35,
       image: categoryJuvenil
     },
     {
-      year: "2012 y Anteriores",
-      hoverText: "14+ (año 2012 y anteriores)",
+      year: "14 y mayores",
+      hoverText: "Femenil (14 años y mayores)",
       type: "Femenil",
       ageInfo: "14+ años",
       description: "Categoría Femenil",
-      maxPlayers: 22,
+      maxPlayers: 35,
       image: categoryFemenil
     }
   ];
@@ -46,7 +46,7 @@ export const Categories = () => {
             </h2>
             <div className="w-16 sm:w-20 md:w-24 h-1 bg-primary mx-auto mb-5 md:mb-8"></div>
             <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto mb-4 md:mb-6 leading-relaxed text-center font-bold px-2">
-              Máximo 22 jugadores por equipo
+              Máximo 35 jugadores por equipo en todas las categorías
             </p>
             <Badge variant="outline" className="text-sm sm:text-base md:text-lg px-4 sm:px-5 md:px-6 py-2 md:py-3 border-2 border-primary text-primary font-semibold">
               Tres Categorías Disponibles

@@ -43,39 +43,8 @@ export const TournamentInfo = () => {
             </h2>
             <div className="w-24 h-1 bg-primary mx-auto mb-8"></div>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto font-medium leading-relaxed text-justify">
-              La Copa Telmex Telcel es el torneo de fútbol infantil y juvenil más importante de México, reuniendo a miles de equipos de todo el país. Ofrecemos una experiencia competitiva y única, que promueve el desarrollo deportivo como una alternativa para alejar a los jóvenes de la calle y de los vicios, y así se comprometan a continuar entrenando dentro de las canchas, y con ello, piensen en ser mejores todos los días.
+              COPA TELMEX TELCEL es un torneo que tiene como principales objetivos la asistencia social a personas, sectores y regiones de escasos recursos, comunidades indígenas y grupos vulnerables por edad, sexo o problemas de discapacidad, mediante su inclusión en la sociedad a través de la promoción del deporte y la activación física; lo anterior, como medida de prevención de problemas de carácter social que afectan actualmente a la población mexicana como lo puede ser el alcoholismo, drogadicción, la delincuencia, entre otros.
             </p>
-          </div>
-
-          {/* Misión y Visión */}
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="border-2 border-border animate-slide-in-left">
-              <CardContent className="p-10">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Star className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-secondary">Misión</h3>
-                </div>
-                <p className="text-muted-foreground leading-relaxed text-justify">
-                  La Copa Telmex Telcel es el torneo de fútbol infantil y juvenil más importante de México, reuniendo a miles de equipos de todo el país. Promueve el desarrollo deportivo como una alternativa para alejar a los jóvenes de la calle y de los vicios, y así se comprometan a continuar entrenando dentro de las canchas, y con ello, piensen en ser mejores todos los días.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-border animate-slide-in-right">
-              <CardContent className="p-10">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Award className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-secondary">Visión</h3>
-                </div>
-                <p className="text-muted-foreground leading-relaxed text-justify">
-                  Ser el torneo aficionado más grande del mundo, reconocido por su impacto social positivo y su capacidad de transformar vidas a través del deporte, promoviendo valores como el respeto, trabajo en equipo y juego limpio.
-                </p>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Por qué es el más grande */}
@@ -122,7 +91,7 @@ export const TournamentInfo = () => {
                 </div>
                 <div className="bg-background rounded-lg p-4 border border-border">
                   <p className="text-sm text-muted-foreground mb-1">Sorteo Fase Nacional</p>
-                  <p className="text-xl font-bold text-secondary">10 Nov 2026</p>
+                  <p className="text-xl font-bold text-secondary">POR DEFINIR</p>
                 </div>
                 <div className="bg-background rounded-lg p-4 border border-border">
                   <p className="text-sm text-muted-foreground mb-1">Fase Nacional (Juvenil/Femenil)</p>

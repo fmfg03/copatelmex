@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
-import { Calendar, MapPin, Trophy, Users, ClipboardCheck, Shuffle, Hotel } from "lucide-react";
+import { Calendar, MapPin, Trophy, Users, ClipboardCheck, Shuffle, Hotel, Radio } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const phases = [
@@ -23,17 +23,7 @@ const phases = [
     borderColor: "border-secondary",
     dateRange: "13 de abril – 9 de agosto",
     icon: Users,
-    description: "Partidos locales organizados por cada equipo en sus respectivas comunidades.",
-  },
-  {
-    id: "revision",
-    label: "Revisión Administrativa",
-    color: "bg-muted-foreground",
-    textColor: "text-muted-foreground",
-    borderColor: "border-muted-foreground",
-    dateRange: "10 – 23 de agosto / 26 oct – 28 nov",
-    icon: ClipboardCheck,
-    description: "Periodos de revisión y trabajo administrativo previos a la Fase Estatal y Fase Nacional.",
+    description: "Partidos organizados por cada operador local en sus respectivas comunidades.",
   },
   {
     id: "estatal",
@@ -43,7 +33,7 @@ const phases = [
     borderColor: "border-accent",
     dateRange: "24 de agosto – 25 de octubre",
     icon: MapPin,
-    description: "Eliminatorias a nivel estatal para definir a los representantes de cada entidad.",
+    description: "Eliminatorias para definir los representantes estatales de cada categoría, rumbo a la Fase Nacional.",
   },
   {
     id: "sorteo",
@@ -51,9 +41,9 @@ const phases = [
     color: "bg-primary",
     textColor: "text-primary",
     borderColor: "border-primary",
-    dateRange: "10 de noviembre",
+    dateRange: "Por definir",
     icon: Shuffle,
-    description: "Sorteo oficial para definir los grupos y enfrentamientos de la Fase Nacional.",
+    description: "Sorteo oficial de la Fase Nacional.",
   },
 ];
 
@@ -61,24 +51,24 @@ const nationalPhaseEvents = [
   {
     category: "JUVENIL / FEMENIL",
     events: [
-      { date: "29 nov", label: "Recepción en hoteles sede", icon: Hotel },
-      { date: "30 nov", label: "Juego de clasificación 1", icon: Trophy },
-      { date: "1 dic", label: "Juego de clasificación 2", icon: Trophy },
-      { date: "2 dic", label: "Juego de clasificación 3", icon: Trophy },
+      { date: "29 nov", label: "Recepción de equipos en hoteles sede", icon: Hotel },
+      { date: "30 nov", label: "Jornada 1", icon: Trophy },
+      { date: "1 dic", label: "Jornada 2", icon: Trophy },
+      { date: "2 dic", label: "Jornada 3", icon: Trophy },
       { date: "3 dic", label: "Cuartos de Final", icon: Trophy },
-      { date: "4 dic", label: "Semifinales", icon: Trophy },
-      { date: "5 dic", label: "Finales", icon: Trophy },
+      { date: "4 dic", label: "Semifinales", icon: Radio, live: true },
+      { date: "5 dic", label: "Finales", icon: Radio, live: true },
     ],
   },
   {
     category: "VARONIL",
     events: [
-      { date: "7 dic", label: "Recepción de equipos", icon: Hotel },
-      { date: "8 dic", label: "Juego de clasificación 1", icon: Trophy },
-      { date: "9 dic", label: "Juego de clasificación 2", icon: Trophy },
-      { date: "10 dic", label: "Juego de clasificación 3 y Cuartos de Final", icon: Trophy },
-      { date: "11 dic", label: "Semifinal", icon: Trophy },
-      { date: "12 dic", label: "Final", icon: Trophy },
+      { date: "7 dic", label: "Recepción de equipos en hoteles sede", icon: Hotel },
+      { date: "8 dic", label: "Jornada 1", icon: Trophy },
+      { date: "9 dic", label: "Jornada 2", icon: Trophy },
+      { date: "10 dic", label: "Por la mañana: Jornada 3 | Por la tarde: Cuartos de Final", icon: Trophy, double: true },
+      { date: "11 dic", label: "Semifinales", icon: Radio, live: true },
+      { date: "12 dic", label: "Final", icon: Radio, live: true },
     ],
   },
 ];
@@ -194,7 +184,9 @@ const TournamentCalendar = () => {
                 <div className="divide-y divide-border">
                   {group.events.map((evt, i) => {
                     const EvtIcon = evt.icon;
-                    const isFinal = evt.label.toLowerCase().includes("final") && !evt.label.toLowerCase().includes("clasificación") && !evt.label.toLowerCase().includes("cuartos");
+                    const isFinal = evt.label.toLowerCase().includes("final") && !evt.label.toLowerCase().includes("jornada") && !evt.label.toLowerCase().includes("cuartos");
+                    const isLive = 'live' in evt && evt.live;
+                    const isDouble = 'double' in evt && evt.double;
                     return (
                       <div
                         key={i}
@@ -205,18 +197,28 @@ const TournamentCalendar = () => {
                         <div className={`flex-shrink-0 w-16 text-center rounded-lg py-1.5 ${
                           isFinal
                             ? "bg-accent/15 text-accent font-bold"
+                            : isDouble
+                            ? "bg-primary/10 text-primary font-bold"
                             : "bg-muted text-muted-foreground"
                         }`}>
                           <span className="text-sm font-semibold">{evt.date}</span>
                         </div>
                         <EvtIcon className={`w-4 h-4 flex-shrink-0 ${
-                          isFinal ? "text-accent" : "text-primary"
+                          isLive ? "text-destructive" : isFinal ? "text-accent" : "text-primary"
                         }`} />
-                        <span className={`text-sm ${
-                          isFinal ? "font-bold text-foreground" : "text-foreground"
-                        }`}>
-                          {evt.label}
-                        </span>
+                        <div className="flex flex-col">
+                          <span className={`text-sm ${
+                            isFinal ? "font-bold text-foreground" : "text-foreground"
+                          }`}>
+                            {evt.label}
+                          </span>
+                          {isLive && (
+                            <span className="text-xs font-semibold text-destructive flex items-center gap-1 mt-0.5">
+                              <Radio className="w-3 h-3" />
+                              TRANSMISIÓN EN VIVO
+                            </span>
+                          )}
+                        </div>
                       </div>
                     );
                   })}

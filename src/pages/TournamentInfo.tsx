@@ -19,7 +19,6 @@ import tournamentTeams from "@/assets/tournament-teams.jpg";
 import sponsorKeuka from "@/assets/sponsor-keuka.png";
 import sponsorZucaritas from "@/assets/sponsor-zucaritas.png";
 import sponsorPowerade from "@/assets/sponsor-powerade.png";
-import sponsorPlataformaSports from "@/assets/sponsor-plataforma-sports.png";
 import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
 export default function TournamentInfo() {
   const navigate = useNavigate();
@@ -112,8 +111,8 @@ export default function TournamentInfo() {
                   <div className="w-12 h-12 rounded-xl bg-america-blue/10 flex items-center justify-center mx-auto mb-4">
                     <Trophy className="w-6 h-6 text-america-blue" />
                   </div>
-                  <h3 className="font-bold text-lg mb-2">Entidades</h3>
-                  <p className="text-muted-foreground">34 participantes</p>
+                  <h3 className="font-bold text-lg mb-2">Cobertura</h3>
+                  <p className="text-muted-foreground">Nivel Nacional</p>
                 </CardContent>
               </Card>
             </div>
@@ -126,7 +125,7 @@ export default function TournamentInfo() {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-secondary mb-4">Fases del Torneo</h2>
+              <h2 className="text-4xl font-bold text-secondary mb-4">Fases del Torneo por Categoría</h2>
               <div className="w-24 h-1 bg-primary mx-auto"></div>
             </div>
 
@@ -145,11 +144,11 @@ export default function TournamentInfo() {
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
-                        <span>Conformación de grupos</span>
+                        <span>Partidos locales</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
-                        <span>Partidos locales</span>
+                        <span>Clasificación a fase estatal</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
@@ -211,7 +210,7 @@ export default function TournamentInfo() {
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
-                        <span>Coronación de campeones</span>
+                        <span>Premiación de campeones</span>
                       </li>
                     </ul>
                   </div>
@@ -303,24 +302,24 @@ export default function TournamentInfo() {
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-secondary mb-4">Categorías del Torneo</h2>
               <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
-              <p className="text-muted-foreground">Tres categorías - Máximo 22 jugadores por equipo</p>
+              <p className="text-muted-foreground">Tres categorías - Máximo 35 jugadores por equipo</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[{
               name: "Categoría Varonil",
-              years: "2008 o anteriores",
-              max: 22,
-              ageInfo: "18+ años"
+              years: "18 y mayores",
+              max: 35,
+              ageInfo: "Varonil Libre"
             }, {
-              name: "Categoría Varonil Juvenil",
-              years: "2009, 2010, 2011",
-              max: 22,
-              ageInfo: "Sub-17"
+              name: "Categoría Juvenil",
+              years: "15, 16 y 17 años",
+              max: 35,
+              ageInfo: "15-17 años"
             }, {
               name: "Categoría Femenil",
-              years: "2012 y anteriores",
-              max: 22,
+              years: "14 y mayores",
+              max: 35,
               ageInfo: "14+ años"
             }].map((category, index) => <Card key={category.name} className="group border-2 hover:border-primary hover:-translate-y-2 transition-all duration-300 hover:shadow-xl cursor-pointer animate-fade-in overflow-hidden relative" style={{
               animationDelay: `${index * 0.1}s`
@@ -361,21 +360,16 @@ export default function TournamentInfo() {
             }, {
               src: sponsorZucaritas,
               alt: "Zucaritas",
-              name: "Zucaritas",
-              dark: true
+              name: "Zucaritas"
             }, {
               src: sponsorPowerade,
               alt: "Powerade",
               name: "Powerade"
             }, {
-              src: sponsorPlataformaSports,
-              alt: "Plataforma Sports",
-              name: "Plataforma Sports"
-            }, {
               src: sponsorClaroSports,
               alt: "Claro Sports",
               name: "Claro Sports"
-            }].map((sponsor, index) => <div key={index} className={`group p-6 rounded-xl transition-all duration-300 hover:scale-110 ${sponsor.dark ? 'bg-secondary' : 'bg-white'} shadow-md hover:shadow-xl`}>
+            }].map((sponsor, index) => <div key={index} className={`group p-6 rounded-xl transition-all duration-300 hover:scale-110 bg-white shadow-md hover:shadow-xl`}>
                   <img src={sponsor.src} alt={sponsor.alt} className="h-12 md:h-16 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300" />
                 </div>)}
             </div>

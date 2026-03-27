@@ -1,14 +1,12 @@
 import sponsorKeuka from "@/assets/sponsor-keuka.png";
 import sponsorZucaritas from "@/assets/sponsor-zucaritas.png";
 import sponsorPowerade from "@/assets/sponsor-powerade.png";
-import sponsorPlataformaSports from "@/assets/sponsor-plataforma-sports.png";
 import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
 
 const sponsors = [
   { src: sponsorKeuka, alt: "Keuka", dark: false },
-  { src: sponsorZucaritas, alt: "Zucaritas", dark: true },
+  { src: sponsorZucaritas, alt: "Zucaritas", dark: false },
   { src: sponsorPowerade, alt: "Powerade", dark: false },
-  { src: sponsorPlataformaSports, alt: "Plataforma Sports", dark: false },
   { src: sponsorClaroSports, alt: "Claro Sports", dark: false },
 ];
 
