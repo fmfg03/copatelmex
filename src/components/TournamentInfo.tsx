@@ -47,37 +47,6 @@ export const TournamentInfo = () => {
             </p>
           </div>
 
-          {/* Misión y Visión */}
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="border-2 border-border animate-slide-in-left">
-              <CardContent className="p-10">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Star className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-secondary">Misión</h3>
-                </div>
-                <p className="text-muted-foreground leading-relaxed text-justify">
-                  La Copa Telmex Telcel es el torneo de fútbol infantil y juvenil más importante de México, reuniendo a miles de equipos de todo el país. Promueve el desarrollo deportivo como una alternativa para alejar a los jóvenes de la calle y de los vicios, y así se comprometan a continuar entrenando dentro de las canchas, y con ello, piensen en ser mejores todos los días.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-border animate-slide-in-right">
-              <CardContent className="p-10">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Award className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-secondary">Visión</h3>
-                </div>
-                <p className="text-muted-foreground leading-relaxed text-justify">
-                  Ser el torneo aficionado más grande del mundo, reconocido por su impacto social positivo y su capacidad de transformar vidas a través del deporte, promoviendo valores como el respeto, trabajo en equipo y juego limpio.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-
           {/* Por qué es el más grande */}
           <Card className="border-2 border-primary/20 bg-gradient-to-br from-background to-primary/5 animate-scale-in">
             <CardContent className="p-8">
