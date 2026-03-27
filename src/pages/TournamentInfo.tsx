@@ -126,7 +126,7 @@ export default function TournamentInfo() {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-secondary mb-4">Fases del Torneo</h2>
+              <h2 className="text-4xl font-bold text-secondary mb-4">Fases del Torneo por Categoría</h2>
               <div className="w-24 h-1 bg-primary mx-auto"></div>
             </div>
 
