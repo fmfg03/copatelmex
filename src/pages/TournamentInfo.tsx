@@ -361,21 +361,16 @@ export default function TournamentInfo() {
             }, {
               src: sponsorZucaritas,
               alt: "Zucaritas",
-              name: "Zucaritas",
-              dark: true
+              name: "Zucaritas"
             }, {
               src: sponsorPowerade,
               alt: "Powerade",
               name: "Powerade"
             }, {
-              src: sponsorPlataformaSports,
-              alt: "Plataforma Sports",
-              name: "Plataforma Sports"
-            }, {
               src: sponsorClaroSports,
               alt: "Claro Sports",
               name: "Claro Sports"
-            }].map((sponsor, index) => <div key={index} className={`group p-6 rounded-xl transition-all duration-300 hover:scale-110 ${sponsor.dark ? 'bg-secondary' : 'bg-white'} shadow-md hover:shadow-xl`}>
+            }].map((sponsor, index) => <div key={index} className={`group p-6 rounded-xl transition-all duration-300 hover:scale-110 bg-white shadow-md hover:shadow-xl`}>
                   <img src={sponsor.src} alt={sponsor.alt} className="h-12 md:h-16 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300" />
                 </div>)}
             </div>
