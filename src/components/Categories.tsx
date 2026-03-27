@@ -7,30 +7,30 @@ import categoryFemenil from "@/assets/category-femenil-telmex.jpg";
 export const Categories = () => {
   const categories = [
     {
-      year: "2008 y Anteriores",
-      hoverText: "18+ (año 2008 y anteriores)",
+      year: "18 y mayores",
+      hoverText: "Varonil Libre (18 años y mayores)",
       type: "Varonil",
       ageInfo: "18+ años",
       description: "Categoría Varonil",
-      maxPlayers: 22,
+      maxPlayers: 35,
       image: categoryVaronil
     },
     {
-      year: "2009, 2010, 2011",
-      hoverText: "Sub-17 (años 2009, 2010 y 2011)",
+      year: "15, 16 y 17 años",
+      hoverText: "Juvenil (15, 16 y 17 años)",
       type: "Juvenil",
-      ageInfo: "Sub-17",
+      ageInfo: "15-17 años",
       description: "Categoría Juvenil",
-      maxPlayers: 22,
+      maxPlayers: 35,
       image: categoryJuvenil
     },
     {
-      year: "2012 y Anteriores",
-      hoverText: "14+ (año 2012 y anteriores)",
+      year: "14 y mayores",
+      hoverText: "Femenil (14 años y mayores)",
       type: "Femenil",
       ageInfo: "14+ años",
       description: "Categoría Femenil",
-      maxPlayers: 22,
+      maxPlayers: 35,
       image: categoryFemenil
     }
   ];
