@@ -98,7 +98,7 @@ export const Categories = () => {
                     </p>
                     <div className="flex items-center gap-2 text-white/80 font-medium text-xs sm:text-sm">
                       <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                      <span>Máximo {category.maxPlayers} jugadores por equipo</span>
+                      <span>Mín. 16 · Máx. {category.maxPlayers} jugadores por equipo</span>
                     </div>
                   </div>
                 </div>

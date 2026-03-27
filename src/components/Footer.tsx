@@ -20,7 +20,7 @@ export const Footer = () => {
                 </div>
               </div>
               <p className="text-white/80 text-sm leading-relaxed text-justify">
-                El torneo aficionado más grande del mundo, impulsando la asistencia social mediante el deporte.
+                Reconocido como el torneo aficionado más grande del mundo, impulsando la asistencia social mediante el deporte.
               </p>
             </div>
 
