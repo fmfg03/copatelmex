@@ -15,8 +15,8 @@ const Index = () => {
       <Hero />
       <TournamentInfo />
       <Categories />
-      <NewsSection />
       <SponsorsCarousel />
+      <NewsSection />
       <VideoFeedSection />
       <Footer />
       <FloatingWhatsApp />
