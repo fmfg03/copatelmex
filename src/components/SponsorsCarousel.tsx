@@ -6,9 +6,8 @@ import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
 
 const sponsors = [
   { src: sponsorKeuka, alt: "Keuka", dark: false },
-  { src: sponsorZucaritas, alt: "Zucaritas", dark: true },
+  { src: sponsorZucaritas, alt: "Zucaritas", dark: false },
   { src: sponsorPowerade, alt: "Powerade", dark: false },
-  { src: sponsorPlataformaSports, alt: "Plataforma Sports", dark: false },
   { src: sponsorClaroSports, alt: "Claro Sports", dark: false },
 ];
 
