@@ -5,7 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { Shield, Users, Calendar, Image, DollarSign, FileText, UserCog, History, BarChart3, FileCheck, Mail, MessageSquare, ClipboardList, Gamepad2 } from "lucide-react";
+import { Shield, Users, Calendar, Image, DollarSign, FileText, UserCog, History, BarChart3, FileCheck, Mail, MessageSquare, ClipboardList, Gamepad2, Newspaper } from "lucide-react";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { AdminPlayers } from "@/components/admin/AdminPlayers";
 import { AdminTeams } from "@/components/admin/AdminTeams";
@@ -22,6 +22,7 @@ import { AdminWhatsApp } from "@/components/admin/AdminWhatsApp";
 import { AdminDocuments } from "@/components/admin/AdminDocuments";
 import { AdminSurveys } from "@/components/admin/AdminSurveys";
 import { AdminMatchCapture } from "@/components/admin/AdminMatchCapture";
+import { AdminNews } from "@/components/admin/AdminNews";
 import { toast } from "@/hooks/use-toast";
 
 const Admin = () => {
@@ -147,6 +148,10 @@ const Admin = () => {
                 <DollarSign className="w-4 h-4" />
                 <span className="hidden sm:inline">Pagos</span>
               </TabsTrigger> */}
+              <TabsTrigger value="news" className="flex items-center gap-2">
+                <Newspaper className="w-4 h-4" />
+                <span className="hidden sm:inline">Noticias</span>
+              </TabsTrigger>
               <TabsTrigger value="email" className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
                 <span className="hidden sm:inline">Correo</span>
@@ -187,6 +192,7 @@ const Admin = () => {
             <TabsContent value="capture" className="mt-6"><AdminMatchCapture /></TabsContent>
             <TabsContent value="gallery" className="mt-6"><AdminGallery /></TabsContent>
             <TabsContent value="payments" className="mt-6"><AdminPayments /></TabsContent>
+            <TabsContent value="news" className="mt-6"><AdminNews /></TabsContent>
             <TabsContent value="email" className="mt-6"><AdminEmail /></TabsContent>
             <TabsContent value="whatsapp" className="mt-6"><AdminWhatsApp /></TabsContent>
             <TabsContent value="surveys" className="mt-6"><AdminSurveys /></TabsContent>
