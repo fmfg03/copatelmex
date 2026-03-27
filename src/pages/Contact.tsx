@@ -20,68 +20,52 @@ import {
 } from "@/components/ui/accordion";
 import { useToast } from "@/hooks/use-toast";
 import { Send, HelpCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const FAQS = [
   {
     question: "¿Cómo me inscribo al torneo?",
-    answer: "Para inscribirte, debes crear una cuenta en nuestra plataforma, registrar tu equipo y completar el proceso de pago. Una vez confirmado el pago, recibirás un correo de confirmación."
-  },
-  {
-    question: "¿Cuánto cuesta la inscripción?",
-    answer: "El costo de inscripción varía según la categoría. Consulta la sección de información del torneo para conocer los precios actualizados."
+    answer: (
+      <span>
+        Para inscribirte, debes crear una cuenta en nuestra plataforma, registrar tu equipo y completar el proceso de pago. Una vez confirmado el pago, recibirás un correo de confirmación. También puedes{" "}
+        <Link to="/operadores" className="text-primary underline font-semibold hover:text-primary/80">
+          contactar al operador local de tu estado
+        </Link>.
+      </span>
+    ),
   },
   {
     question: "¿Cuáles son las categorías disponibles?",
-    answer: "El torneo cuenta con categorías varoniles y femeniles para diferentes años de nacimiento. Consulta la sección de categorías para ver todas las opciones disponibles."
+    answer: "El torneo cuenta con tres categorías: Varonil Libre (18 años y mayores), Juvenil (de 15 a 17 años) y Femenil (a partir de los 14 años).",
   },
   {
     question: "¿Cuántos jugadores puedo inscribir por equipo?",
-    answer: "Cada equipo puede inscribir un máximo de jugadores según la categoría. Consulta las bases del torneo para conocer el límite específico de tu categoría."
+    answer: "Todas las categorías pueden inscribir un máximo de 35 jugadores por equipo.",
   },
   {
     question: "¿Cuál es la fecha límite de inscripción?",
-    answer: "La fecha límite de inscripción se publicará próximamente. Te recomendamos inscribirte con anticipación ya que los lugares son limitados."
-  },
-  {
-    question: "¿Dónde se llevará a cabo el torneo?",
-    answer: "El torneo se realizará en las instalaciones del CECAP (Centro de Capacitación y Desarrollo). Consulta la sección de sedes para más detalles."
+    answer: "La fecha límite de inscripción es el 30 de junio de 2026.",
   },
   {
     question: "¿Qué documentos necesito para inscribir a mi equipo?",
-    answer: "Se requiere acta de nacimiento, CURP, fotografía reciente y carta responsiva firmada por el padre o tutor de cada jugador."
-  },
-  {
-    question: "¿Cuándo se realizará el torneo?",
-    answer: "Las fechas del torneo se publicarán próximamente. Mantente atento a nuestras redes sociales y sitio web para conocer el calendario oficial."
-  },
-  {
-    question: "¿Qué incluye la inscripción?",
-    answer: "La inscripción incluye la participación en todos los partidos de la fase de grupos, acceso a las instalaciones, arbitraje, servicios médicos básicos y kit de bienvenida."
+    answer: (
+      <span>
+        Se requiere acta de nacimiento, CURP, fotografía reciente y carta responsiva firmada por el padre o tutor de cada jugador.{" "}
+        <Link to="/operadores" className="text-primary underline font-semibold hover:text-primary/80">
+          Consulta con el operador local de tu estado
+        </Link>{" "}
+        para más detalles.
+      </span>
+    ),
   },
   {
     question: "¿Puedo inscribir más de un equipo?",
-    answer: "Sí, puedes inscribir múltiples equipos en diferentes categorías. Cada equipo debe completar su proceso de inscripción y pago de forma independiente."
-  },
-  {
-    question: "¿Cuáles son los métodos de pago aceptados?",
-    answer: "Aceptamos pagos con tarjeta de crédito/débito a través de nuestra plataforma segura. También puedes realizar transferencias bancarias."
-  },
-  {
-    question: "¿Hay reembolsos si no puedo participar?",
-    answer: "Las políticas de reembolso dependen de la fecha de cancelación. Consulta los términos y condiciones o contáctanos para más información."
-  },
-  {
-    question: "¿Cuántos partidos jugará cada equipo?",
-    answer: "Cada equipo jugará un mínimo de partidos en la fase de grupos. La cantidad total dependerá del avance en el torneo."
-  },
-  {
-    question: "¿Qué pasa si un jugador no puede asistir a un partido?",
-    answer: "Los jugadores pueden ser sustituidos por otros jugadores previamente registrados en la plantilla del equipo. No se permiten jugadores no registrados."
+    answer: "Sí, puedes inscribir múltiples equipos en diferentes categorías. Cada equipo debe completar su proceso de inscripción y pago de forma independiente.",
   },
   {
     question: "¿Hay premios para los ganadores?",
-    answer: "Sí, habrá premios para los equipos ganadores de cada categoría. Los detalles de los premios se anunciarán próximamente."
-  }
+    answer: "Sí. El campeón de cada estado pasa a la Fase Nacional; el campeón y subcampeón reciben trofeos y medallas.",
+  },
 ];
 
 const ESTADOS_MEXICO = [
@@ -148,7 +132,7 @@ const Contact = () => {
               Contáctanos
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
-              ¿Tienes alguna duda, queja o sugerencia? Contacta con nuestro Director General y él te responderá.
+              ¿Tienes alguna duda, queja o sugerencia? Envíanos un mensaje y te responderemos.
             </p>
           </div>
 
