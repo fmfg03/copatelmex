@@ -20,7 +20,6 @@ import sponsorKeuka from "@/assets/sponsor-keuka.png";
 import sponsorZucaritas from "@/assets/sponsor-zucaritas.png";
 import sponsorPowerade from "@/assets/sponsor-powerade.png";
 import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
-import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
 export default function TournamentInfo() {
   const navigate = useNavigate();
   return <div className="min-h-screen">
