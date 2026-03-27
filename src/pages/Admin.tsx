@@ -192,6 +192,7 @@ const Admin = () => {
             <TabsContent value="capture" className="mt-6"><AdminMatchCapture /></TabsContent>
             <TabsContent value="gallery" className="mt-6"><AdminGallery /></TabsContent>
             <TabsContent value="payments" className="mt-6"><AdminPayments /></TabsContent>
+            <TabsContent value="news" className="mt-6"><AdminNews /></TabsContent>
             <TabsContent value="email" className="mt-6"><AdminEmail /></TabsContent>
             <TabsContent value="whatsapp" className="mt-6"><AdminWhatsApp /></TabsContent>
             <TabsContent value="surveys" className="mt-6"><AdminSurveys /></TabsContent>
