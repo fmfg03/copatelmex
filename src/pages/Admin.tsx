@@ -148,6 +148,10 @@ const Admin = () => {
                 <DollarSign className="w-4 h-4" />
                 <span className="hidden sm:inline">Pagos</span>
               </TabsTrigger> */}
+              <TabsTrigger value="news" className="flex items-center gap-2">
+                <Newspaper className="w-4 h-4" />
+                <span className="hidden sm:inline">Noticias</span>
+              </TabsTrigger>
               <TabsTrigger value="email" className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
                 <span className="hidden sm:inline">Correo</span>
