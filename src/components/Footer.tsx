@@ -91,7 +91,9 @@ export const Footer = () => {
 
           {/* Fundación Logo - Full Width Centered */}
           <div className="mt-8 sm:mt-10 text-center">
-            <img src={fundacionLogo} alt="Fundación Telmex, A.C." className="h-8 sm:h-10 object-contain opacity-80 mx-auto" />
+            <a href="https://www.fundaciontelmextelcel.org/" target="_blank" rel="noopener noreferrer">
+              <img src={fundacionLogo} alt="Fundación Telmex, A.C." className="h-8 sm:h-10 object-contain opacity-80 hover:opacity-100 transition-opacity mx-auto" />
+            </a>
           </div>
 
           {/* Bottom Bar */}
