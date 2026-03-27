@@ -91,7 +91,7 @@ export const TournamentInfo = () => {
                 </div>
                 <div className="bg-background rounded-lg p-4 border border-border">
                   <p className="text-sm text-muted-foreground mb-1">Sorteo Fase Nacional</p>
-                  <p className="text-xl font-bold text-secondary">10 Nov 2026</p>
+                  <p className="text-xl font-bold text-secondary">POR DEFINIR</p>
                 </div>
                 <div className="bg-background rounded-lg p-4 border border-border">
                   <p className="text-sm text-muted-foreground mb-1">Fase Nacional (Juvenil/Femenil)</p>

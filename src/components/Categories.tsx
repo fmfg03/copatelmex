@@ -46,7 +46,7 @@ export const Categories = () => {
             </h2>
             <div className="w-16 sm:w-20 md:w-24 h-1 bg-primary mx-auto mb-5 md:mb-8"></div>
             <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto mb-4 md:mb-6 leading-relaxed text-center font-bold px-2">
-              Máximo 22 jugadores por equipo
+              Máximo 35 jugadores por equipo en todas las categorías
             </p>
             <Badge variant="outline" className="text-sm sm:text-base md:text-lg px-4 sm:px-5 md:px-6 py-2 md:py-3 border-2 border-primary text-primary font-semibold">
               Tres Categorías Disponibles
