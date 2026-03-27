@@ -54,7 +54,7 @@ const ComingSoon = () => {
           <div className="h-1 w-24 md:w-32 mx-auto bg-gradient-to-r from-primary via-accent to-primary rounded-full" />
           <p className="text-white/80 text-base sm:text-lg md:text-xl max-w-lg mx-auto leading-relaxed mt-4">
             Estamos preparando algo increíble. El sitio oficial de la{" "}
-            <span className="text-primary font-semibold">Copa Telmex Telcel 2026</span>{" "}
+            <span className="text-red-500 font-semibold">Copa Telmex Telcel 2026</span>{" "}
             estará disponible muy pronto.
           </p>
         </div>
