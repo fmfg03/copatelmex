@@ -134,7 +134,7 @@ export const Hero = () => {
                 COPA TELMEX TELCEL
               </h1>
               <p className="text-white text-lg sm:text-xl md:text-2xl max-w-4xl mx-auto font-bold mb-3 md:mb-4 leading-relaxed text-center px-2">
-                El torneo aficionado más grande del mundo
+                Reconocido como el torneo aficionado más grande del mundo
               </p>
               <p className="text-white/90 text-base sm:text-lg md:text-xl max-w-3xl mx-auto font-medium leading-relaxed text-center px-2">
                 Vigésimo sexta edición reuniendo a miles de equipos de todo el país
