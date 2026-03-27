@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { FloatingDownload } from "@/components/FloatingDownload";
+import ComingSoon from "./pages/ComingSoon";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Register from "./pages/Register";
@@ -33,7 +34,8 @@ const App = () => (
         <ScrollToTop />
         <FloatingDownload />
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<ComingSoon />} />
+          <Route path="/home" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/register" element={<Register />} />
           <Route path="/documents" element={<DocumentsPortal />} />
