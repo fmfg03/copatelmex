@@ -4,10 +4,10 @@ import sponsorPowerade from "@/assets/sponsor-powerade.png";
 import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
 
 const sponsors = [
-  { src: sponsorKeuka, alt: "Keuka", dark: false },
-  { src: sponsorZucaritas, alt: "Zucaritas", dark: false },
-  { src: sponsorPowerade, alt: "Powerade", dark: false },
-  { src: sponsorClaroSports, alt: "Claro Sports", dark: false },
+  { src: sponsorKeuka, alt: "Keuka", dark: false, url: null },
+  { src: sponsorZucaritas, alt: "Zucaritas", dark: false, url: null },
+  { src: sponsorPowerade, alt: "Powerade", dark: false, url: "https://www.coca-cola.com/mx/es/brands/powerade" },
+  { src: sponsorClaroSports, alt: "Claro Sports", dark: false, url: null },
 ];
 
 // Duplicate sponsors for seamless infinite loop
