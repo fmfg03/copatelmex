@@ -4,7 +4,7 @@ import sponsorPowerade from "@/assets/sponsor-powerade.png";
 import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
 
 const sponsors = [
-  { src: sponsorKeuka, alt: "Keuka", dark: false, url: null },
+  { src: sponsorKeuka, alt: "Keuka", dark: false, url: "https://keuka.com.mx/" },
   { src: sponsorZucaritas, alt: "Zucaritas", dark: false, url: null },
   { src: sponsorPowerade, alt: "Powerade", dark: false, url: "https://www.coca-cola.com/mx/es/brands/powerade" },
   { src: sponsorClaroSports, alt: "Claro Sports", dark: false, url: null },
