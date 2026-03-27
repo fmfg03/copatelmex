@@ -303,7 +303,7 @@ export default function TournamentInfo() {
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-secondary mb-4">Categorías del Torneo</h2>
               <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
-              <p className="text-muted-foreground">Tres categorías - Máximo 22 jugadores por equipo</p>
+              <p className="text-muted-foreground">Tres categorías - Máximo 35 jugadores por equipo</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
