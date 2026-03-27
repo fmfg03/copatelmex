@@ -149,7 +149,7 @@ export default function TournamentInfo() {
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
-                        <span>Partidos locales</span>
+                        <span>Clasificación a fase estatal</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-4 h-4 text-america-blue mt-0.5 flex-shrink-0" />
