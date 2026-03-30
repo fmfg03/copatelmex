@@ -9,9 +9,10 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Newspaper, Star, Calendar, Image } from "lucide-react";
+import { Plus, Pencil, Trash2, Newspaper, Star, Calendar, Image, Upload, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { useRef } from "react";
 
 interface NewsArticle {
   id: string;
