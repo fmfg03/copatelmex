@@ -78,6 +78,41 @@ export const AdminNews = () => {
     setDialogOpen(true);
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Archivo inválido", description: "Solo se permiten imágenes", variant: "destructive" });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from("news-images")
+        .upload(fileName, file);
+      
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("news-images")
+        .getPublicUrl(fileName);
+
+      setForm({ ...form, image_url: publicUrl });
+      toast({ title: "Imagen subida correctamente" });
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast({ title: "Error", description: "No se pudo subir la imagen", variant: "destructive" });
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
   const handleSave = async () => {
     if (!form.title.trim() || !form.content.trim()) {
       toast({ title: "Campos requeridos", description: "Título y contenido son obligatorios", variant: "destructive" });
