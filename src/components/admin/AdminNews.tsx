@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
@@ -199,8 +199,8 @@ export const AdminNews = () => {
                 <Input id="title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Título de la noticia" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="content">Contenido *</Label>
-                <Textarea id="content" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} placeholder="Redacta el contenido de la noticia..." rows={6} />
+                <Label>Contenido *</Label>
+                <RichTextEditor value={form.content} onChange={(html) => setForm({ ...form, content: html })} />
               </div>
               <div className="space-y-2">
                 <Label>Imagen</Label>
