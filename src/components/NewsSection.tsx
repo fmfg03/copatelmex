@@ -58,8 +58,10 @@ export const NewsSection = () => {
   const secondary = articles.slice(1, 4);
 
   const getExcerpt = (content: string, maxLength: number) => {
-    if (content.length <= maxLength) return content;
-    return content.substring(0, maxLength).trim() + "…";
+    // Strip HTML tags for excerpt
+    const text = content.replace(/<[^>]*>/g, "");
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength).trim() + "…";
   };
 
   const formatDate = (date: string | null) => {
