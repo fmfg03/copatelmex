@@ -203,8 +203,35 @@ export const AdminNews = () => {
                 <Textarea id="content" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} placeholder="Redacta el contenido de la noticia..." rows={6} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="image_url">URL de Imagen</Label>
-                <Input id="image_url" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="https://ejemplo.com/imagen.jpg" />
+                <Label>Imagen</Label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                />
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="flex-1"
+                  >
+                    {uploading ? (
+                      <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Subiendo...</>
+                    ) : (
+                      <><Upload className="w-4 h-4 mr-2" />Subir imagen</>
+                    )}
+                  </Button>
+                </div>
+                <Input
+                  value={form.image_url}
+                  onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+                  placeholder="O pega una URL de imagen"
+                  className="text-xs"
+                />
                 {form.image_url && (
                   <img src={form.image_url} alt="Preview" className="w-full h-32 object-cover rounded-md mt-1" onError={(e) => (e.currentTarget.style.display = "none")} />
                 )}
