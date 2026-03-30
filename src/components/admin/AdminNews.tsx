@@ -9,9 +9,10 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Newspaper, Star, Calendar, Image } from "lucide-react";
+import { Plus, Pencil, Trash2, Newspaper, Star, Calendar, Image, Upload, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { useRef } from "react";
 
 interface NewsArticle {
   id: string;
@@ -37,6 +38,8 @@ export const AdminNews = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchArticles();
@@ -73,6 +76,41 @@ export const AdminNews = () => {
       is_featured: article.is_featured || false,
     });
     setDialogOpen(true);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Archivo inválido", description: "Solo se permiten imágenes", variant: "destructive" });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from("news-images")
+        .upload(fileName, file);
+      
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("news-images")
+        .getPublicUrl(fileName);
+
+      setForm({ ...form, image_url: publicUrl });
+      toast({ title: "Imagen subida correctamente" });
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast({ title: "Error", description: "No se pudo subir la imagen", variant: "destructive" });
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
   };
 
   const handleSave = async () => {
@@ -165,8 +203,35 @@ export const AdminNews = () => {
                 <Textarea id="content" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} placeholder="Redacta el contenido de la noticia..." rows={6} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="image_url">URL de Imagen</Label>
-                <Input id="image_url" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="https://ejemplo.com/imagen.jpg" />
+                <Label>Imagen</Label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                />
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="flex-1"
+                  >
+                    {uploading ? (
+                      <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Subiendo...</>
+                    ) : (
+                      <><Upload className="w-4 h-4 mr-2" />Subir imagen</>
+                    )}
+                  </Button>
+                </div>
+                <Input
+                  value={form.image_url}
+                  onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+                  placeholder="O pega una URL de imagen"
+                  className="text-xs"
+                />
                 {form.image_url && (
                   <img src={form.image_url} alt="Preview" className="w-full h-32 object-cover rounded-md mt-1" onError={(e) => (e.currentTarget.style.display = "none")} />
                 )}
