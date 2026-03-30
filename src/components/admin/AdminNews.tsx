@@ -199,8 +199,8 @@ export const AdminNews = () => {
                 <Input id="title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Título de la noticia" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="content">Contenido *</Label>
-                <Textarea id="content" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} placeholder="Redacta el contenido de la noticia..." rows={6} />
+                <Label>Contenido *</Label>
+                <RichTextEditor value={form.content} onChange={(html) => setForm({ ...form, content: html })} />
               </div>
               <div className="space-y-2">
                 <Label>Imagen</Label>
