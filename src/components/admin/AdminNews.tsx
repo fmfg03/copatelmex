@@ -90,16 +90,18 @@ export const AdminNews = () => {
         .from("news_import_jobs")
         .select("status, error_message, result")
         .eq("id", jobId)
-        .single<ImportJobRecord>();
+        .single();
+
+      const job = data as ImportJobRecord | null;
 
       if (error) throw error;
 
-      if (data?.status === "completed" && data.result) {
-        return data.result;
+      if (job?.status === "completed" && job.result) {
+        return job.result;
       }
 
-      if (data?.status === "failed") {
-        throw new Error(data.error_message || "No se pudo importar la nota");
+      if (job?.status === "failed") {
+        throw new Error(job.error_message || "No se pudo importar la nota");
       }
 
       await wait(1500);
