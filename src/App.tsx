@@ -21,6 +21,7 @@ import PaymentCancelled from "./pages/PaymentCancelled";
 import Admin from "./pages/Admin";
 import MyTeams from "./pages/MyTeams";
 import StateOperators from "./pages/StateOperators";
+import NewsDetail from "./pages/NewsDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
