@@ -1,5 +1,6 @@
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { SponsorsCarousel } from "@/components/SponsorsCarousel";
+import { NewsSection } from "@/components/NewsSection";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
 import heroImage from "@/assets/hero-copa-telmex.jpg";
 import { Instagram, Facebook, Mail } from "lucide-react";
