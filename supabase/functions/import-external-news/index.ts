@@ -1,43 +1,89 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { corsHeaders } from "../_shared/cors.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
+const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+
+const requestSchema = z.object({
+  url: z.string().trim().url("URL inválida").max(2000, "URL muy larga"),
+  source_name: z.string().trim().max(120, "La fuente es demasiado larga").optional(),
+  action: z.enum(["preview", "publish"]).optional().default("preview"),
+});
+
+type ImportedArticle = {
+  title: string;
+  content: string;
+  image_url: string | null;
+  source_name: string;
+  source_url: string;
 };
 
-function extractMetaContent(html: string, property: string): string | null {
-  // Match both property="og:X" content="Y" and content="Y" property="og:X" orders
-  const pattern1 = new RegExp(`<meta[^>]*property=["']${property}["'][^>]*content=["']([^"']+)["']`, 'i');
-  const pattern2 = new RegExp(`<meta[^>]*content=["']([^"']+)["'][^>]*property=["']${property}["']`, 'i');
-  const pattern3 = new RegExp(`<meta[^>]*name=["']${property}["'][^>]*content=["']([^"']+)["']`, 'i');
-  const pattern4 = new RegExp(`<meta[^>]*content=["']([^"']+)["'][^>]*name=["']${property}["']`, 'i');
+type RuntimeWithWaitUntil = typeof globalThis & {
+  EdgeRuntime?: {
+    waitUntil: (promise: Promise<unknown>) => void;
+  };
+};
+
+const HTML_ENTITIES: Record<string, string> = {
+  "&amp;": "&",
+  "&quot;": '"',
+  "&#039;": "'",
+  "&lt;": "<",
+  "&gt;": ">",
+  "&nbsp;": " ",
+};
+
+function jsonResponse(status: number, payload: unknown) {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
+
+function decodeHtmlEntities(value: string) {
+  return value.replace(/&(amp|quot|#039|lt|gt|nbsp);/g, (entity) => HTML_ENTITIES[entity] ?? entity).trim();
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function normalizeUrl(value: string | null, baseUrl: string) {
+  if (!value) return null;
+  try {
+    return new URL(value, baseUrl).toString();
+  } catch {
+    return value;
+  }
+}
+
+function extractMetaContent(html: string, property: string) {
+  const pattern1 = new RegExp(`<meta[^>]*property=["']${property}["'][^>]*content=["']([^"']+)["']`, "i");
+  const pattern2 = new RegExp(`<meta[^>]*content=["']([^"']+)["'][^>]*property=["']${property}["']`, "i");
+  const pattern3 = new RegExp(`<meta[^>]*name=["']${property}["'][^>]*content=["']([^"']+)["']`, "i");
+  const pattern4 = new RegExp(`<meta[^>]*content=["']([^"']+)["'][^>]*name=["']${property}["']`, "i");
+
   return pattern1.exec(html)?.[1] ?? pattern2.exec(html)?.[1] ?? pattern3.exec(html)?.[1] ?? pattern4.exec(html)?.[1] ?? null;
 }
 
-function stripToArticleHtml(html: string): { title: string; content: string; imageUrl: string | null; description: string } {
-  // Extract title from og:title or <title>
-  const ogTitle = extractMetaContent(html, "og:title")
-    ?? html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1]
-    ?? "";
+function stripToArticleHtml(html: string, baseUrl: string) {
+  const ogTitle = extractMetaContent(html, "og:title") ?? html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1] ?? "";
+  const imageUrl = normalizeUrl(extractMetaContent(html, "og:image"), baseUrl);
+  const description = extractMetaContent(html, "og:description") ?? extractMetaContent(html, "description") ?? "";
 
-  // Extract og:image
-  const imageUrl = extractMetaContent(html, "og:image") ?? null;
-
-  // Extract og:description
-  const description = extractMetaContent(html, "og:description")
-    ?? extractMetaContent(html, "description")
-    ?? "";
-
-  // Try to extract the main article body
   let articleHtml = "";
-
-  // Try common content div selectors first (more specific than <article>)
   const contentPatterns = [
-    /<div[^>]*class="[^"]*(?:td-post-content|tdb-block-inner)[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
-    /<div[^>]*class="[^"]*(?:article-body|entry-content|post-content|article-content|story-body)[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
+    /<div[^>]*class=["'][^"']*(?:td-post-content|tdb-block-inner)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
+    /<div[^>]*class=["'][^"']*(?:article-body|entry-content|post-content|article-content|story-body)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
   ];
-  
+
   for (const pattern of contentPatterns) {
     const match = html.match(pattern);
     if (match) {
@@ -53,55 +99,143 @@ function stripToArticleHtml(html: string): { title: string; content: string; ima
     }
   }
 
-  // Clean the HTML content
-  let content = articleHtml || "";
-
-  // Remove script and style tags
+  let content = articleHtml;
   content = content.replace(/<script[\s\S]*?<\/script>/gi, "");
   content = content.replace(/<style[\s\S]*?<\/style>/gi, "");
   content = content.replace(/<noscript[\s\S]*?<\/noscript>/gi, "");
-
-  // Remove navigation, aside, footer elements
-  content = content.replace(/<nav[\s\S]*?<\/nav>/gi, "");
-  content = content.replace(/<aside[\s\S]*?<\/aside>/gi, "");
-  content = content.replace(/<footer[\s\S]*?<\/footer>/gi, "");
-
-  // Remove social sharing widgets and related articles
-  content = content.replace(/<div[^>]*class="[^"]*(?:share|social|related|comment|sidebar|ad-|banner|newsletter)[^"]*"[^>]*>[\s\S]*?<\/div>/gi, "");
-
-  // Remove iframe, form, button, input elements
-  content = content.replace(/<iframe[\s\S]*?<\/iframe>/gi, "");
-  content = content.replace(/<form[\s\S]*?<\/form>/gi, "");
-  content = content.replace(/<button[\s\S]*?<\/button>/gi, "");
+  content = content.replace(/<(nav|aside|footer)[\s\S]*?<\/\1>/gi, "");
+  content = content.replace(/<div[^>]*class=["'][^"']*(?:share|social|related|comment|sidebar|ad-|banner|newsletter)[^"']*["'][^>]*>[\s\S]*?<\/div>/gi, "");
+  content = content.replace(/<(iframe|form|button)[\s\S]*?<\/\1>/gi, "");
   content = content.replace(/<input[^>]*>/gi, "");
-
-  // Remove all links but keep text
   content = content.replace(/<a[^>]*>([\s\S]*?)<\/a>/gi, "$1");
-
-  // Remove class, style, id, data-* attributes from remaining tags
   content = content.replace(/<(\w+)\s+[^>]*>/gi, (match, tag) => {
-    // Keep img src and alt
     if (tag.toLowerCase() === "img") {
-      const src = match.match(/src="([^"]+)"/)?.[1] ?? "";
-      const alt = match.match(/alt="([^"]+)"/)?.[1] ?? "";
-      return `<img src="${src}" alt="${alt}">`;
+      const src = normalizeUrl(match.match(/src=["']([^"']+)["']/i)?.[1] ?? "", baseUrl) ?? "";
+      const alt = escapeHtml(match.match(/alt=["']([^"']+)["']/i)?.[1] ?? "");
+      return src ? `<img src="${src}" alt="${alt}">` : "";
     }
     return `<${tag}>`;
   });
-
-  // Remove empty paragraphs
   content = content.replace(/<p>\s*<\/p>/gi, "");
   content = content.replace(/<p>\s*&nbsp;\s*<\/p>/gi, "");
-
-  // Trim whitespace
   content = content.trim();
 
   return {
-    title: ogTitle.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">"),
+    title: decodeHtmlEntities(ogTitle),
+    description: decodeHtmlEntities(description),
     content,
     imageUrl,
-    description: description.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#039;/g, "'"),
   };
+}
+
+async function fetchImportedArticle(url: string, sourceName: string): Promise<ImportedArticle> {
+  console.log("Fetching URL:", url);
+
+  const pageResponse = await fetch(url, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (compatible; CopaTelmexBot/1.0)",
+      "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
+      "Accept-Language": "es-MX,es;q=0.9,en;q=0.8",
+      "Cache-Control": "no-cache",
+    },
+    redirect: "follow",
+    signal: AbortSignal.timeout(15000),
+  });
+
+  if (!pageResponse.ok) {
+    throw new Error(`No se pudo acceder al sitio (${pageResponse.status})`);
+  }
+
+  const html = await pageResponse.text();
+  const extracted = stripToArticleHtml(html, url);
+
+  if (!extracted.title) {
+    throw new Error("No se pudo extraer el título del artículo");
+  }
+
+  const safeSourceName = escapeHtml(sourceName);
+  const descriptionBlock = extracted.description
+    ? `<p><em>${escapeHtml(extracted.description)}</em></p>`
+    : "";
+  const articleBody = extracted.content || descriptionBlock;
+
+  if (!articleBody) {
+    throw new Error("No se pudo extraer contenido del artículo");
+  }
+
+  return {
+    title: extracted.title,
+    content: `<p><em>Nota cortesía de <strong>${safeSourceName}</strong></em></p>${descriptionBlock && !articleBody.includes(descriptionBlock) ? descriptionBlock : ""}${articleBody}<hr><p><em>Artículo original publicado por <strong>${safeSourceName}</strong>. Reproducido con fines informativos como cortesía editorial.</em></p>`,
+    image_url: extracted.imageUrl,
+    source_name: sourceName,
+    source_url: url,
+  };
+}
+
+async function processImportJob(params: {
+  jobId: string;
+  userId: string;
+  url: string;
+  sourceName: string;
+  action: "preview" | "publish";
+}) {
+  const serviceClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+  await serviceClient
+    .from("news_import_jobs")
+    .update({ status: "processing", error_message: null })
+    .eq("id", params.jobId);
+
+  try {
+    const article = await fetchImportedArticle(params.url, params.sourceName);
+    let newsId: string | null = null;
+
+    if (params.action === "publish") {
+      const { data: insertedNews, error: insertError } = await serviceClient
+        .from("news")
+        .insert({
+          title: article.title,
+          content: article.content,
+          image_url: article.image_url,
+          is_featured: false,
+          published_at: new Date().toISOString(),
+          author_id: params.userId,
+        })
+        .select("id")
+        .single();
+
+      if (insertError) {
+        throw new Error("Error al guardar la noticia");
+      }
+
+      newsId = insertedNews.id;
+    }
+
+    await serviceClient
+      .from("news_import_jobs")
+      .update({
+        status: "completed",
+        error_message: null,
+        extracted_title: article.title,
+        extracted_content: article.content,
+        extracted_image_url: article.image_url,
+        result: { ...article, published: params.action === "publish", news_id: newsId },
+        completed_at: new Date().toISOString(),
+      })
+      .eq("id", params.jobId);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Error interno al importar la nota";
+    console.error("Import job failed:", message);
+
+    await serviceClient
+      .from("news_import_jobs")
+      .update({
+        status: "failed",
+        error_message: message,
+        completed_at: new Date().toISOString(),
+      })
+      .eq("id", params.jobId);
+  }
 }
 
 Deno.serve(async (req) => {
@@ -109,158 +243,87 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !SUPABASE_SERVICE_ROLE_KEY) {
+    return jsonResponse(500, { error: "Faltan credenciales del servidor" });
+  }
+
   try {
-    // Verify auth
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
-      return new Response(JSON.stringify({ error: "No autorizado" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return jsonResponse(401, { error: "No autorizado" });
     }
 
-    const supabaseClient = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_ANON_KEY")!,
-      { global: { headers: { Authorization: authHeader } } }
-    );
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: { headers: { Authorization: authHeader } },
+    });
 
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabaseClient.auth.getUser();
+
     if (authError || !user) {
-      return new Response(JSON.stringify({ error: "No autorizado" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return jsonResponse(401, { error: "No autorizado" });
     }
 
-    // Check admin role
-    const { data: roleData } = await supabaseClient.rpc("has_role", {
+    const { data: isAdmin } = await supabaseClient.rpc("has_role", {
       _user_id: user.id,
       _role: "admin",
     });
-    if (!roleData) {
-      return new Response(JSON.stringify({ error: "Se requiere rol de administrador" }), {
-        status: 403,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+
+    if (!isAdmin) {
+      return jsonResponse(403, { error: "Se requiere rol de administrador" });
     }
 
-    const { url, source_name, action } = await req.json();
+    const body = await req.json();
+    const parsed = requestSchema.safeParse(body);
 
-    if (!url || typeof url !== "string") {
-      return new Response(JSON.stringify({ error: "URL es requerido" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (!parsed.success) {
+      return jsonResponse(400, { error: parsed.error.issues[0]?.message ?? "Datos inválidos" });
     }
 
-    // Validate URL format
-    let parsedUrl: URL;
-    try {
-      parsedUrl = new URL(url);
-      if (!["http:", "https:"].includes(parsedUrl.protocol)) {
-        throw new Error("Invalid protocol");
-      }
-    } catch {
-      return new Response(JSON.stringify({ error: "URL inválido" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    const sourceName = parsed.data.source_name || "Fuente externa";
+    const { data: job, error: insertJobError } = await supabaseClient
+      .from("news_import_jobs")
+      .insert({
+        user_id: user.id,
+        url: parsed.data.url,
+        source_name: sourceName,
+        requested_action: parsed.data.action,
+      })
+      .select("id")
+      .single();
+
+    if (insertJobError || !job) {
+      console.error("Queue insert error:", insertJobError);
+      return jsonResponse(500, { error: "No se pudo iniciar la importación" });
     }
 
-    const sourceName = (source_name || "").trim() || "Fuente externa";
-
-    console.log("Fetching URL:", url);
-
-    // Fetch the page
-    const pageResponse = await fetch(url, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; CopaTelmexBot/1.0)",
-        "Accept": "text/html,application/xhtml+xml",
-        "Accept-Language": "es-MX,es;q=0.9",
-      },
+    const jobPromise = processImportJob({
+      jobId: job.id,
+      userId: user.id,
+      url: parsed.data.url,
+      sourceName,
+      action: parsed.data.action,
     });
 
-    if (!pageResponse.ok) {
-      return new Response(
-        JSON.stringify({ error: `No se pudo acceder al sitio (${pageResponse.status})` }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    const runtime = globalThis as RuntimeWithWaitUntil;
+    if (runtime.EdgeRuntime?.waitUntil) {
+      runtime.EdgeRuntime.waitUntil(jobPromise);
+    } else {
+      void jobPromise;
     }
 
-    const html = await pageResponse.text();
-    const extracted = stripToArticleHtml(html);
-
-    if (!extracted.title) {
-      return new Response(
-        JSON.stringify({ error: "No se pudo extraer el título del artículo" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    // Add source credit
-    const creditHeader = `<p><em>Nota cortesía de <strong>${sourceName}</strong></em></p>`;
-    const creditFooter = `<hr><p><em>Artículo original publicado por <strong>${sourceName}</strong>. Reproducido con fines informativos como cortesía editorial.</em></p>`;
-
-    let finalContent = extracted.content;
-    if (extracted.description && !finalContent.includes(extracted.description)) {
-      finalContent = `<p><em>${extracted.description}</em></p>${finalContent}`;
-    }
-    finalContent = `${creditHeader}${finalContent}${creditFooter}`;
-
-    const result = {
-      title: extracted.title,
-      content: finalContent,
-      image_url: extracted.imageUrl,
-      source_name: sourceName,
-      source_url: url,
-    };
-
-    // If action is "preview", just return the extracted data
-    if (action === "preview") {
-      return new Response(JSON.stringify({ success: true, data: result }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // If action is "publish", save to database
-    if (action === "publish") {
-      const serviceClient = createClient(
-        Deno.env.get("SUPABASE_URL")!,
-        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-      );
-
-      const { error: insertError } = await serviceClient.from("news").insert({
-        title: result.title,
-        content: result.content,
-        image_url: result.image_url,
-        is_featured: false,
-        published_at: new Date().toISOString(),
-        author_id: user.id,
-      });
-
-      if (insertError) {
-        console.error("Insert error:", insertError);
-        return new Response(
-          JSON.stringify({ error: "Error al guardar la noticia" }),
-          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-
-      return new Response(JSON.stringify({ success: true, message: "Noticia importada correctamente" }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // Default: return preview
-    return new Response(JSON.stringify({ success: true, data: result }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    return jsonResponse(202, {
+      success: true,
+      queued: true,
+      jobId: job.id,
+      status: "pending",
     });
   } catch (error) {
     console.error("Error:", error);
-    return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : "Error interno" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return jsonResponse(500, {
+      error: error instanceof Error ? error.message : "Error interno",
+    });
   }
 });

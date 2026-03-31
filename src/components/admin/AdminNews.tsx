@@ -23,6 +23,20 @@ interface NewsArticle {
   created_at: string | null;
 }
 
+interface ImportPreviewData {
+  title: string;
+  content: string;
+  image_url: string | null;
+  source_name: string;
+  source_url?: string;
+}
+
+interface ImportJobRecord {
+  status: "pending" | "processing" | "completed" | "failed";
+  error_message: string | null;
+  result: ImportPreviewData | null;
+}
+
 const emptyForm = {
   title: "",
   content: "",
@@ -45,12 +59,7 @@ export const AdminNews = () => {
   const [importUrl, setImportUrl] = useState("");
   const [importSource, setImportSource] = useState("Claro Sports");
   const [importLoading, setImportLoading] = useState(false);
-  const [importPreview, setImportPreview] = useState<{
-    title: string;
-    content: string;
-    image_url: string | null;
-    source_name: string;
-  } | null>(null);
+  const [importPreview, setImportPreview] = useState<ImportPreviewData | null>(null);
   const [importPublishing, setImportPublishing] = useState(false);
 
   useEffect(() => {
@@ -71,6 +80,32 @@ export const AdminNews = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const wait = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+  const pollImportJob = async (jobId: string): Promise<ImportPreviewData> => {
+    for (let attempt = 0; attempt < 20; attempt += 1) {
+      const { data, error } = await (supabase as any)
+        .from("news_import_jobs")
+        .select("status, error_message, result")
+        .eq("id", jobId)
+        .single<ImportJobRecord>();
+
+      if (error) throw error;
+
+      if (data?.status === "completed" && data.result) {
+        return data.result;
+      }
+
+      if (data?.status === "failed") {
+        throw new Error(data.error_message || "No se pudo importar la nota");
+      }
+
+      await wait(1500);
+    }
+
+    throw new Error("La importación tardó demasiado. Intenta nuevamente.");
   };
 
   const openCreate = () => {
@@ -194,8 +229,10 @@ export const AdminNews = () => {
         body: { url: importUrl.trim(), source_name: importSource.trim(), action: "preview" },
       });
       if (error) throw error;
-      if (!data?.success) throw new Error(data?.error || "Error al procesar");
-      setImportPreview(data.data);
+      if (!data?.success || !data?.jobId) throw new Error(data?.error || "No se pudo iniciar la importación");
+
+      const preview = await pollImportJob(data.jobId);
+      setImportPreview(preview);
     } catch (error: any) {
       console.error("Import preview error:", error);
       toast({ title: "Error", description: error.message || "No se pudo procesar la URL", variant: "destructive" });
@@ -205,13 +242,25 @@ export const AdminNews = () => {
   };
 
   const handleImportPublish = async () => {
+    if (!importPreview) return;
+
     setImportPublishing(true);
     try {
-      const { data, error } = await supabase.functions.invoke("import-external-news", {
-        body: { url: importUrl.trim(), source_name: importSource.trim(), action: "publish" },
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      const { error } = await supabase.from("news").insert({
+        title: importPreview.title.trim(),
+        content: importPreview.content.trim(),
+        image_url: importPreview.image_url,
+        is_featured: false,
+        published_at: new Date().toISOString(),
+        author_id: user?.id ?? null,
       });
+
       if (error) throw error;
-      if (!data?.success) throw new Error(data?.error || "Error al publicar");
+
       toast({ title: "¡Nota importada!", description: "La noticia se publicó correctamente" });
       setImportDialogOpen(false);
       setImportUrl("");
