@@ -50,8 +50,9 @@ const App = () => (
           <Route path="/payment-cancelled" element={<PaymentCancelled />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/my-teams" element={<MyTeams />} />
-          <Route path="/inscripcion" element={<StateOperators />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/inscripcion" element={<StateOperators />} />
+            <Route path="/noticias/:id" element={<NewsDetail />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
