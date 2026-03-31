@@ -93,7 +93,7 @@ const NewsDetail = () => {
               )}
 
               <div
-                className="prose prose-lg max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-ul:text-foreground/90 prose-ol:text-foreground/90"
+                className="prose max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-ul:text-foreground/90 prose-ol:text-foreground/90 prose-p:my-2 prose-headings:my-3 [&_br]:leading-normal"
                 dangerouslySetInnerHTML={{ __html: article.content }}
               />
             </article>
