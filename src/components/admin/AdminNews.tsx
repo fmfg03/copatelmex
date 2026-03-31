@@ -182,11 +182,54 @@ export const AdminNews = () => {
     }
   };
 
+  const handleImportPreview = async () => {
+    if (!importUrl.trim()) {
+      toast({ title: "URL requerido", description: "Pega la URL del artículo a importar", variant: "destructive" });
+      return;
+    }
+    setImportLoading(true);
+    setImportPreview(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("import-external-news", {
+        body: { url: importUrl.trim(), source_name: importSource.trim(), action: "preview" },
+      });
+      if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || "Error al procesar");
+      setImportPreview(data.data);
+    } catch (error: any) {
+      console.error("Import preview error:", error);
+      toast({ title: "Error", description: error.message || "No se pudo procesar la URL", variant: "destructive" });
+    } finally {
+      setImportLoading(false);
+    }
+  };
+
+  const handleImportPublish = async () => {
+    setImportPublishing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("import-external-news", {
+        body: { url: importUrl.trim(), source_name: importSource.trim(), action: "publish" },
+      });
+      if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || "Error al publicar");
+      toast({ title: "¡Nota importada!", description: "La noticia se publicó correctamente" });
+      setImportDialogOpen(false);
+      setImportUrl("");
+      setImportPreview(null);
+      fetchArticles();
+    } catch (error: any) {
+      console.error("Import publish error:", error);
+      toast({ title: "Error", description: error.message || "No se pudo importar", variant: "destructive" });
+    } finally {
+      setImportPublishing(false);
+    }
+  };
+
   if (loading) return <div className="text-center py-8">Cargando noticias...</div>;
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <Newspaper className="w-6 h-6" />
@@ -194,6 +237,80 @@ export const AdminNews = () => {
           </h2>
           <p className="text-muted-foreground text-sm">Gestiona las noticias que aparecen en "Lo Último del Torneo"</p>
         </div>
+        <div className="flex gap-2">
+          {/* Import Dialog */}
+          <Dialog open={importDialogOpen} onOpenChange={(open) => { setImportDialogOpen(open); if (!open) { setImportPreview(null); setImportUrl(""); } }}>
+            <DialogTrigger asChild>
+              <Button variant="outline">
+                <Globe className="w-4 h-4 mr-2" />
+                Importar nota externa
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Globe className="w-5 h-5" />
+                  Importar nota de terceros
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 pt-2">
+                <div className="space-y-2">
+                  <Label htmlFor="import-source">Fuente / Partner</Label>
+                  <Input
+                    id="import-source"
+                    value={importSource}
+                    onChange={(e) => setImportSource(e.target.value)}
+                    placeholder="Ej: Claro Sports"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="import-url">URL del artículo</Label>
+                  <Input
+                    id="import-url"
+                    value={importUrl}
+                    onChange={(e) => setImportUrl(e.target.value)}
+                    placeholder="https://www.clarosports.com/futbol/..."
+                    type="url"
+                  />
+                </div>
+                <Button onClick={handleImportPreview} disabled={importLoading} className="w-full">
+                  {importLoading ? (
+                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Procesando...</>
+                  ) : (
+                    <><ExternalLink className="w-4 h-4 mr-2" />Vista previa</>
+                  )}
+                </Button>
+
+                {importPreview && (
+                  <div className="border rounded-lg p-4 space-y-3 bg-muted/30">
+                    <h3 className="font-bold text-sm">Vista previa de la nota:</h3>
+                    {importPreview.image_url && (
+                      <img
+                        src={importPreview.image_url}
+                        alt="Preview"
+                        className="w-full h-40 object-cover rounded-md"
+                      />
+                    )}
+                    <p className="font-semibold text-base">{importPreview.title}</p>
+                    <div
+                      className="text-xs text-muted-foreground max-h-40 overflow-y-auto prose prose-sm dark:prose-invert"
+                      dangerouslySetInnerHTML={{ __html: importPreview.content.substring(0, 1000) + "..." }}
+                    />
+                    <Badge variant="secondary" className="text-xs">
+                      Cortesía de {importPreview.source_name}
+                    </Badge>
+                    <Button onClick={handleImportPublish} disabled={importPublishing} className="w-full" variant="default">
+                      {importPublishing ? (
+                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Publicando...</>
+                      ) : (
+                        <><Check className="w-4 h-4 mr-2" />Publicar nota</>
+                      )}
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={openCreate}>
