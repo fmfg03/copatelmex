@@ -274,7 +274,7 @@ export default function Schedule() {
     const topKeepers: Goalkeeper[] = [];
     for (const [teamId, stats] of goalsMap.entries()) {
       const { data: teamData } = await supabase
-        .from("teams")
+        .from("teams_public")
         .select("team_name")
         .eq("id", teamId)
         .single();
