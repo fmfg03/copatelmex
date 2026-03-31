@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,10 +9,9 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Newspaper, Star, Calendar, Image, Upload, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Newspaper, Star, Calendar, Image, Upload, Loader2, Globe, ExternalLink, Check } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { useRef } from "react";
 
 interface NewsArticle {
   id: string;
