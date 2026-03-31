@@ -40,6 +40,19 @@ export const AdminNews = () => {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Import state
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const [importUrl, setImportUrl] = useState("");
+  const [importSource, setImportSource] = useState("Claro Sports");
+  const [importLoading, setImportLoading] = useState(false);
+  const [importPreview, setImportPreview] = useState<{
+    title: string;
+    content: string;
+    image_url: string | null;
+    source_name: string;
+  } | null>(null);
+  const [importPublishing, setImportPublishing] = useState(false);
+
   useEffect(() => {
     fetchArticles();
   }, []);
