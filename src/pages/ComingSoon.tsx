@@ -1,5 +1,6 @@
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { SponsorsCarousel } from "@/components/SponsorsCarousel";
+import { NewsSection } from "@/components/NewsSection";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
 import heroImage from "@/assets/hero-copa-telmex.jpg";
 import { Instagram, Facebook, Mail } from "lucide-react";
@@ -102,6 +103,11 @@ const ComingSoon = () => {
           <p className="text-white/50 text-xs uppercase tracking-widest mb-4">Patrocinadores</p>
           <SponsorsCarousel />
         </div>
+      </div>
+
+      {/* News Section */}
+      <div className="relative z-10 w-full">
+        <NewsSection />
       </div>
 
       {/* Footer */}
