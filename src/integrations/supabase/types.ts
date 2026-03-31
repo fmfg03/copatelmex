@@ -668,6 +668,57 @@ export type Database = {
         }
         Relationships: []
       }
+      news_import_jobs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          extracted_content: string | null
+          extracted_image_url: string | null
+          extracted_title: string | null
+          id: string
+          requested_action: string
+          result: Json | null
+          source_name: string
+          status: string
+          updated_at: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          extracted_content?: string | null
+          extracted_image_url?: string | null
+          extracted_title?: string | null
+          id?: string
+          requested_action?: string
+          result?: Json | null
+          source_name: string
+          status?: string
+          updated_at?: string
+          url: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          extracted_content?: string | null
+          extracted_image_url?: string | null
+          extracted_title?: string | null
+          id?: string
+          requested_action?: string
+          result?: Json | null
+          source_name?: string
+          status?: string
+          updated_at?: string
+          url?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       player_access_log: {
         Row: {
           accessed_at: string
