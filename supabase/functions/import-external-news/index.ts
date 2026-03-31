@@ -6,32 +6,50 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+function extractMetaContent(html: string, property: string): string | null {
+  // Match both property="og:X" content="Y" and content="Y" property="og:X" orders
+  const pattern1 = new RegExp(`<meta[^>]*property=["']${property}["'][^>]*content=["']([^"']+)["']`, 'i');
+  const pattern2 = new RegExp(`<meta[^>]*content=["']([^"']+)["'][^>]*property=["']${property}["']`, 'i');
+  const pattern3 = new RegExp(`<meta[^>]*name=["']${property}["'][^>]*content=["']([^"']+)["']`, 'i');
+  const pattern4 = new RegExp(`<meta[^>]*content=["']([^"']+)["'][^>]*name=["']${property}["']`, 'i');
+  return pattern1.exec(html)?.[1] ?? pattern2.exec(html)?.[1] ?? pattern3.exec(html)?.[1] ?? pattern4.exec(html)?.[1] ?? null;
+}
+
 function stripToArticleHtml(html: string): { title: string; content: string; imageUrl: string | null; description: string } {
   // Extract title from og:title or <title>
-  const ogTitle = html.match(/<meta[^>]*property="og:title"[^>]*content="([^"]+)"/i)?.[1]
+  const ogTitle = extractMetaContent(html, "og:title")
     ?? html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1]
     ?? "";
 
   // Extract og:image
-  const imageUrl = html.match(/<meta[^>]*property="og:image"[^>]*content="([^"]+)"/i)?.[1] ?? null;
+  const imageUrl = extractMetaContent(html, "og:image") ?? null;
 
   // Extract og:description
-  const description = html.match(/<meta[^>]*property="og:description"[^>]*content="([^"]+)"/i)?.[1]
-    ?? html.match(/<meta[^>]*name="description"[^>]*content="([^"]+)"/i)?.[1]
+  const description = extractMetaContent(html, "og:description")
+    ?? extractMetaContent(html, "description")
     ?? "";
 
   // Try to extract the main article body
   let articleHtml = "";
 
-  // Try common article selectors via regex
-  const articleMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
-  if (articleMatch) {
-    articleHtml = articleMatch[1];
-  } else {
-    // Fallback: look for common content divs
-    const contentMatch = html.match(/<div[^>]*class="[^"]*(?:article-body|entry-content|post-content|article-content|story-body)[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div)/i);
-    if (contentMatch) {
-      articleHtml = contentMatch[1];
+  // Try common content div selectors first (more specific than <article>)
+  const contentPatterns = [
+    /<div[^>]*class="[^"]*(?:td-post-content|tdb-block-inner)[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
+    /<div[^>]*class="[^"]*(?:article-body|entry-content|post-content|article-content|story-body)[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
+  ];
+  
+  for (const pattern of contentPatterns) {
+    const match = html.match(pattern);
+    if (match) {
+      articleHtml = match[1];
+      break;
+    }
+  }
+
+  if (!articleHtml) {
+    const articleMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
+    if (articleMatch) {
+      articleHtml = articleMatch[1];
     }
   }
 
