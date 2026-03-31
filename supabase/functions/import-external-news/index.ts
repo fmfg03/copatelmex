@@ -81,7 +81,8 @@ function stripToArticleHtml(html: string, baseUrl: string) {
   let articleHtml = "";
   const contentPatterns = [
     /<div[^>]*class=["'][^"']*(?:td-post-content|tdb-block-inner)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
-    /<div[^>]*class=["'][^"']*(?:article-body|entry-content|post-content|article-content|story-body)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
+    /<div[^>]*class=["'][^"']*(?:article-body|entry-content|post-content|article-content|story-body|nota_cuerpo|body-text|article__body|mw-parser-output)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
+    /<div[^>]*id=["'](?:article-body|content|main-content|bodyContent|mw-content-text)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
   ];
 
   for (const pattern of contentPatterns) {
@@ -96,6 +97,14 @@ function stripToArticleHtml(html: string, baseUrl: string) {
     const articleMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
     if (articleMatch) {
       articleHtml = articleMatch[1];
+    }
+  }
+
+  // Fallback: try <main> tag
+  if (!articleHtml) {
+    const mainMatch = html.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
+    if (mainMatch) {
+      articleHtml = mainMatch[1];
     }
   }
 
