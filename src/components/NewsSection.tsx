@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 import { Calendar, ArrowRight, Newspaper } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -17,6 +18,7 @@ interface NewsArticle {
 }
 
 export const NewsSection = () => {
+  const navigate = useNavigate();
   const { data: articles, isLoading } = useQuery({
     queryKey: ["news-home"],
     queryFn: async () => {
@@ -89,7 +91,7 @@ export const NewsSection = () => {
         {/* Featured + Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Featured Article */}
-          <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+          <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer" onClick={() => navigate(`/noticias/${featured.id}`)}>
             <div className="relative h-64 lg:h-full min-h-[300px] overflow-hidden">
               {featured.image_url ? (
                 <img
@@ -129,6 +131,7 @@ export const NewsSection = () => {
             {secondary.map((article) => (
               <Card
                 key={article.id}
+                onClick={() => navigate(`/noticias/${article.id}`)}
                 className="group overflow-hidden border hover:border-primary/30 hover:shadow-md transition-all duration-300 cursor-pointer"
               >
                 <CardContent className="p-0">
