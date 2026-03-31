@@ -91,7 +91,7 @@ export const NewsSection = () => {
         {/* Featured + Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Featured Article */}
-          <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+          <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer" onClick={() => navigate(`/noticias/${featured.id}`)}>
             <div className="relative h-64 lg:h-full min-h-[300px] overflow-hidden">
               {featured.image_url ? (
                 <img
