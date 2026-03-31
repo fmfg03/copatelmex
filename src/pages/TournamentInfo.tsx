@@ -5,11 +5,6 @@ import { Calendar, Trophy, Shield, Users, FileText, Clock, Award, CheckCircle, S
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import galleryGoalCelebration from "@/assets/gallery-goal-celebration.jpg";
-import galleryGoalkeeperSave from "@/assets/gallery-goalkeeper-save.jpg";
-import galleryMatchAction from "@/assets/gallery-match-action.jpg";
-import galleryTeamPhoto from "@/assets/gallery-team-photo.jpg";
-import galleryTrophyCelebration from "@/assets/gallery-trophy-celebration.jpg";
 import galleryFemenil1 from "@/assets/gallery-femenil-1.jpg";
 import galleryVaronil1 from "@/assets/gallery-varonil-1.jpg";
 import galleryJuvenil1 from "@/assets/gallery-juvenil-1.jpg";
@@ -239,26 +234,6 @@ export default function TournamentInfo() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[{
-              src: galleryTrophyCelebration,
-              alt: "Celebración del campeón",
-              title: "Campeones Varonil"
-            }, {
-              src: galleryTeamPhoto,
-              alt: "Foto de equipo",
-              title: "Equipos participantes"
-            }, {
-              src: galleryMatchAction,
-              alt: "Campeonas Femenil",
-              title: "Campeonas Femenil"
-            }, {
-              src: galleryGoalCelebration,
-              alt: "Equipo Femenil",
-              title: "Categoría Femenil"
-            }, {
-              src: galleryGoalkeeperSave,
-              alt: "Subcampeonas",
-              title: "Subcampeonas Femenil"
-            }, {
               src: galleryFemenil1,
               alt: "Medallistas Femenil",
               title: "Medallistas Femenil"
