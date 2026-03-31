@@ -105,6 +105,11 @@ const ComingSoon = () => {
         </div>
       </div>
 
+      {/* News Section */}
+      <div className="relative z-10 w-full">
+        <NewsSection />
+      </div>
+
       {/* Footer */}
       <div className="relative z-10 w-full text-center py-4 mt-auto">
         <p className="text-white/40 text-xs">
