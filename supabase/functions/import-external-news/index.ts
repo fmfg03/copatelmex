@@ -32,15 +32,24 @@ function stripToArticleHtml(html: string): { title: string; content: string; ima
   // Try to extract the main article body
   let articleHtml = "";
 
-  // Try common article selectors via regex
-  const articleMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
-  if (articleMatch) {
-    articleHtml = articleMatch[1];
-  } else {
-    // Fallback: look for common content divs
-    const contentMatch = html.match(/<div[^>]*class="[^"]*(?:article-body|entry-content|post-content|article-content|story-body)[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div)/i);
-    if (contentMatch) {
-      articleHtml = contentMatch[1];
+  // Try common content div selectors first (more specific than <article>)
+  const contentPatterns = [
+    /<div[^>]*class="[^"]*(?:td-post-content|tdb-block-inner)[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
+    /<div[^>]*class="[^"]*(?:article-body|entry-content|post-content|article-content|story-body)[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
+  ];
+  
+  for (const pattern of contentPatterns) {
+    const match = html.match(pattern);
+    if (match) {
+      articleHtml = match[1];
+      break;
+    }
+  }
+
+  if (!articleHtml) {
+    const articleMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
+    if (articleMatch) {
+      articleHtml = articleMatch[1];
     }
   }
 
