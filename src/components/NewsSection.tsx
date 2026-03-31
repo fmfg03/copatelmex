@@ -131,6 +131,7 @@ export const NewsSection = () => {
             {secondary.map((article) => (
               <Card
                 key={article.id}
+                onClick={() => navigate(`/noticias/${article.id}`)}
                 className="group overflow-hidden border hover:border-primary/30 hover:shadow-md transition-all duration-300 cursor-pointer"
               >
                 <CardContent className="p-0">
