@@ -378,7 +378,7 @@ export const AdminNews = () => {
             </div>
           </DialogContent>
         </Dialog>
-      </div>
+        </div>
 
       {articles.length === 0 ? (
         <Card>
