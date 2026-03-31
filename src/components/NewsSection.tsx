@@ -18,6 +18,7 @@ interface NewsArticle {
 }
 
 export const NewsSection = () => {
+  const navigate = useNavigate();
   const { data: articles, isLoading } = useQuery({
     queryKey: ["news-home"],
     queryFn: async () => {
