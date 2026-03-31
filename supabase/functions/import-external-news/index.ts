@@ -81,7 +81,8 @@ function stripToArticleHtml(html: string, baseUrl: string) {
   let articleHtml = "";
   const contentPatterns = [
     /<div[^>]*class=["'][^"']*(?:td-post-content|tdb-block-inner)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
-    /<div[^>]*class=["'][^"']*(?:article-body|entry-content|post-content|article-content|story-body)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
+    /<div[^>]*class=["'][^"']*(?:article-body|entry-content|post-content|article-content|story-body|nota_cuerpo|body-text|article__body|mw-parser-output)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
+    /<div[^>]*id=["'](?:article-body|content|main-content|bodyContent|mw-content-text)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
   ];
 
   for (const pattern of contentPatterns) {
@@ -96,6 +97,14 @@ function stripToArticleHtml(html: string, baseUrl: string) {
     const articleMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
     if (articleMatch) {
       articleHtml = articleMatch[1];
+    }
+  }
+
+  // Fallback: try <main> tag
+  if (!articleHtml) {
+    const mainMatch = html.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
+    if (mainMatch) {
+      articleHtml = mainMatch[1];
     }
   }
 
@@ -133,9 +142,15 @@ async function fetchImportedArticle(url: string, sourceName: string): Promise<Im
 
   const pageResponse = await fetch(url, {
     headers: {
-      "User-Agent": "Mozilla/5.0 (compatible; CopaTelmexBot/1.0)",
-      "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
-      "Accept-Language": "es-MX,es;q=0.9,en;q=0.8",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+      "Accept-Language": "es-MX,es;q=0.9,en-US;q=0.8,en;q=0.7",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Sec-Fetch-Dest": "document",
+      "Sec-Fetch-Mode": "navigate",
+      "Sec-Fetch-Site": "none",
+      "Sec-Fetch-User": "?1",
+      "Upgrade-Insecure-Requests": "1",
       "Cache-Control": "no-cache",
     },
     redirect: "follow",
