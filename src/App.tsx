@@ -35,7 +35,8 @@ const App = () => (
         <ScrollToTop />
         <FloatingDownload />
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<ComingSoon />} />
+          <Route path="/home" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/register" element={<Register />} />
           <Route path="/documents" element={<DocumentsPortal />} />
