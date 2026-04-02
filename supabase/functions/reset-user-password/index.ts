@@ -1,6 +1,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
 import { corsHeaders } from '../_shared/cors.ts'
 import { resetUserPasswordSchema, validateInput, uuidSchema, emailSchema } from '../_shared/validation.ts'
+import { checkRateLimit, rateLimitResponse } from '../_shared/rate-limit.ts'
 
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
