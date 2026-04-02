@@ -37,6 +37,11 @@ Deno.serve(async (req) => {
       throw new Error('Unauthorized');
     }
 
+    // Rate limit: 1 request per hour per admin
+    if (!checkRateLimit(`regen-ids:${user.id}`, { maxRequests: 1, windowSeconds: 3600 })) {
+      return rateLimitResponse(corsHeaders);
+    }
+
     // Check if user is admin
     const { data: roleData, error: roleError } = await supabaseClient
       .from('user_roles')

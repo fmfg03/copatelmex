@@ -49,6 +49,10 @@ Deno.serve(async (req) => {
         }
       )
     }
+    // Rate limit: 3 requests per 15 minutes per user
+    if (!checkRateLimit(`reset-pwd:${user.id}`, { maxRequests: 3, windowSeconds: 900 })) {
+      return rateLimitResponse(corsHeaders);
+    }
 
     // Check if user has admin role
     const { data: userRole, error: roleError } = await supabaseAdmin

@@ -50,6 +50,10 @@ Deno.serve(async (req) => {
         }
       )
     }
+    // Rate limit: 5 requests per hour per admin
+    if (!checkRateLimit(`create-admin:${user.id}`, { maxRequests: 5, windowSeconds: 3600 })) {
+      return rateLimitResponse(corsHeaders);
+    }
 
     // Check if user has admin role using admin client (bypasses RLS)
     const { data: userRole, error: roleError } = await supabaseAdmin
