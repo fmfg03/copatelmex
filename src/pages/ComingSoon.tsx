@@ -7,7 +7,7 @@ import { Instagram, Facebook, Mail } from "lucide-react";
 
 const ComingSoon = () => {
   // 4 days from now → July 1, 2026 launch
-  const launchDate = new Date("2026-04-02T00:00:00-06:00");
+  const launchDate = new Date("2026-04-01T00:00:00-06:00");
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
