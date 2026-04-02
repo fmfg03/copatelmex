@@ -1,6 +1,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
 import { corsHeaders } from '../_shared/cors.ts'
 import { createAdminUserSchema, validateInput } from '../_shared/validation.ts'
+import { checkRateLimit, rateLimitResponse } from '../_shared/rate-limit.ts'
 
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
@@ -48,6 +49,10 @@ Deno.serve(async (req) => {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
+    }
+    // Rate limit: 5 requests per hour per admin
+    if (!checkRateLimit(`create-admin:${user.id}`, { maxRequests: 5, windowSeconds: 3600 })) {
+      return rateLimitResponse(corsHeaders);
     }
 
     // Check if user has admin role using admin client (bypasses RLS)

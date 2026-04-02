@@ -1,6 +1,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
 import { corsHeaders } from '../_shared/cors.ts'
 import { resetUserPasswordSchema, validateInput, uuidSchema, emailSchema } from '../_shared/validation.ts'
+import { checkRateLimit, rateLimitResponse } from '../_shared/rate-limit.ts'
 
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
@@ -47,6 +48,10 @@ Deno.serve(async (req) => {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
+    }
+    // Rate limit: 3 requests per 15 minutes per user
+    if (!checkRateLimit(`reset-pwd:${user.id}`, { maxRequests: 3, windowSeconds: 900 })) {
+      return rateLimitResponse(corsHeaders);
     }
 
     // Check if user has admin role

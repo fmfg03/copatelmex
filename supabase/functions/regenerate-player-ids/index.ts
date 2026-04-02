@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.74.0';
+import { checkRateLimit, rateLimitResponse } from '../_shared/rate-limit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -34,6 +35,11 @@ Deno.serve(async (req) => {
 
     if (authError || !user) {
       throw new Error('Unauthorized');
+    }
+
+    // Rate limit: 1 request per hour per admin
+    if (!checkRateLimit(`regen-ids:${user.id}`, { maxRequests: 1, windowSeconds: 3600 })) {
+      return rateLimitResponse(corsHeaders);
     }
 
     // Check if user is admin
