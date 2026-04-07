@@ -5,6 +5,7 @@ import { corsHeaders } from "../_shared/cors.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY") ?? "";
 
 const requestSchema = z.object({
   url: z.string().trim().url("URL inválida").max(2000, "URL muy larga"),
@@ -114,6 +115,88 @@ async function fetchImportedArticle(url: string, sourceName: string): Promise<Im
   };
 }
 
+async function generateNewsImage(
+  title: string,
+  serviceClient: ReturnType<typeof createClient>,
+): Promise<string | null> {
+  if (!LOVABLE_API_KEY) {
+    console.warn("LOVABLE_API_KEY not set, skipping image generation");
+    return null;
+  }
+
+  try {
+    console.log("Generating AI image for:", title);
+
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-3.1-flash-image-preview",
+        messages: [
+          {
+            role: "user",
+            content: `Generate a professional, modern editorial illustration for a sports news article titled: "${title}". The image should be abstract and editorial in style — use bold colors, geometric shapes, and dynamic compositions related to football/soccer. Do NOT include any text or logos. Clean background, suitable for a news card thumbnail. On a solid white background.`,
+          },
+        ],
+        modalities: ["image", "text"],
+      }),
+      signal: AbortSignal.timeout(30000),
+    });
+
+    if (!response.ok) {
+      console.error("AI gateway error:", response.status);
+      return null;
+    }
+
+    const data = await response.json();
+    const imageDataUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+
+    if (!imageDataUrl || !imageDataUrl.startsWith("data:image/")) {
+      console.error("No image returned from AI");
+      return null;
+    }
+
+    // Extract base64 data and content type
+    const match = imageDataUrl.match(/^data:(image\/\w+);base64,(.+)$/);
+    if (!match) return null;
+
+    const contentType = match[1];
+    const ext = contentType === "image/png" ? "png" : "jpg";
+    const base64Data = match[2];
+
+    // Decode base64 to Uint8Array
+    const binaryStr = atob(base64Data);
+    const bytes = new Uint8Array(binaryStr.length);
+    for (let i = 0; i < binaryStr.length; i++) {
+      bytes[i] = binaryStr.charCodeAt(i);
+    }
+
+    // Upload to news-images bucket
+    const fileName = `imported/${crypto.randomUUID()}.${ext}`;
+    const { error: uploadError } = await serviceClient.storage
+      .from("news-images")
+      .upload(fileName, bytes, { contentType, upsert: false });
+
+    if (uploadError) {
+      console.error("Storage upload error:", uploadError.message);
+      return null;
+    }
+
+    const { data: publicUrlData } = serviceClient.storage
+      .from("news-images")
+      .getPublicUrl(fileName);
+
+    console.log("Image generated and uploaded:", publicUrlData.publicUrl);
+    return publicUrlData.publicUrl;
+  } catch (error) {
+    console.error("Image generation failed:", error);
+    return null;
+  }
+}
+
 async function processImportJob(params: {
   jobId: string;
   userId: string;
@@ -130,6 +213,11 @@ async function processImportJob(params: {
 
   try {
     const article = await fetchImportedArticle(params.url, params.sourceName);
+
+    // Generate a custom AI image instead of using the source's image
+    const generatedImageUrl = await generateNewsImage(article.title, serviceClient);
+    article.image_url = generatedImageUrl;
+
     let newsId: string | null = null;
 
     if (params.action === "publish") {
