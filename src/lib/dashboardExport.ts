@@ -1,6 +1,6 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 
 type StatsData = {
   totalTeams: number;
@@ -22,11 +22,9 @@ export const exportDashboardToPDF = (stats: StatsData, trendData: TrendData, dat
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
   
-  // Title
   doc.setFontSize(18);
   doc.text("Reporte de Estadísticas - Copa Telmex Telcel", pageWidth / 2, 20, { align: "center" });
   
-  // Date range
   doc.setFontSize(10);
   const dateText = dateRange?.from && dateRange?.to 
     ? `Período: ${dateRange.from.toLocaleDateString('es-MX')} - ${dateRange.to.toLocaleDateString('es-MX')}`
@@ -36,7 +34,6 @@ export const exportDashboardToPDF = (stats: StatsData, trendData: TrendData, dat
 
   let yPos = 45;
 
-  // Summary
   doc.setFontSize(14);
   doc.text("Resumen General", 14, yPos);
   yPos += 8;
@@ -56,7 +53,6 @@ export const exportDashboardToPDF = (stats: StatsData, trendData: TrendData, dat
 
   yPos = (doc as any).lastAutoTable.finalY + 15;
 
-  // Teams by Status
   doc.setFontSize(14);
   doc.text("Equipos por Status", 14, yPos);
   yPos += 8;
@@ -71,7 +67,6 @@ export const exportDashboardToPDF = (stats: StatsData, trendData: TrendData, dat
 
   yPos = (doc as any).lastAutoTable.finalY + 15;
 
-  // Teams by Payment
   doc.setFontSize(14);
   doc.text("Registros por Estado de Pago", 14, yPos);
   yPos += 8;
@@ -84,11 +79,9 @@ export const exportDashboardToPDF = (stats: StatsData, trendData: TrendData, dat
     headStyles: { fillColor: [15, 76, 129] },
   });
 
-  // New page for more data
   doc.addPage();
   yPos = 20;
 
-  // Teams by State
   doc.setFontSize(14);
   doc.text("Equipos por Estado (Top 10)", 14, yPos);
   yPos += 8;
@@ -103,7 +96,6 @@ export const exportDashboardToPDF = (stats: StatsData, trendData: TrendData, dat
 
   yPos = (doc as any).lastAutoTable.finalY + 15;
 
-  // Teams by Category
   doc.setFontSize(14);
   doc.text("Registros por Categoría", 14, yPos);
   yPos += 8;
@@ -118,7 +110,6 @@ export const exportDashboardToPDF = (stats: StatsData, trendData: TrendData, dat
 
   yPos = (doc as any).lastAutoTable.finalY + 15;
 
-  // Document Stats
   doc.setFontSize(14);
   doc.text("Documentos de Jugadores", 14, yPos);
   yPos += 8;
@@ -131,7 +122,6 @@ export const exportDashboardToPDF = (stats: StatsData, trendData: TrendData, dat
     headStyles: { fillColor: [15, 76, 129] },
   });
 
-  // Trend data if available
   if (trendData.length > 0) {
     doc.addPage();
     doc.setFontSize(14);
@@ -149,82 +139,64 @@ export const exportDashboardToPDF = (stats: StatsData, trendData: TrendData, dat
   doc.save(`estadisticas-copa-america-${new Date().toISOString().split('T')[0]}.pdf`);
 };
 
-export const exportDashboardToExcel = (stats: StatsData, trendData: TrendData, dateRange?: { from?: Date; to?: Date }) => {
-  const wb = XLSX.utils.book_new();
+const addSheetData = (worksheet: ExcelJS.Worksheet, title: string, headers: string[], rows: (string | number)[][]) => {
+  worksheet.addRow([title]);
+  worksheet.addRow(headers);
+  rows.forEach(row => worksheet.addRow(row));
+  worksheet.getColumn(1).width = 25;
+  worksheet.getColumn(2).width = 15;
+};
 
-  // Summary sheet
-  const summaryData = [
-    ["Reporte de Estadísticas - Copa Telmex Telcel"],
-    [dateRange?.from && dateRange?.to 
-      ? `Período: ${dateRange.from.toLocaleDateString('es-MX')} - ${dateRange.to.toLocaleDateString('es-MX')}`
-      : "Período: Todo el tiempo"],
-    [`Generado: ${new Date().toLocaleDateString('es-MX')} ${new Date().toLocaleTimeString('es-MX')}`],
-    [],
-    ["Resumen General"],
-    ["Métrica", "Valor"],
-    ["Total Equipos", stats.totalTeams],
-    ["Total Jugadores", stats.totalPlayers],
-    ["Pagos Completados", stats.teamsByPayment.find(p => p.name === "Pagado")?.value || 0],
-    ["Estados Participantes", stats.teamsByState.length],
-  ];
-  const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
-  XLSX.utils.book_append_sheet(wb, summarySheet, "Resumen");
+export const exportDashboardToExcel = async (stats: StatsData, trendData: TrendData, dateRange?: { from?: Date; to?: Date }) => {
+  const wb = new ExcelJS.Workbook();
 
-  // Status sheet
-  const statusData = [
-    ["Equipos por Status"],
-    ["Status", "Cantidad"],
-    ...stats.teamsByStatus.map(s => [s.name, s.value])
-  ];
-  const statusSheet = XLSX.utils.aoa_to_sheet(statusData);
-  XLSX.utils.book_append_sheet(wb, statusSheet, "Por Status");
+  const summarySheet = wb.addWorksheet("Resumen");
+  summarySheet.addRow(["Reporte de Estadísticas - Copa Telmex Telcel"]);
+  summarySheet.addRow([dateRange?.from && dateRange?.to 
+    ? `Período: ${dateRange.from.toLocaleDateString('es-MX')} - ${dateRange.to.toLocaleDateString('es-MX')}`
+    : "Período: Todo el tiempo"]);
+  summarySheet.addRow([`Generado: ${new Date().toLocaleDateString('es-MX')} ${new Date().toLocaleTimeString('es-MX')}`]);
+  summarySheet.addRow([]);
+  summarySheet.addRow(["Resumen General"]);
+  summarySheet.addRow(["Métrica", "Valor"]);
+  summarySheet.addRow(["Total Equipos", stats.totalTeams]);
+  summarySheet.addRow(["Total Jugadores", stats.totalPlayers]);
+  summarySheet.addRow(["Pagos Completados", stats.teamsByPayment.find(p => p.name === "Pagado")?.value || 0]);
+  summarySheet.addRow(["Estados Participantes", stats.teamsByState.length]);
+  summarySheet.getColumn(1).width = 25;
+  summarySheet.getColumn(2).width = 15;
 
-  // Payment sheet
-  const paymentData = [
-    ["Registros por Estado de Pago"],
-    ["Estado", "Cantidad"],
-    ...stats.teamsByPayment.map(p => [p.name, p.value])
-  ];
-  const paymentSheet = XLSX.utils.aoa_to_sheet(paymentData);
-  XLSX.utils.book_append_sheet(wb, paymentSheet, "Por Pago");
+  const statusSheet = wb.addWorksheet("Por Status");
+  addSheetData(statusSheet, "Equipos por Status", ["Status", "Cantidad"], stats.teamsByStatus.map(s => [s.name, s.value]));
 
-  // State sheet
-  const stateData = [
-    ["Equipos por Estado"],
-    ["Estado", "Equipos"],
-    ...stats.teamsByState.map(s => [s.name, s.value])
-  ];
-  const stateSheet = XLSX.utils.aoa_to_sheet(stateData);
-  XLSX.utils.book_append_sheet(wb, stateSheet, "Por Estado");
+  const paymentSheet = wb.addWorksheet("Por Pago");
+  addSheetData(paymentSheet, "Registros por Estado de Pago", ["Estado", "Cantidad"], stats.teamsByPayment.map(p => [p.name, p.value]));
 
-  // Category sheet
-  const categoryData = [
-    ["Registros por Categoría"],
-    ["Categoría", "Registros"],
-    ...stats.teamsByCategory.map(c => [c.name, c.value])
-  ];
-  const categorySheet = XLSX.utils.aoa_to_sheet(categoryData);
-  XLSX.utils.book_append_sheet(wb, categorySheet, "Por Categoría");
+  const stateSheet = wb.addWorksheet("Por Estado");
+  addSheetData(stateSheet, "Equipos por Estado", ["Estado", "Equipos"], stats.teamsByState.map(s => [s.name, s.value]));
 
-  // Documents sheet
-  const docsData = [
-    ["Documentos de Jugadores"],
-    ["Estado", "Jugadores"],
-    ...stats.documentStats.map(d => [d.name, d.value])
-  ];
-  const docsSheet = XLSX.utils.aoa_to_sheet(docsData);
-  XLSX.utils.book_append_sheet(wb, docsSheet, "Documentos");
+  const categorySheet = wb.addWorksheet("Por Categoría");
+  addSheetData(categorySheet, "Registros por Categoría", ["Categoría", "Registros"], stats.teamsByCategory.map(c => [c.name, c.value]));
 
-  // Trend sheet
+  const docsSheet = wb.addWorksheet("Documentos");
+  addSheetData(docsSheet, "Documentos de Jugadores", ["Estado", "Jugadores"], stats.documentStats.map(d => [d.name, d.value]));
+
   if (trendData.length > 0) {
-    const trendSheetData = [
-      ["Tendencia de Inscripciones"],
-      ["Fecha", "Inscripciones", "Pagos"],
-      ...trendData.map(t => [t.date, t.registrations, t.payments])
-    ];
-    const trendSheet = XLSX.utils.aoa_to_sheet(trendSheetData);
-    XLSX.utils.book_append_sheet(wb, trendSheet, "Tendencias");
+    const trendSheet = wb.addWorksheet("Tendencias");
+    trendSheet.addRow(["Tendencia de Inscripciones"]);
+    trendSheet.addRow(["Fecha", "Inscripciones", "Pagos"]);
+    trendData.forEach(t => trendSheet.addRow([t.date, t.registrations, t.payments]));
+    trendSheet.getColumn(1).width = 15;
+    trendSheet.getColumn(2).width = 15;
+    trendSheet.getColumn(3).width = 15;
   }
 
-  XLSX.writeFile(wb, `estadisticas-copa-america-${new Date().toISOString().split('T')[0]}.xlsx`);
+  const buffer = await wb.xlsx.writeBuffer();
+  const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `estadisticas-copa-america-${new Date().toISOString().split('T')[0]}.xlsx`;
+  link.click();
+  window.URL.revokeObjectURL(url);
 };

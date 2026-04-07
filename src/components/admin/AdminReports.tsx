@@ -6,13 +6,29 @@ import { toast } from "@/hooks/use-toast";
 import { FileSpreadsheet, FileText, Download } from "lucide-react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 
 declare module "jspdf" {
   interface jsPDF {
     autoTable: (options: any) => jsPDF;
   }
 }
+
+const downloadExcel = async (sheetName: string, data: Record<string, any>[], fileName: string) => {
+  const wb = new ExcelJS.Workbook();
+  const ws = wb.addWorksheet(sheetName);
+  if (data.length === 0) return;
+  ws.columns = Object.keys(data[0]).map(key => ({ header: key, key, width: 20 }));
+  data.forEach(row => ws.addRow(row));
+  const buffer = await wb.xlsx.writeBuffer();
+  const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  link.click();
+  window.URL.revokeObjectURL(url);
+};
 
 export const AdminReports = () => {
   const [loading, setLoading] = useState(false);
@@ -22,16 +38,7 @@ export const AdminReports = () => {
     try {
       const { data: players, error } = await supabase
         .from("players")
-        .select(`
-          *,
-          registrations!inner (
-            teams!inner (
-              team_name,
-              academy_name
-            )
-          )
-        `);
-
+        .select(`*, registrations!inner ( teams!inner ( team_name, academy_name ) )`);
       if (error) throw error;
 
       const reportData = players.map((player) => ({
@@ -46,10 +53,7 @@ export const AdminReports = () => {
       }));
 
       if (format === "excel") {
-        const ws = XLSX.utils.json_to_sheet(reportData);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Jugadores");
-        XLSX.writeFile(wb, `jugadores_${new Date().toISOString().split("T")[0]}.xlsx`);
+        await downloadExcel("Jugadores", reportData, `jugadores_${new Date().toISOString().split("T")[0]}.xlsx`);
       } else {
         const doc = new jsPDF();
         doc.text("Reporte de Jugadores", 14, 15);
@@ -61,17 +65,10 @@ export const AdminReports = () => {
         doc.save(`jugadores_${new Date().toISOString().split("T")[0]}.pdf`);
       }
 
-      toast({
-        title: "Reporte generado",
-        description: `El reporte se ha descargado correctamente en formato ${format.toUpperCase()}`,
-      });
+      toast({ title: "Reporte generado", description: `El reporte se ha descargado correctamente en formato ${format.toUpperCase()}` });
     } catch (error) {
       console.error("Error generating report:", error);
-      toast({
-        title: "Error",
-        description: "No se pudo generar el reporte",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "No se pudo generar el reporte", variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -82,15 +79,7 @@ export const AdminReports = () => {
     try {
       const { data: teams, error } = await supabase
         .from("teams")
-        .select(`
-          *,
-          registrations (
-            category_id,
-            payment_status,
-            payment_amount
-          )
-        `);
-
+        .select(`*, registrations ( category_id, payment_status, payment_amount )`);
       if (error) throw error;
 
       const reportData = teams.map((team) => ({
@@ -103,10 +92,7 @@ export const AdminReports = () => {
       }));
 
       if (format === "excel") {
-        const ws = XLSX.utils.json_to_sheet(reportData);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Equipos");
-        XLSX.writeFile(wb, `equipos_${new Date().toISOString().split("T")[0]}.xlsx`);
+        await downloadExcel("Equipos", reportData, `equipos_${new Date().toISOString().split("T")[0]}.xlsx`);
       } else {
         const doc = new jsPDF();
         doc.text("Reporte de Equipos", 14, 15);
@@ -118,17 +104,10 @@ export const AdminReports = () => {
         doc.save(`equipos_${new Date().toISOString().split("T")[0]}.pdf`);
       }
 
-      toast({
-        title: "Reporte generado",
-        description: `El reporte se ha descargado correctamente en formato ${format.toUpperCase()}`,
-      });
+      toast({ title: "Reporte generado", description: `El reporte se ha descargado correctamente en formato ${format.toUpperCase()}` });
     } catch (error) {
       console.error("Error generating report:", error);
-      toast({
-        title: "Error",
-        description: "No se pudo generar el reporte",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "No se pudo generar el reporte", variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -139,14 +118,7 @@ export const AdminReports = () => {
     try {
       const { data: registrations, error } = await supabase
         .from("registrations")
-        .select(`
-          *,
-          teams!inner (
-            team_name,
-            academy_name
-          )
-        `);
-
+        .select(`*, teams!inner ( team_name, academy_name )`);
       if (error) throw error;
 
       const reportData = registrations.map((reg) => ({
@@ -160,10 +132,7 @@ export const AdminReports = () => {
       }));
 
       if (format === "excel") {
-        const ws = XLSX.utils.json_to_sheet(reportData);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Pagos");
-        XLSX.writeFile(wb, `pagos_${new Date().toISOString().split("T")[0]}.xlsx`);
+        await downloadExcel("Pagos", reportData, `pagos_${new Date().toISOString().split("T")[0]}.xlsx`);
       } else {
         const doc = new jsPDF();
         doc.text("Reporte de Pagos", 14, 15);
@@ -175,17 +144,10 @@ export const AdminReports = () => {
         doc.save(`pagos_${new Date().toISOString().split("T")[0]}.pdf`);
       }
 
-      toast({
-        title: "Reporte generado",
-        description: `El reporte se ha descargado correctamente en formato ${format.toUpperCase()}`,
-      });
+      toast({ title: "Reporte generado", description: `El reporte se ha descargado correctamente en formato ${format.toUpperCase()}` });
     } catch (error) {
       console.error("Error generating report:", error);
-      toast({
-        title: "Error",
-        description: "No se pudo generar el reporte",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "No se pudo generar el reporte", variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -205,20 +167,11 @@ export const AdminReports = () => {
             Exporta la lista completa de jugadores con sus datos y estado de documentos
           </p>
           <div className="flex gap-2">
-            <Button
-              onClick={() => generatePlayersReport("excel")}
-              disabled={loading}
-              className="flex-1"
-            >
+            <Button onClick={() => generatePlayersReport("excel")} disabled={loading} className="flex-1">
               <FileSpreadsheet className="w-4 h-4 mr-2" />
               Exportar a Excel
             </Button>
-            <Button
-              onClick={() => generatePlayersReport("pdf")}
-              disabled={loading}
-              variant="secondary"
-              className="flex-1"
-            >
+            <Button onClick={() => generatePlayersReport("pdf")} disabled={loading} variant="secondary" className="flex-1">
               <Download className="w-4 h-4 mr-2" />
               Exportar a PDF
             </Button>
@@ -238,20 +191,11 @@ export const AdminReports = () => {
             Exporta la lista de equipos registrados con su información de contacto
           </p>
           <div className="flex gap-2">
-            <Button
-              onClick={() => generateTeamsReport("excel")}
-              disabled={loading}
-              className="flex-1"
-            >
+            <Button onClick={() => generateTeamsReport("excel")} disabled={loading} className="flex-1">
               <FileSpreadsheet className="w-4 h-4 mr-2" />
               Exportar a Excel
             </Button>
-            <Button
-              onClick={() => generateTeamsReport("pdf")}
-              disabled={loading}
-              variant="secondary"
-              className="flex-1"
-            >
+            <Button onClick={() => generateTeamsReport("pdf")} disabled={loading} variant="secondary" className="flex-1">
               <Download className="w-4 h-4 mr-2" />
               Exportar a PDF
             </Button>
@@ -271,20 +215,11 @@ export const AdminReports = () => {
             Exporta el historial de pagos y registros con detalles financieros
           </p>
           <div className="flex gap-2">
-            <Button
-              onClick={() => generatePaymentsReport("excel")}
-              disabled={loading}
-              className="flex-1"
-            >
+            <Button onClick={() => generatePaymentsReport("excel")} disabled={loading} className="flex-1">
               <FileSpreadsheet className="w-4 h-4 mr-2" />
               Exportar a Excel
             </Button>
-            <Button
-              onClick={() => generatePaymentsReport("pdf")}
-              disabled={loading}
-              variant="secondary"
-              className="flex-1"
-            >
+            <Button onClick={() => generatePaymentsReport("pdf")} disabled={loading} variant="secondary" className="flex-1">
               <Download className="w-4 h-4 mr-2" />
               Exportar a PDF
             </Button>

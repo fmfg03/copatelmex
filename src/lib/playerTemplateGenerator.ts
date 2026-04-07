@@ -1,98 +1,57 @@
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 
-export const generatePlayerTemplate = () => {
-  // Datos de ejemplo
-  const exampleData = [
-    {
-      'Nombre del Equipo': 'Águilas FC',
-      'Categoría': '2016',
-      'Nombre': 'Juan',
-      'Apellido Paterno': 'García',
-      'Apellido Materno': 'López',
-      'Fecha Nacimiento (YYYY-MM-DD)': '2015-03-15',
-      'CURP': 'GALJ150315HDFRPN01',
-      'Nombre Tutor': 'María López',
-      'Email Tutor': 'maria.lopez@example.com',
-      'Teléfono Tutor': '5512345678',
-      'Posición': 'Delantero',
-      'Número Jersey': '10'
-    },
-    {
-      'Nombre del Equipo': 'Águilas FC',
-      'Categoría': '2016',
-      'Nombre': 'Pedro',
-      'Apellido Paterno': 'Martínez',
-      'Apellido Materno': 'Sánchez',
-      'Fecha Nacimiento (YYYY-MM-DD)': '2016-07-22',
-      'CURP': 'MASP160722HDFRTR02',
-      'Nombre Tutor': 'José Martínez',
-      'Email Tutor': 'jose.martinez@example.com',
-      'Teléfono Tutor': '5523456789',
-      'Posición': 'Portero',
-      'Número Jersey': '1'
-    },
-    {
-      'Nombre del Equipo': 'Tigres FC',
-      'Categoría': '2017',
-      'Nombre': 'Luis',
-      'Apellido Paterno': 'Hernández',
-      'Apellido Materno': 'Ramírez',
-      'Fecha Nacimiento (YYYY-MM-DD)': '2015-11-08',
-      'CURP': 'HERL151108HDFRMS03',
-      'Nombre Tutor': 'Ana Hernández',
-      'Email Tutor': 'ana.hernandez@example.com',
-      'Teléfono Tutor': '5534567890',
-      'Posición': 'Defensa',
-      'Número Jersey': '4'
-    }
-  ];
+export const generatePlayerTemplate = async () => {
+  const workbook = new ExcelJS.Workbook();
 
-  // Instrucciones
+  // Instrucciones sheet
+  const instrSheet = workbook.addWorksheet('Instrucciones');
+  instrSheet.getColumn(1).width = 80;
   const instructions = [
-    { 'INSTRUCCIONES': '1. Complete los datos de cada jugador en las filas siguientes' },
-    { 'INSTRUCCIONES': '2. Los ejemplos pueden ser eliminados' },
-    { 'INSTRUCCIONES': '3. Nombre del Equipo: Debe coincidir EXACTAMENTE con el nombre de uno de sus equipos registrados' },
-    { 'INSTRUCCIONES': '4. Categoría: Debe coincidir con la categoría del equipo' },
-    { 'INSTRUCCIONES': '5. CURP: OBLIGATORIO - Debe tener exactamente 18 caracteres en MAYÚSCULAS' },
-    { 'INSTRUCCIONES': '6. Fecha: Formato YYYY-MM-DD (ejemplo: 2015-03-15)' },
-    { 'INSTRUCCIONES': '7. Teléfono: Mínimo 10 dígitos' },
-    { 'INSTRUCCIONES': '8. Número Jersey: Entre 1 y 99' },
-    { 'INSTRUCCIONES': '9. Posición: Campo opcional (Portero, Defensa, Medio, Delantero)' },
-    { 'INSTRUCCIONES': '' },
-    { 'INSTRUCCIONES': 'IMPORTANTE: Mantenga los nombres de las columnas exactamente como están' }
+    '1. Complete los datos de cada jugador en las filas siguientes',
+    '2. Los ejemplos pueden ser eliminados',
+    '3. Nombre del Equipo: Debe coincidir EXACTAMENTE con el nombre de uno de sus equipos registrados',
+    '4. Categoría: Debe coincidir con la categoría del equipo',
+    '5. CURP: OBLIGATORIO - Debe tener exactamente 18 caracteres en MAYÚSCULAS',
+    '6. Fecha: Formato YYYY-MM-DD (ejemplo: 2015-03-15)',
+    '7. Teléfono: Mínimo 10 dígitos',
+    '8. Número Jersey: Entre 1 y 99',
+    '9. Posición: Campo opcional (Portero, Defensa, Medio, Delantero)',
+    '',
+    'IMPORTANTE: Mantenga los nombres de las columnas exactamente como están'
+  ];
+  instructions.forEach(text => instrSheet.addRow([text]));
+
+  // Players sheet
+  const playersSheet = workbook.addWorksheet('Jugadores');
+  playersSheet.columns = [
+    { header: 'Nombre del Equipo', key: 'teamName', width: 25 },
+    { header: 'Categoría', key: 'category', width: 15 },
+    { header: 'Nombre', key: 'firstName', width: 15 },
+    { header: 'Apellido Paterno', key: 'paternalSurname', width: 18 },
+    { header: 'Apellido Materno', key: 'maternalSurname', width: 18 },
+    { header: 'Fecha Nacimiento (YYYY-MM-DD)', key: 'birthDate', width: 28 },
+    { header: 'CURP', key: 'curp', width: 20 },
+    { header: 'Nombre Tutor', key: 'parentName', width: 20 },
+    { header: 'Email Tutor', key: 'emailTutor', width: 28 },
+    { header: 'Teléfono Tutor', key: 'phoneTutor', width: 18 },
+    { header: 'Posición', key: 'position', width: 15 },
+    { header: 'Número Jersey', key: 'jersey', width: 15 },
   ];
 
-  // Crear workbook
-  const wb = XLSX.utils.book_new();
+  playersSheet.addRows([
+    { teamName: 'Águilas FC', category: '2016', firstName: 'Juan', paternalSurname: 'García', maternalSurname: 'López', birthDate: '2015-03-15', curp: 'GALJ150315HDFRPN01', parentName: 'María López', emailTutor: 'maria.lopez@example.com', phoneTutor: '5512345678', position: 'Delantero', jersey: '10' },
+    { teamName: 'Águilas FC', category: '2016', firstName: 'Pedro', paternalSurname: 'Martínez', maternalSurname: 'Sánchez', birthDate: '2016-07-22', curp: 'MASP160722HDFRTR02', parentName: 'José Martínez', emailTutor: 'jose.martinez@example.com', phoneTutor: '5523456789', position: 'Portero', jersey: '1' },
+    { teamName: 'Tigres FC', category: '2017', firstName: 'Luis', paternalSurname: 'Hernández', maternalSurname: 'Ramírez', birthDate: '2015-11-08', curp: 'HERL151108HDFRMS03', parentName: 'Ana Hernández', emailTutor: 'ana.hernandez@example.com', phoneTutor: '5534567890', position: 'Defensa', jersey: '4' },
+  ]);
 
-  // Agregar hoja de instrucciones
-  const wsInstructions = XLSX.utils.json_to_sheet(instructions);
-  wsInstructions['!cols'] = [{ wch: 80 }]; // Ancho de columna
-  XLSX.utils.book_append_sheet(wb, wsInstructions, 'Instrucciones');
-
-  // Agregar hoja de jugadores
-  const wsPlayers = XLSX.utils.json_to_sheet(exampleData);
-  
-  // Configurar ancho de columnas
-  wsPlayers['!cols'] = [
-    { wch: 25 }, // Nombre del Equipo
-    { wch: 15 }, // Categoría
-    { wch: 15 }, // Nombre
-    { wch: 18 }, // Apellido Paterno
-    { wch: 18 }, // Apellido Materno
-    { wch: 28 }, // Fecha Nacimiento
-    { wch: 20 }, // CURP
-    { wch: 20 }, // Nombre Tutor
-    { wch: 28 }, // Email Tutor
-    { wch: 18 }, // Teléfono Tutor
-    { wch: 15 }, // Posición
-    { wch: 15 }  // Número Jersey
-  ];
-  
-  XLSX.utils.book_append_sheet(wb, wsPlayers, 'Jugadores');
-
-  // Generar archivo y descargar
-  XLSX.writeFile(wb, 'plantilla-carga-jugadores.xlsx');
+  const buffer = await workbook.xlsx.writeBuffer();
+  const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'plantilla-carga-jugadores.xlsx';
+  link.click();
+  window.URL.revokeObjectURL(url);
 };
 
 interface ValidationError {
@@ -110,9 +69,8 @@ interface ParseResult {
 
 const validatePlayerData = (row: any, rowIndex: number, teams: any[], categories: any[]): ValidationError[] => {
   const errors: ValidationError[] = [];
-  const actualRow = rowIndex + 2; // +2 porque la fila 1 son headers y empezamos en 0
+  const actualRow = rowIndex + 2;
 
-  // Validar Nombre del Equipo
   const teamName = row['Nombre del Equipo']?.toString().trim();
   if (!teamName) {
     errors.push({ row: actualRow, column: 'Nombre del Equipo', error: 'Campo requerido' });
@@ -123,7 +81,6 @@ const validatePlayerData = (row: any, rowIndex: number, teams: any[], categories
     }
   }
 
-  // Validar Categoría
   const categoryName = row['Categoría']?.toString().trim();
   if (!categoryName) {
     errors.push({ row: actualRow, column: 'Categoría', error: 'Campo requerido' });
@@ -134,38 +91,32 @@ const validatePlayerData = (row: any, rowIndex: number, teams: any[], categories
     }
   }
 
-  // Validar Nombre
   if (!row['Nombre']?.toString().trim()) {
     errors.push({ row: actualRow, column: 'Nombre', error: 'Campo requerido' });
   } else if (row['Nombre'].toString().length > 100) {
     errors.push({ row: actualRow, column: 'Nombre', error: 'Máximo 100 caracteres', value: row['Nombre'] });
   }
 
-  // Validar Apellido Paterno
   if (!row['Apellido Paterno']?.toString().trim()) {
     errors.push({ row: actualRow, column: 'Apellido Paterno', error: 'Campo requerido' });
   } else if (row['Apellido Paterno'].toString().length > 100) {
     errors.push({ row: actualRow, column: 'Apellido Paterno', error: 'Máximo 100 caracteres' });
   }
 
-  // Validar Apellido Materno
   if (!row['Apellido Materno']?.toString().trim()) {
     errors.push({ row: actualRow, column: 'Apellido Materno', error: 'Campo requerido' });
   } else if (row['Apellido Materno'].toString().length > 100) {
     errors.push({ row: actualRow, column: 'Apellido Materno', error: 'Máximo 100 caracteres' });
   }
 
-  // Validar Fecha de Nacimiento
   const birthDate = row['Fecha Nacimiento (YYYY-MM-DD)']?.toString().trim();
   if (!birthDate) {
     errors.push({ row: actualRow, column: 'Fecha Nacimiento', error: 'Campo requerido' });
   } else {
-    // Validar formato YYYY-MM-DD
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (!dateRegex.test(birthDate)) {
       errors.push({ row: actualRow, column: 'Fecha Nacimiento', error: 'Formato inválido. Use YYYY-MM-DD', value: birthDate });
     } else {
-      // Validar que sea una fecha válida
       const date = new Date(birthDate);
       if (isNaN(date.getTime())) {
         errors.push({ row: actualRow, column: 'Fecha Nacimiento', error: 'Fecha inválida', value: birthDate });
@@ -173,7 +124,6 @@ const validatePlayerData = (row: any, rowIndex: number, teams: any[], categories
     }
   }
 
-  // Validar CURP
   const curp = row['CURP']?.toString().trim().toUpperCase();
   if (!curp) {
     errors.push({ row: actualRow, column: 'CURP', error: 'Campo requerido' });
@@ -186,14 +136,12 @@ const validatePlayerData = (row: any, rowIndex: number, teams: any[], categories
     }
   }
 
-  // Validar Nombre Tutor
   if (!row['Nombre Tutor']?.toString().trim()) {
     errors.push({ row: actualRow, column: 'Nombre Tutor', error: 'Campo requerido' });
   } else if (row['Nombre Tutor'].toString().length > 100) {
     errors.push({ row: actualRow, column: 'Nombre Tutor', error: 'Máximo 100 caracteres' });
   }
 
-  // Validar Email Tutor
   const email = row['Email Tutor']?.toString().trim();
   if (!email) {
     errors.push({ row: actualRow, column: 'Email Tutor', error: 'Campo requerido' });
@@ -206,7 +154,6 @@ const validatePlayerData = (row: any, rowIndex: number, teams: any[], categories
     }
   }
 
-  // Validar Teléfono Tutor
   const phone = row['Teléfono Tutor']?.toString().trim();
   if (!phone) {
     errors.push({ row: actualRow, column: 'Teléfono Tutor', error: 'Campo requerido' });
@@ -216,13 +163,11 @@ const validatePlayerData = (row: any, rowIndex: number, teams: any[], categories
     errors.push({ row: actualRow, column: 'Teléfono Tutor', error: 'Máximo 20 caracteres' });
   }
 
-  // Validar Posición (opcional)
   const position = row['Posición']?.toString().trim();
   if (position && position.length > 50) {
     errors.push({ row: actualRow, column: 'Posición', error: 'Máximo 50 caracteres' });
   }
 
-  // Validar Número Jersey
   const jersey = row['Número Jersey']?.toString().trim();
   if (!jersey) {
     errors.push({ row: actualRow, column: 'Número Jersey', error: 'Campo requerido' });
@@ -237,85 +182,79 @@ const validatePlayerData = (row: any, rowIndex: number, teams: any[], categories
 };
 
 export const parsePlayerExcel = async (file: File, teams: any[], categories: any[]): Promise<ParseResult> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    
-    reader.onload = (e) => {
-      try {
-        const data = e.target?.result;
-        const workbook = XLSX.read(data, { type: 'binary' });
-        
-        // Buscar la hoja de jugadores
-        const sheetName = workbook.SheetNames.find(name => 
-          name.toLowerCase().includes('jugador')
-        ) || workbook.SheetNames[1] || workbook.SheetNames[0];
-        
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet);
-        
-        if (jsonData.length === 0) {
-          reject(new Error('El archivo no contiene datos de jugadores'));
-          return;
-        }
+  const arrayBuffer = await file.arrayBuffer();
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(arrayBuffer);
 
-        const allErrors: ValidationError[] = [];
-        const allWarnings: ValidationError[] = [];
-        
-        // Validar cada fila
-        jsonData.forEach((row: any, index: number) => {
-          const rowErrors = validatePlayerData(row, index, teams, categories);
-          allErrors.push(...rowErrors);
-        });
+  // Find the players sheet
+  let worksheet = workbook.worksheets.find(ws => ws.name.toLowerCase().includes('jugador'));
+  if (!worksheet) worksheet = workbook.worksheets[1] || workbook.worksheets[0];
+  if (!worksheet) throw new Error('El archivo no contiene hojas de datos');
 
-        // Validar CURPs duplicados en el Excel
-        const curps = new Map<string, number[]>();
-        jsonData.forEach((row: any, index: number) => {
-          const curp = row['CURP']?.toString().trim().toUpperCase();
-          if (curp) {
-            if (!curps.has(curp)) {
-              curps.set(curp, []);
-            }
-            curps.get(curp)!.push(index + 2);
-          }
-        });
-
-        // Agregar errores para CURPs duplicados
-        curps.forEach((rows, curp) => {
-          if (rows.length > 1) {
-            rows.forEach(row => {
-              allErrors.push({
-                row,
-                column: 'CURP',
-                error: `CURP duplicado. Este CURP aparece en las filas: ${rows.join(', ')}`,
-                value: curp
-              });
-            });
-          }
-        });
-
-        // Mapear los datos al formato esperado
-        const players = jsonData.map((row: any) => ({
-          teamName: row['Nombre del Equipo']?.toString().trim() || '',
-          categoryName: row['Categoría']?.toString().trim() || '',
-          firstName: row['Nombre']?.toString().trim() || '',
-          paternalSurname: row['Apellido Paterno']?.toString().trim() || '',
-          maternalSurname: row['Apellido Materno']?.toString().trim() || '',
-          birthDate: row['Fecha Nacimiento (YYYY-MM-DD)']?.toString().trim() || '',
-          curp: row['CURP']?.toString().trim().toUpperCase() || '',
-          parentName: row['Nombre Tutor']?.toString().trim() || '',
-          parentEmail: row['Email Tutor']?.toString().trim() || '',
-          parentPhone: row['Teléfono Tutor']?.toString().trim() || '',
-          position: row['Posición']?.toString().trim() || '',
-          jerseyNumber: row['Número Jersey']?.toString().trim() || ''
-        }));
-        
-        resolve({ players, errors: allErrors, warnings: allWarnings });
-      } catch (error) {
-        reject(new Error('Error al leer el archivo Excel. Verifica que el formato sea correcto.'));
-      }
-    };
-    
-    reader.onerror = () => reject(new Error('Error al leer el archivo'));
-    reader.readAsBinaryString(file);
+  // Extract headers from first row
+  const headerRow = worksheet.getRow(1);
+  const headers: string[] = [];
+  headerRow.eachCell((cell, colNumber) => {
+    headers[colNumber] = cell.value?.toString() || '';
   });
+
+  // Extract data rows
+  const jsonData: any[] = [];
+  worksheet.eachRow((row, rowNumber) => {
+    if (rowNumber === 1) return; // skip header
+    const rowData: any = {};
+    row.eachCell((cell, colNumber) => {
+      const header = headers[colNumber];
+      if (header) {
+        rowData[header] = cell.value?.toString() || '';
+      }
+    });
+    if (Object.keys(rowData).length > 0) jsonData.push(rowData);
+  });
+
+  if (jsonData.length === 0) {
+    throw new Error('El archivo no contiene datos de jugadores');
+  }
+
+  const allErrors: ValidationError[] = [];
+  const allWarnings: ValidationError[] = [];
+
+  jsonData.forEach((row: any, index: number) => {
+    const rowErrors = validatePlayerData(row, index, teams, categories);
+    allErrors.push(...rowErrors);
+  });
+
+  // Validate duplicate CURPs
+  const curps = new Map<string, number[]>();
+  jsonData.forEach((row: any, index: number) => {
+    const curp = row['CURP']?.toString().trim().toUpperCase();
+    if (curp) {
+      if (!curps.has(curp)) curps.set(curp, []);
+      curps.get(curp)!.push(index + 2);
+    }
+  });
+  curps.forEach((rows, curp) => {
+    if (rows.length > 1) {
+      rows.forEach(row => {
+        allErrors.push({ row, column: 'CURP', error: `CURP duplicado. Este CURP aparece en las filas: ${rows.join(', ')}`, value: curp });
+      });
+    }
+  });
+
+  const players = jsonData.map((row: any) => ({
+    teamName: row['Nombre del Equipo']?.toString().trim() || '',
+    categoryName: row['Categoría']?.toString().trim() || '',
+    firstName: row['Nombre']?.toString().trim() || '',
+    paternalSurname: row['Apellido Paterno']?.toString().trim() || '',
+    maternalSurname: row['Apellido Materno']?.toString().trim() || '',
+    birthDate: row['Fecha Nacimiento (YYYY-MM-DD)']?.toString().trim() || '',
+    curp: row['CURP']?.toString().trim().toUpperCase() || '',
+    parentName: row['Nombre Tutor']?.toString().trim() || '',
+    parentEmail: row['Email Tutor']?.toString().trim() || '',
+    parentPhone: row['Teléfono Tutor']?.toString().trim() || '',
+    position: row['Posición']?.toString().trim() || '',
+    jerseyNumber: row['Número Jersey']?.toString().trim() || ''
+  }));
+
+  return { players, errors: allErrors, warnings: allWarnings };
 };
