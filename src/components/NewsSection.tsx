@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { Calendar, ArrowRight, Newspaper } from "lucide-react";
+import { Calendar, ArrowRight, Newspaper, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,6 +15,8 @@ interface NewsArticle {
   image_url: string | null;
   published_at: string | null;
   is_featured: boolean | null;
+  source_url: string | null;
+  source_name: string | null;
 }
 
 export const NewsSection = () => {
@@ -60,7 +62,6 @@ export const NewsSection = () => {
   const secondary = articles.slice(1, 4);
 
   const getExcerpt = (content: string, maxLength: number) => {
-    // Strip HTML tags for excerpt
     const text = content.replace(/<[^>]*>/g, "");
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength).trim() + "…";
@@ -69,6 +70,14 @@ export const NewsSection = () => {
   const formatDate = (date: string | null) => {
     if (!date) return "";
     return format(new Date(date), "d 'de' MMMM, yyyy", { locale: es });
+  };
+
+  const handleArticleClick = (article: NewsArticle) => {
+    if (article.source_url) {
+      window.open(article.source_url, "_blank", "noopener,noreferrer");
+    } else {
+      navigate(`/noticias/${article.id}`);
+    }
   };
 
   return (
@@ -91,7 +100,7 @@ export const NewsSection = () => {
         {/* Featured + Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Featured Article */}
-          <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer" onClick={() => navigate(`/noticias/${featured.id}`)}>
+          <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer" onClick={() => handleArticleClick(featured)}>
             <div className="relative h-64 lg:h-full min-h-[300px] overflow-hidden">
               {featured.image_url ? (
                 <img
@@ -107,11 +116,19 @@ export const NewsSection = () => {
               {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                {featured.is_featured && (
-                  <Badge className="bg-accent text-accent-foreground mb-3 text-xs">
-                    Destacado
-                  </Badge>
-                )}
+                <div className="flex items-center gap-2 mb-3">
+                  {featured.is_featured && (
+                    <Badge className="bg-accent text-accent-foreground text-xs">
+                      Destacado
+                    </Badge>
+                  )}
+                  {featured.source_name && (
+                    <Badge variant="outline" className="text-xs text-white/90 border-white/40 gap-1">
+                      <ExternalLink className="w-3 h-3" />
+                      {featured.source_name}
+                    </Badge>
+                  )}
+                </div>
                 <h3 className="text-xl md:text-2xl font-bold leading-tight mb-2">
                   {featured.title}
                 </h3>
@@ -131,7 +148,7 @@ export const NewsSection = () => {
             {secondary.map((article) => (
               <Card
                 key={article.id}
-                onClick={() => navigate(`/noticias/${article.id}`)}
+                onClick={() => handleArticleClick(article)}
                 className="group overflow-hidden border hover:border-primary/30 hover:shadow-md transition-all duration-300 cursor-pointer"
               >
                 <CardContent className="p-0">
@@ -152,15 +169,25 @@ export const NewsSection = () => {
                     </div>
                     {/* Content */}
                     <div className="flex flex-col justify-center py-3 pr-4 flex-1 min-w-0">
-                      <h4 className="font-bold text-foreground text-sm md:text-base leading-tight mb-1 line-clamp-2 group-hover:text-primary transition-colors">
-                        {article.title}
-                      </h4>
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4 className="font-bold text-foreground text-sm md:text-base leading-tight line-clamp-2 group-hover:text-primary transition-colors">
+                          {article.title}
+                        </h4>
+                      </div>
                       <p className="text-muted-foreground text-xs line-clamp-2 mb-2 hidden sm:block">
                         {getExcerpt(article.content, 100)}
                       </p>
-                      <div className="flex items-center gap-2 text-muted-foreground text-xs">
-                        <Calendar className="w-3 h-3" />
-                        {formatDate(article.published_at)}
+                      <div className="flex items-center gap-3 text-muted-foreground text-xs">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {formatDate(article.published_at)}
+                        </span>
+                        {article.source_name && (
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 gap-1">
+                            <ExternalLink className="w-2.5 h-2.5" />
+                            {article.source_name}
+                          </Badge>
+                        )}
                       </div>
                     </div>
                     {/* Arrow */}

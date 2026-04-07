@@ -3,12 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { Calendar, ArrowLeft, Newspaper } from "lucide-react";
+import { Calendar, ArrowLeft, Newspaper, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { useEffect } from "react";
 
 const NewsDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,10 +29,33 @@ const NewsDetail = () => {
     enabled: !!id,
   });
 
+  // If external article, redirect to source
+  useEffect(() => {
+    if (article?.source_url) {
+      window.location.replace(article.source_url);
+    }
+  }, [article]);
+
   const formatDate = (date: string | null) => {
     if (!date) return "";
     return format(new Date(date), "d 'de' MMMM, yyyy", { locale: es });
   };
+
+  // Show loading while redirecting external articles
+  if (article?.source_url) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center">
+          <div className="text-center space-y-4">
+            <ExternalLink className="w-8 h-8 text-primary mx-auto animate-pulse" />
+            <p className="text-muted-foreground">Redirigiendo a {article.source_name || "la fuente original"}...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -63,11 +87,11 @@ const NewsDetail = () => {
               <Newspaper className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
               <h2 className="text-xl font-bold text-foreground mb-2">Artículo no encontrado</h2>
               <p className="text-muted-foreground mb-4">No pudimos encontrar la noticia que buscas.</p>
-              <Button onClick={() => navigate("/home")}>Ir al inicio</Button>
+              <Button onClick={() => navigate("/")}>Ir al inicio</Button>
             </div>
           )}
 
-          {article && (
+          {article && !article.source_url && (
             <article>
               <div className="mb-6">
                 {article.is_featured && (

@@ -25,10 +25,10 @@ interface NewsArticle {
 
 interface ImportPreviewData {
   title: string;
-  content: string;
+  excerpt: string;
   image_url: string | null;
   source_name: string;
-  source_url?: string;
+  source_url: string;
 }
 
 interface ImportJobRecord {

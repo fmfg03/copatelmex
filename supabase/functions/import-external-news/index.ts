@@ -14,7 +14,7 @@ const requestSchema = z.object({
 
 type ImportedArticle = {
   title: string;
-  content: string;
+  excerpt: string;
   image_url: string | null;
   source_name: string;
   source_url: string;
@@ -46,13 +46,13 @@ function decodeHtmlEntities(value: string) {
   return value.replace(/&(amp|quot|#039|lt|gt|nbsp);/g, (entity) => HTML_ENTITIES[entity] ?? entity).trim();
 }
 
-function escapeHtml(value: string) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+function extractMetaContent(html: string, property: string) {
+  const pattern1 = new RegExp(`<meta[^>]*property=["']${property}["'][^>]*content=["']([^"']+)["']`, "i");
+  const pattern2 = new RegExp(`<meta[^>]*content=["']([^"']+)["'][^>]*property=["']${property}["']`, "i");
+  const pattern3 = new RegExp(`<meta[^>]*name=["']${property}["'][^>]*content=["']([^"']+)["']`, "i");
+  const pattern4 = new RegExp(`<meta[^>]*content=["']([^"']+)["'][^>]*name=["']${property}["']`, "i");
+
+  return pattern1.exec(html)?.[1] ?? pattern2.exec(html)?.[1] ?? pattern3.exec(html)?.[1] ?? pattern4.exec(html)?.[1] ?? null;
 }
 
 function normalizeUrl(value: string | null, baseUrl: string) {
@@ -64,75 +64,14 @@ function normalizeUrl(value: string | null, baseUrl: string) {
   }
 }
 
-function extractMetaContent(html: string, property: string) {
-  const pattern1 = new RegExp(`<meta[^>]*property=["']${property}["'][^>]*content=["']([^"']+)["']`, "i");
-  const pattern2 = new RegExp(`<meta[^>]*content=["']([^"']+)["'][^>]*property=["']${property}["']`, "i");
-  const pattern3 = new RegExp(`<meta[^>]*name=["']${property}["'][^>]*content=["']([^"']+)["']`, "i");
-  const pattern4 = new RegExp(`<meta[^>]*content=["']([^"']+)["'][^>]*name=["']${property}["']`, "i");
-
-  return pattern1.exec(html)?.[1] ?? pattern2.exec(html)?.[1] ?? pattern3.exec(html)?.[1] ?? pattern4.exec(html)?.[1] ?? null;
-}
-
-function stripToArticleHtml(html: string, baseUrl: string) {
+function extractArticleMeta(html: string, url: string) {
   const ogTitle = extractMetaContent(html, "og:title") ?? html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1] ?? "";
-  const imageUrl = normalizeUrl(extractMetaContent(html, "og:image"), baseUrl);
+  const imageUrl = normalizeUrl(extractMetaContent(html, "og:image"), url);
   const description = extractMetaContent(html, "og:description") ?? extractMetaContent(html, "description") ?? "";
-
-  let articleHtml = "";
-  const contentPatterns = [
-    /<div[^>]*class=["'][^"']*(?:td-post-content|tdb-block-inner)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
-    /<div[^>]*class=["'][^"']*(?:article-body|entry-content|post-content|article-content|story-body|nota_cuerpo|body-text|article__body|mw-parser-output)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
-    /<div[^>]*id=["'](?:article-body|content|main-content|bodyContent|mw-content-text)[^"']*["'][^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div|$)/i,
-  ];
-
-  for (const pattern of contentPatterns) {
-    const match = html.match(pattern);
-    if (match) {
-      articleHtml = match[1];
-      break;
-    }
-  }
-
-  if (!articleHtml) {
-    const articleMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
-    if (articleMatch) {
-      articleHtml = articleMatch[1];
-    }
-  }
-
-  // Fallback: try <main> tag
-  if (!articleHtml) {
-    const mainMatch = html.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
-    if (mainMatch) {
-      articleHtml = mainMatch[1];
-    }
-  }
-
-  let content = articleHtml;
-  content = content.replace(/<script[\s\S]*?<\/script>/gi, "");
-  content = content.replace(/<style[\s\S]*?<\/style>/gi, "");
-  content = content.replace(/<noscript[\s\S]*?<\/noscript>/gi, "");
-  content = content.replace(/<(nav|aside|footer)[\s\S]*?<\/\1>/gi, "");
-  content = content.replace(/<div[^>]*class=["'][^"']*(?:share|social|related|comment|sidebar|ad-|banner|newsletter)[^"']*["'][^>]*>[\s\S]*?<\/div>/gi, "");
-  content = content.replace(/<(iframe|form|button)[\s\S]*?<\/\1>/gi, "");
-  content = content.replace(/<input[^>]*>/gi, "");
-  content = content.replace(/<a[^>]*>([\s\S]*?)<\/a>/gi, "$1");
-  content = content.replace(/<(\w+)\s+[^>]*>/gi, (match, tag) => {
-    if (tag.toLowerCase() === "img") {
-      const src = normalizeUrl(match.match(/src=["']([^"']+)["']/i)?.[1] ?? "", baseUrl) ?? "";
-      const alt = escapeHtml(match.match(/alt=["']([^"']+)["']/i)?.[1] ?? "");
-      return src ? `<img src="${src}" alt="${alt}">` : "";
-    }
-    return `<${tag}>`;
-  });
-  content = content.replace(/<p>\s*<\/p>/gi, "");
-  content = content.replace(/<p>\s*&nbsp;\s*<\/p>/gi, "");
-  content = content.trim();
 
   return {
     title: decodeHtmlEntities(ogTitle),
     description: decodeHtmlEntities(description),
-    content,
     imageUrl,
   };
 }
@@ -145,13 +84,6 @@ async function fetchImportedArticle(url: string, sourceName: string): Promise<Im
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
       "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
       "Accept-Language": "es-MX,es;q=0.9,en-US;q=0.8,en;q=0.7",
-      "Accept-Encoding": "gzip, deflate, br",
-      "Sec-Fetch-Dest": "document",
-      "Sec-Fetch-Mode": "navigate",
-      "Sec-Fetch-Site": "none",
-      "Sec-Fetch-User": "?1",
-      "Upgrade-Insecure-Requests": "1",
-      "Cache-Control": "no-cache",
     },
     redirect: "follow",
     signal: AbortSignal.timeout(15000),
@@ -162,26 +94,21 @@ async function fetchImportedArticle(url: string, sourceName: string): Promise<Im
   }
 
   const html = await pageResponse.text();
-  const extracted = stripToArticleHtml(html, url);
+  const meta = extractArticleMeta(html, url);
 
-  if (!extracted.title) {
+  if (!meta.title) {
     throw new Error("No se pudo extraer el título del artículo");
   }
 
-  const safeSourceName = escapeHtml(sourceName);
-  const descriptionBlock = extracted.description
-    ? `<p><em>${escapeHtml(extracted.description)}</em></p>`
+  // Only store a short excerpt (max 200 chars), not the full content
+  const excerpt = meta.description
+    ? (meta.description.length > 200 ? meta.description.substring(0, 200).trim() + "…" : meta.description)
     : "";
-  const articleBody = extracted.content || descriptionBlock;
-
-  if (!articleBody) {
-    throw new Error("No se pudo extraer contenido del artículo");
-  }
 
   return {
-    title: extracted.title,
-    content: `<p><em>Nota cortesía de <strong>${safeSourceName}</strong></em></p>${descriptionBlock && !articleBody.includes(descriptionBlock) ? descriptionBlock : ""}${articleBody}<hr><p><em>Artículo original publicado por <strong>${safeSourceName}</strong>. Reproducido con fines informativos como cortesía editorial.</em></p>`,
-    image_url: extracted.imageUrl,
+    title: meta.title,
+    excerpt,
+    image_url: meta.imageUrl,
     source_name: sourceName,
     source_url: url,
   };
@@ -210,8 +137,10 @@ async function processImportJob(params: {
         .from("news")
         .insert({
           title: article.title,
-          content: article.content,
+          content: article.excerpt,
           image_url: article.image_url,
+          source_url: article.source_url,
+          source_name: article.source_name,
           is_featured: false,
           published_at: new Date().toISOString(),
           author_id: params.userId,
@@ -232,7 +161,7 @@ async function processImportJob(params: {
         status: "completed",
         error_message: null,
         extracted_title: article.title,
-        extracted_content: article.content,
+        extracted_content: article.excerpt,
         extracted_image_url: article.image_url,
         result: { ...article, published: params.action === "publish", news_id: newsId },
         completed_at: new Date().toISOString(),
