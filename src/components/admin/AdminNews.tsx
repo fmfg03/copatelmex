@@ -345,10 +345,9 @@ export const AdminNews = () => {
                       />
                     )}
                     <p className="font-semibold text-base">{importPreview.title}</p>
-                    <div
-                      className="text-xs text-muted-foreground max-h-40 overflow-y-auto prose prose-sm dark:prose-invert"
-                      dangerouslySetInnerHTML={{ __html: importPreview.content.substring(0, 1000) + "..." }}
-                    />
+                    <p className="text-xs text-muted-foreground">
+                      {importPreview.excerpt}
+                    </p>
                     <Badge variant="secondary" className="text-xs">
                       Cortesía de {importPreview.source_name}
                     </Badge>
