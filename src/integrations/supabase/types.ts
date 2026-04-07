@@ -644,6 +644,8 @@ export type Database = {
           image_url: string | null
           is_featured: boolean | null
           published_at: string | null
+          source_name: string | null
+          source_url: string | null
           title: string
         }
         Insert: {
@@ -654,6 +656,8 @@ export type Database = {
           image_url?: string | null
           is_featured?: boolean | null
           published_at?: string | null
+          source_name?: string | null
+          source_url?: string | null
           title: string
         }
         Update: {
@@ -664,6 +668,8 @@ export type Database = {
           image_url?: string | null
           is_featured?: boolean | null
           published_at?: string | null
+          source_name?: string | null
+          source_url?: string | null
           title?: string
         }
         Relationships: []

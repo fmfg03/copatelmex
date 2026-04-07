@@ -25,10 +25,10 @@ interface NewsArticle {
 
 interface ImportPreviewData {
   title: string;
-  content: string;
+  excerpt: string;
   image_url: string | null;
   source_name: string;
-  source_url?: string;
+  source_url: string;
 }
 
 interface ImportJobRecord {
@@ -254,8 +254,10 @@ export const AdminNews = () => {
 
       const { error } = await supabase.from("news").insert({
         title: importPreview.title.trim(),
-        content: importPreview.content.trim(),
+        content: importPreview.excerpt.trim(),
         image_url: importPreview.image_url,
+        source_url: importPreview.source_url,
+        source_name: importPreview.source_name,
         is_featured: false,
         published_at: new Date().toISOString(),
         author_id: user?.id ?? null,
@@ -343,10 +345,9 @@ export const AdminNews = () => {
                       />
                     )}
                     <p className="font-semibold text-base">{importPreview.title}</p>
-                    <div
-                      className="text-xs text-muted-foreground max-h-40 overflow-y-auto prose prose-sm dark:prose-invert"
-                      dangerouslySetInnerHTML={{ __html: importPreview.content.substring(0, 1000) + "..." }}
-                    />
+                    <p className="text-xs text-muted-foreground">
+                      {importPreview.excerpt}
+                    </p>
                     <Badge variant="secondary" className="text-xs">
                       Cortesía de {importPreview.source_name}
                     </Badge>
