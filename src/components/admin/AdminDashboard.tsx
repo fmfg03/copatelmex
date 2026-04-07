@@ -221,9 +221,9 @@ export const AdminDashboard = () => {
     }
   };
 
-  const handleExportExcel = () => {
+  const handleExportExcel = async () => {
     if (stats) {
-      exportDashboardToExcel(stats, trendData, dateRange);
+      await exportDashboardToExcel(stats, trendData, dateRange);
     }
   };
 
