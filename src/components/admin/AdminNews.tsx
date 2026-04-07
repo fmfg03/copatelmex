@@ -254,8 +254,10 @@ export const AdminNews = () => {
 
       const { error } = await supabase.from("news").insert({
         title: importPreview.title.trim(),
-        content: importPreview.content.trim(),
+        content: importPreview.excerpt.trim(),
         image_url: importPreview.image_url,
+        source_url: importPreview.source_url,
+        source_name: importPreview.source_name,
         is_featured: false,
         published_at: new Date().toISOString(),
         author_id: user?.id ?? null,
