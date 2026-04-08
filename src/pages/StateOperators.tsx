@@ -121,42 +121,71 @@ const StateOperators = () => {
                             </div>
                             
                             <div className="space-y-3">
-                              <div>
-                                <p className="text-sm text-muted-foreground mb-1">Nombre del Operador</p>
-                                <p className="font-semibold text-secondary dark:text-white">{operator.name}</p>
-                              </div>
-                              
-                              <div className="flex items-center gap-2">
-                                <Mail className="w-4 h-4 text-primary" />
-                                <a 
-                                  href={`mailto:${operator.email}`}
-                                  className="text-primary hover:underline font-medium"
-                                >
-                                  {operator.email}
-                                </a>
-                              </div>
-                              
-                              {operator.phone && (
-                                <div className="flex items-center gap-2">
-                                  <Phone className="w-4 h-4 text-primary" />
-                                  <a 
-                                    href={`tel:${operator.phone.replace(/\s/g, '')}`}
-                                    className="text-primary hover:underline font-medium"
-                                  >
-                                    {operator.phone}
-                                  </a>
-                                </div>
-                              )}
-                            </div>
+                              {operator.subOperators ? (
+                                operator.subOperators.map((sub, idx) => (
+                                  <div key={idx} className={`space-y-2 ${idx > 0 ? 'pt-3 border-t' : ''}`}>
+                                    <p className="text-xs font-semibold text-primary uppercase tracking-wide">{sub.zone}</p>
+                                    <div>
+                                      <p className="text-sm text-muted-foreground mb-1">Operador</p>
+                                      <p className="font-semibold text-secondary dark:text-white">{sub.name}</p>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <Mail className="w-4 h-4 text-primary" />
+                                      <a href={`mailto:${sub.email}`} className="text-primary hover:underline font-medium text-sm break-all">
+                                        {sub.email}
+                                      </a>
+                                    </div>
+                                    {sub.phone && (
+                                      <div className="flex items-center gap-2">
+                                        <Phone className="w-4 h-4 text-primary" />
+                                        <a href={`tel:${sub.phone}`} className="text-primary hover:underline font-medium text-sm">
+                                          {sub.phone}
+                                        </a>
+                                      </div>
+                                    )}
+                                    <a
+                                      href={`mailto:${sub.email}?subject=Inscripción Copa Telmex Telcel - ${operator.stateName} (${sub.zone})`}
+                                      className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-2 px-3 rounded-lg transition-colors text-sm"
+                                    >
+                                      <Mail className="w-3 h-3" />
+                                      Contactar
+                                    </a>
+                                  </div>
+                                ))
+                              ) : (
+                                <>
+                                  <div>
+                                    <p className="text-sm text-muted-foreground mb-1">Nombre del Operador</p>
+                                    <p className="font-semibold text-secondary dark:text-white">{operator.name}</p>
+                                  </div>
+                                  
+                                  <div className="flex items-center gap-2">
+                                    <Mail className="w-4 h-4 text-primary" />
+                                    <a href={`mailto:${operator.email}`} className="text-primary hover:underline font-medium">
+                                      {operator.email}
+                                    </a>
+                                  </div>
+                                  
+                                  {operator.phone && (
+                                    <div className="flex items-center gap-2">
+                                      <Phone className="w-4 h-4 text-primary" />
+                                      <a href={`tel:${operator.phone.replace(/\s/g, '')}`} className="text-primary hover:underline font-medium">
+                                        {operator.phone}
+                                      </a>
+                                    </div>
+                                  )}
 
-                            <div className="pt-4 border-t">
-                              <a
-                                href={`mailto:${operator.email}?subject=Inscripción Copa Telmex Telcel - ${operator.stateName}`}
-                                className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-lg transition-colors"
-                              >
-                                <Mail className="w-4 h-4" />
-                                Contactar Operador
-                              </a>
+                                  <div className="pt-4 border-t">
+                                    <a
+                                      href={`mailto:${operator.email}?subject=Inscripción Copa Telmex Telcel - ${operator.stateName}`}
+                                      className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+                                    >
+                                      <Mail className="w-4 h-4" />
+                                      Contactar Operador
+                                    </a>
+                                  </div>
+                                </>
+                              )}
                             </div>
                           </div>
                         );
