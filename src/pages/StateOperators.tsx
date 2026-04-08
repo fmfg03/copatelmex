@@ -11,6 +11,12 @@ export interface StateOperator {
   email: string;
   phone?: string;
   stateName: string;
+  subOperators?: Array<{
+    zone: string;
+    name: string;
+    email: string;
+    phone?: string;
+  }>;
 }
 
 // Datos de Asociaciones Estatales - Responsables por estado
@@ -29,7 +35,10 @@ export const stateOperators: Record<string, StateOperator> = {
   "guerrero": { id: "gro", stateName: "Guerrero", name: "Guillermo Moreno", email: "gallo_futbol@hotmail.com" },
   "hidalgo": { id: "hgo", stateName: "Hidalgo", name: "Mayra Cruz", email: "mec79jb@gmail.com" },
   "jalisco": { id: "jal", stateName: "Jalisco", name: "Mauricio Figueroa", email: "mauricio.fimo.ufd@gmail.com" },
-  "estado-de-mexico": { id: "mex", stateName: "Estado de México", name: "Juliana Martín (Valle de México) / Jesús Mondragón (Valle de Toluca)", email: "asoc_mex@yahoo.com.mx" },
+  "estado-de-mexico": { id: "mex", stateName: "Estado de México", name: "Juliana Martín / Jesús Mondragón", email: "asoc_mex@yahoo.com.mx", subOperators: [
+    { zone: "Valle de México", name: "Juliana Martín", email: "asoc_mex@yahoo.com.mx" },
+    { zone: "Valle de Toluca", name: "Jesús Mondragón", email: "jesusmondragon66@hotmail.com", phone: "7223581093" },
+  ] },
   "michoacan": { id: "mich", stateName: "Michoacán", name: "Felipe Nery Luna", email: "apodacaupn@live.com.mx" },
   "morelos": { id: "mor", stateName: "Morelos", name: "José Antonio Albarrán Salazar", email: "jaqueline.afaem@gmail.com" },
   "nayarit": { id: "nay", stateName: "Nayarit", name: "Jose Antonio Huizar", email: "nubia_camacho@hotmail.com" },
@@ -112,42 +121,71 @@ const StateOperators = () => {
                             </div>
                             
                             <div className="space-y-3">
-                              <div>
-                                <p className="text-sm text-muted-foreground mb-1">Nombre del Operador</p>
-                                <p className="font-semibold text-secondary dark:text-white">{operator.name}</p>
-                              </div>
-                              
-                              <div className="flex items-center gap-2">
-                                <Mail className="w-4 h-4 text-primary" />
-                                <a 
-                                  href={`mailto:${operator.email}`}
-                                  className="text-primary hover:underline font-medium"
-                                >
-                                  {operator.email}
-                                </a>
-                              </div>
-                              
-                              {operator.phone && (
-                                <div className="flex items-center gap-2">
-                                  <Phone className="w-4 h-4 text-primary" />
-                                  <a 
-                                    href={`tel:${operator.phone.replace(/\s/g, '')}`}
-                                    className="text-primary hover:underline font-medium"
-                                  >
-                                    {operator.phone}
-                                  </a>
-                                </div>
-                              )}
-                            </div>
+                              {operator.subOperators ? (
+                                operator.subOperators.map((sub, idx) => (
+                                  <div key={idx} className={`space-y-2 ${idx > 0 ? 'pt-3 border-t' : ''}`}>
+                                    <p className="text-xs font-semibold text-primary uppercase tracking-wide">{sub.zone}</p>
+                                    <div>
+                                      <p className="text-sm text-muted-foreground mb-1">Operador</p>
+                                      <p className="font-semibold text-secondary dark:text-white">{sub.name}</p>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <Mail className="w-4 h-4 text-primary" />
+                                      <a href={`mailto:${sub.email}`} className="text-primary hover:underline font-medium text-sm break-all">
+                                        {sub.email}
+                                      </a>
+                                    </div>
+                                    {sub.phone && (
+                                      <div className="flex items-center gap-2">
+                                        <Phone className="w-4 h-4 text-primary" />
+                                        <a href={`tel:${sub.phone}`} className="text-primary hover:underline font-medium text-sm">
+                                          {sub.phone}
+                                        </a>
+                                      </div>
+                                    )}
+                                    <a
+                                      href={`mailto:${sub.email}?subject=Inscripción Copa Telmex Telcel - ${operator.stateName} (${sub.zone})`}
+                                      className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-2 px-3 rounded-lg transition-colors text-sm"
+                                    >
+                                      <Mail className="w-3 h-3" />
+                                      Contactar
+                                    </a>
+                                  </div>
+                                ))
+                              ) : (
+                                <>
+                                  <div>
+                                    <p className="text-sm text-muted-foreground mb-1">Nombre del Operador</p>
+                                    <p className="font-semibold text-secondary dark:text-white">{operator.name}</p>
+                                  </div>
+                                  
+                                  <div className="flex items-center gap-2">
+                                    <Mail className="w-4 h-4 text-primary" />
+                                    <a href={`mailto:${operator.email}`} className="text-primary hover:underline font-medium">
+                                      {operator.email}
+                                    </a>
+                                  </div>
+                                  
+                                  {operator.phone && (
+                                    <div className="flex items-center gap-2">
+                                      <Phone className="w-4 h-4 text-primary" />
+                                      <a href={`tel:${operator.phone.replace(/\s/g, '')}`} className="text-primary hover:underline font-medium">
+                                        {operator.phone}
+                                      </a>
+                                    </div>
+                                  )}
 
-                            <div className="pt-4 border-t">
-                              <a
-                                href={`mailto:${operator.email}?subject=Inscripción Copa Telmex Telcel - ${operator.stateName}`}
-                                className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-lg transition-colors"
-                              >
-                                <Mail className="w-4 h-4" />
-                                Contactar Operador
-                              </a>
+                                  <div className="pt-4 border-t">
+                                    <a
+                                      href={`mailto:${operator.email}?subject=Inscripción Copa Telmex Telcel - ${operator.stateName}`}
+                                      className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+                                    >
+                                      <Mail className="w-4 h-4" />
+                                      Contactar Operador
+                                    </a>
+                                  </div>
+                                </>
+                              )}
                             </div>
                           </div>
                         );
