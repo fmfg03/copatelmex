@@ -11,6 +11,12 @@ export interface StateOperator {
   email: string;
   phone?: string;
   stateName: string;
+  subOperators?: Array<{
+    zone: string;
+    name: string;
+    email: string;
+    phone?: string;
+  }>;
 }
 
 // Datos de Asociaciones Estatales - Responsables por estado
