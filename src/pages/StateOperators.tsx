@@ -35,7 +35,10 @@ export const stateOperators: Record<string, StateOperator> = {
   "guerrero": { id: "gro", stateName: "Guerrero", name: "Guillermo Moreno", email: "gallo_futbol@hotmail.com" },
   "hidalgo": { id: "hgo", stateName: "Hidalgo", name: "Mayra Cruz", email: "mec79jb@gmail.com" },
   "jalisco": { id: "jal", stateName: "Jalisco", name: "Mauricio Figueroa", email: "mauricio.fimo.ufd@gmail.com" },
-  "estado-de-mexico": { id: "mex", stateName: "Estado de México", name: "Juliana Martín (Valle de México) / Jesús Mondragón (Valle de Toluca)", email: "asoc_mex@yahoo.com.mx" },
+  "estado-de-mexico": { id: "mex", stateName: "Estado de México", name: "Juliana Martín / Jesús Mondragón", email: "asoc_mex@yahoo.com.mx", subOperators: [
+    { zone: "Valle de México", name: "Juliana Martín", email: "asoc_mex@yahoo.com.mx" },
+    { zone: "Valle de Toluca", name: "Jesús Mondragón", email: "jesusmondragon66@hotmail.com", phone: "7223581093" },
+  ] },
   "michoacan": { id: "mich", stateName: "Michoacán", name: "Felipe Nery Luna", email: "apodacaupn@live.com.mx" },
   "morelos": { id: "mor", stateName: "Morelos", name: "José Antonio Albarrán Salazar", email: "jaqueline.afaem@gmail.com" },
   "nayarit": { id: "nay", stateName: "Nayarit", name: "Jose Antonio Huizar", email: "nubia_camacho@hotmail.com" },
