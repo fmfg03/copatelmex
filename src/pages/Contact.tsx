@@ -60,7 +60,7 @@ const FAQS = [
   },
   {
     question: "¿Puedo inscribir más de un equipo?",
-    answer: "Sí, puedes inscribir múltiples equipos en diferentes categorías. Cada equipo debe completar su proceso de inscripción y pago de forma independiente.",
+    answer: "Sí, puedes inscribir múltiples equipos en diferentes categorías. Cada equipo debe completar su proceso de inscripción de forma independiente.",
   },
   {
     question: "¿Hay premios para los ganadores?",
