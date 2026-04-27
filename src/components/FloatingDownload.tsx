@@ -1,10 +1,12 @@
 import { Download } from "lucide-react";
+import { CONVOCATORIA_PATH, downloadConvocatoria } from "@/lib/downloads";
 
 export const FloatingDownload = () => {
   return (
     <a
-      href="/convocatoria.pdf"
+      href={CONVOCATORIA_PATH}
       download
+      onClick={downloadConvocatoria}
       className="fixed bottom-8 right-8 z-40 bg-accent hover:bg-accent/90 text-white rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 flex items-center gap-2 group"
     >
       <Download className="w-6 h-6" />

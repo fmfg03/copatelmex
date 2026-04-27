@@ -15,6 +15,7 @@ import heroChampions1 from "@/assets/hero-champions-1.jpg";
 import heroChampions2 from "@/assets/hero-champions-ceremony.jpg";
 import heroFemenilChampions from "@/assets/hero-femenil-champions.jpeg";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
+import { CONVOCATORIA_PATH, downloadConvocatoria } from "@/lib/downloads";
 
 
 const heroSlides = [
@@ -177,7 +178,7 @@ export const Hero = () => {
                 asChild
                 className="bg-accent hover:bg-accent/90 text-white font-bold text-sm md:text-lg px-6 md:px-8 py-5 md:py-6 w-full sm:w-auto rounded-full shadow-lg"
               >
-                <a href="/convocatoria.pdf" download>
+                <a href={CONVOCATORIA_PATH} download onClick={downloadConvocatoria}>
                   <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                   Descarga Convocatoria
                 </a>

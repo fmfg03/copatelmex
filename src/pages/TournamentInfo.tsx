@@ -15,6 +15,7 @@ import sponsorKeuka from "@/assets/sponsor-keuka.png";
 import sponsorZucaritas from "@/assets/sponsor-zucaritas.png";
 import sponsorPowerade from "@/assets/sponsor-powerade.png";
 import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
+import { CONVOCATORIA_PATH, downloadConvocatoria } from "@/lib/downloads";
 export default function TournamentInfo() {
   const navigate = useNavigate();
   return <div className="min-h-screen">
@@ -37,7 +38,7 @@ export default function TournamentInfo() {
                 Quiero Inscribirme
               </Button>
               <Button size="lg" variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-secondary" asChild>
-                <a href="/convocatoria.pdf" download>
+                <a href={CONVOCATORIA_PATH} download onClick={downloadConvocatoria}>
                   <Download className="w-5 h-5 mr-2" />
                   Descargar Convocatoria
                 </a>
