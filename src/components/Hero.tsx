@@ -177,7 +177,7 @@ export const Hero = () => {
                 asChild
                 className="bg-accent hover:bg-accent/90 text-white font-bold text-sm md:text-lg px-6 md:px-8 py-5 md:py-6 w-full sm:w-auto rounded-full shadow-lg"
               >
-                <a href="/bases-torneo.pdf" download>
+                <a href="/convocatoria.pdf" download>
                   <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                   Descarga Convocatoria
                 </a>
