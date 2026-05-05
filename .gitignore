@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local tooling
+.venv-news/
+
+# Source-only news images kept out of git; optimized assets live in src/assets/news/optimized/
+src/assets/news/INSCRIPCIONES-ABIERTAS.png
+src/assets/news/WhatsApp Image *.jpeg
