@@ -86,7 +86,16 @@ serve(async (req) => {
       throw new Error(`SendGrid error: ${response.status} - ${errorBody}`);
     }
 
-    try { await supabase.from("email_send_log").insert({ sent_by: user.id, recipient_count: 1, subject: `Pago Verificado - ${teamData.team_name}`, status: "sent" }) } catch {}
+    try {
+      await supabase.from("email_send_log").insert({
+        sent_by: user.id,
+        recipient_count: 1,
+        subject: `Pago Verificado - ${teamData.team_name}`,
+        status: "sent",
+      });
+    } catch (logError) {
+      console.warn("Unable to write email_send_log entry", logError);
+    }
 
     return new Response(JSON.stringify({ success: true, message: `Email sent to ${profile.email}` }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 });

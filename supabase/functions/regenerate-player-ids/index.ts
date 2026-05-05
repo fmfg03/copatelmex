@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
     console.log(`Found ${players.length} players to process`);
 
     let updatedCount = 0;
-    let errors = [];
+    const errors = [];
 
     // Process each player
     for (const player of players) {
