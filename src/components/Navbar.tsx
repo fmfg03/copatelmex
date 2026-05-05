@@ -76,7 +76,8 @@ export const Navbar = () => {
     { name: "Información", href: "/tournament-info", disabled: false },
     { name: "Reglamento", href: "/reglamento", disabled: true },
     { name: "Calendario", href: "/calendario", disabled: false },
-    { name: "Multimedia", href: "/media", disabled: true },
+    { name: "Multimedia", href: "/media", disabled: false },
+    { name: "Noticias", href: "/noticias", disabled: false },
     { name: "Contacto", href: "/contacto", disabled: false },
   ];
 
@@ -108,14 +109,18 @@ export const Navbar = () => {
                       e.preventDefault();
                       return;
                     }
-                    if (link.href.startsWith("/#")) {
+                    if (link.href === "/") {
+                      e.preventDefault();
+                      navigate("/");
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    } else if (link.href.startsWith("/#")) {
                       e.preventDefault();
                       navigate("/");
                       setTimeout(() => {
                         const element = document.querySelector(link.href.substring(1));
                         element?.scrollIntoView({ behavior: "smooth" });
                       }, 100);
-                    } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto" || link.href === "/calendario") {
+                    } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto" || link.href === "/calendario" || link.href === "/media" || link.href === "/noticias") {
                       e.preventDefault();
                       navigate(link.href);
                     }
@@ -229,14 +234,18 @@ export const Navbar = () => {
                         return;
                       }
                       setIsOpen(false);
-                      if (link.href.startsWith("/#")) {
+                      if (link.href === "/") {
+                        e.preventDefault();
+                        navigate("/");
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      } else if (link.href.startsWith("/#")) {
                         e.preventDefault();
                         navigate("/");
                         setTimeout(() => {
                           const element = document.querySelector(link.href.substring(1));
                           element?.scrollIntoView({ behavior: "smooth" });
                         }, 100);
-                      } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto" || link.href === "/calendario") {
+                      } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto" || link.href === "/calendario" || link.href === "/media" || link.href === "/noticias") {
                         e.preventDefault();
                         navigate(link.href);
                       }

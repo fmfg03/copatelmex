@@ -3,17 +3,19 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { Calendar, ArrowLeft, Newspaper, ExternalLink } from "lucide-react";
+import { Calendar, ArrowLeft, Newspaper, ExternalLink, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { useEffect } from "react";
+import { getLocalNewsArticleById } from "@/content/localNews";
 
 const NewsDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const localArticle = id ? getLocalNewsArticleById(id) : undefined;
 
   const { data: article, isLoading, error } = useQuery({
     queryKey: ["news-detail", id],
@@ -26,15 +28,15 @@ const NewsDetail = () => {
       if (error) throw error;
       return data;
     },
-    enabled: !!id,
+    enabled: !!id && !localArticle,
   });
 
   // If external article, redirect to source
   useEffect(() => {
-    if (article?.source_url) {
+    if (!localArticle && article?.source_url) {
       window.location.replace(article.source_url);
     }
-  }, [article]);
+  }, [article, localArticle]);
 
   const formatDate = (date: string | null) => {
     if (!date) return "";
@@ -42,7 +44,7 @@ const NewsDetail = () => {
   };
 
   // Show loading while redirecting external articles
-  if (article?.source_url) {
+  if (!localArticle && article?.source_url) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
         <Navbar />
@@ -71,7 +73,7 @@ const NewsDetail = () => {
             Regresar
           </Button>
 
-          {isLoading && (
+          {isLoading && !localArticle && (
             <div className="space-y-4">
               <Skeleton className="h-8 w-3/4" />
               <Skeleton className="h-4 w-48" />
@@ -82,7 +84,7 @@ const NewsDetail = () => {
             </div>
           )}
 
-          {error && (
+          {error && !localArticle && (
             <div className="text-center py-16">
               <Newspaper className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
               <h2 className="text-xl font-bold text-foreground mb-2">Artículo no encontrado</h2>
@@ -91,7 +93,98 @@ const NewsDetail = () => {
             </div>
           )}
 
-          {article && !article.source_url && (
+          {localArticle && (
+            <article>
+              <div className="mb-6">
+                <Badge className="bg-accent text-accent-foreground mb-3">Destacado</Badge>
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground leading-tight mb-3">
+                  {localArticle.title}
+                </h1>
+                <div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm">
+                  <span className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4" />
+                    {formatDate(localArticle.publishedAt)}
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4" />
+                    {localArticle.location}
+                  </span>
+                </div>
+              </div>
+
+              <div className="rounded-xl overflow-hidden mb-8 shadow-[var(--shadow-lg)]">
+                <img
+                  src={localArticle.coverImage}
+                  alt={localArticle.title}
+                  className="w-full h-auto"
+                  loading="eager"
+                />
+              </div>
+
+              <div className="prose max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-ul:text-foreground/90 prose-ol:text-foreground/90 prose-p:my-3 prose-headings:my-3">
+                <p className="text-xl font-semibold text-accent leading-8">{localArticle.excerpt}</p>
+                <p>{localArticle.lead}</p>
+                <p>{localArticle.paragraphs[0]}</p>
+              </div>
+
+              <div className="grid gap-6 my-8">
+                <div className="rounded-xl overflow-hidden shadow-[var(--shadow-md)]">
+                  <img
+                    src={localArticle.gallery[0].src}
+                    alt={localArticle.gallery[0].alt}
+                    className="w-full h-auto"
+                    loading="lazy"
+                  />
+                </div>
+
+                <div className="prose max-w-none dark:prose-invert prose-p:text-foreground/90 prose-ul:text-foreground/90">
+                  <p>{localArticle.paragraphs[1]}</p>
+                  <p>Las regiones son:</p>
+                  <ul>
+                    {localArticle.regions.map((region) => (
+                      <li key={region}>{region}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="rounded-xl overflow-hidden shadow-[var(--shadow-md)]">
+                    <img
+                      src={localArticle.gallery[1].src}
+                      alt={localArticle.gallery[1].alt}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="rounded-xl overflow-hidden shadow-[var(--shadow-md)]">
+                    <img
+                      src={localArticle.gallery[2].src}
+                      alt={localArticle.gallery[2].alt}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+
+                <div className="prose max-w-none dark:prose-invert prose-p:text-foreground/90">
+                  <p>{localArticle.paragraphs[2]}</p>
+                  <p>{localArticle.paragraphs[3]}</p>
+                  <p>{localArticle.paragraphs[4]}</p>
+                </div>
+
+                <div className="rounded-xl overflow-hidden shadow-[var(--shadow-md)]">
+                  <img
+                    src={localArticle.gallery[3].src}
+                    alt={localArticle.gallery[3].alt}
+                    className="w-full h-auto"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </article>
+          )}
+
+          {article && !article.source_url && !localArticle && (
             <article>
               <div className="mb-6">
                 {article.is_featured && (

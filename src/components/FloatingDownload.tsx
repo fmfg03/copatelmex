@@ -1,7 +1,15 @@
 import { Download } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { CONVOCATORIA_PATH, downloadConvocatoria } from "@/lib/downloads";
 
 export const FloatingDownload = () => {
+  const { pathname } = useLocation();
+  const visibleRoutes = new Set(["/", "/tournament-info", "/schedule", "/calendario", "/media", "/contacto"]);
+
+  if (!visibleRoutes.has(pathname) && !pathname.startsWith("/noticias")) {
+    return null;
+  }
+
   return (
     <a
       href={CONVOCATORIA_PATH}

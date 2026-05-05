@@ -20,6 +20,7 @@ import PaymentCancelled from "./pages/PaymentCancelled";
 import Admin from "./pages/Admin";
 import MyTeams from "./pages/MyTeams";
 import StateOperators from "./pages/StateOperators";
+import News from "./pages/News";
 import NewsDetail from "./pages/NewsDetail";
 import NotFound from "./pages/NotFound";
 
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/calendario" element={<TournamentCalendar />} />
           <Route path="/media" element={<MediaGallery />} />
+          <Route path="/noticias" element={<News />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/contacto" element={<Contact />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />

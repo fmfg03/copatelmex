@@ -214,6 +214,7 @@ export const Hero = () => {
               <iframe
                 src={`https://www.youtube.com/embed/${youtubeVideoId}?rel=0&start=${videoStartTime}`}
                 title="Final Copa Telmex Telcel"
+                loading="lazy"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
                 className="absolute inset-0 w-full h-full"

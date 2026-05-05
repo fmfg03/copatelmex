@@ -1,16 +1,62 @@
+import { useEffect, useRef, useState } from "react";
 import { Play, Trophy, Users, Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import tournamentFeed from "@/assets/tournament-feed.mp4";
 
 export const VideoFeedSection = () => {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+
   const stats = [
     { icon: Trophy, value: "26", label: "Ediciones" },
     { icon: Users, value: "12,000+", label: "Equipos" },
     { icon: Star, value: "34", label: "Entidades" },
   ];
 
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section || typeof IntersectionObserver === "undefined") {
+      setIsVisible(true);
+      setShouldLoadVideo(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const nextVisible = entry.isIntersecting;
+        setIsVisible(nextVisible);
+        if (nextVisible) {
+          setShouldLoadVideo(true);
+        }
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video || !shouldLoadVideo) {
+      return;
+    }
+
+    if (isVisible) {
+      video.play().catch(() => undefined);
+      return;
+    }
+
+    video.pause();
+  }, [isVisible, shouldLoadVideo]);
+
   return (
-    <section className="py-16 bg-gradient-to-br from-secondary via-secondary/95 to-secondary relative overflow-hidden">
+    <section ref={sectionRef} className="py-16 bg-gradient-to-br from-secondary via-secondary/95 to-secondary relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(252,211,77,0.15),transparent_50%)]"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(59,130,246,0.1),transparent_50%)]"></div>
@@ -46,12 +92,13 @@ export const VideoFeedSection = () => {
                   {/* Video Container */}
                   <div className="relative aspect-[9/16] bg-black">
                     <video
-                      src={tournamentFeed}
+                      ref={videoRef}
+                      src={shouldLoadVideo ? tournamentFeed : undefined}
                       className="w-full h-full object-cover"
-                      autoPlay
                       muted
                       loop
                       playsInline
+                      preload="none"
                     />
                   </div>
 

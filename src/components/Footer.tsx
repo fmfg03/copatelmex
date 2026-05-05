@@ -1,9 +1,33 @@
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 import copaTelmexLogo from "@/assets/copa-telmex-logo.png";
 import fundacionLogo from "@/assets/fundacion-telmex-logo-white.png";
 
 export const Footer = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const currentYear = new Date().getFullYear();
+
+  const quickLinks = [
+    { name: "Inicio", target: "#inicio" },
+    { name: "Información", target: "#informacion" },
+    { name: "Categorías", target: "#categorias" },
+  ];
+
+  const handleQuickLink = (target: string) => {
+    const scrollToSection = () => {
+      const element = document.querySelector(target);
+      element?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    if (pathname === "/") {
+      scrollToSection();
+      return;
+    }
+
+    navigate("/");
+    setTimeout(scrollToSection, 100);
+  };
   
   return (
     <footer id="contacto" className="bg-secondary dark:bg-secondary/90 text-white border-t border-transparent dark:border-border">
@@ -28,13 +52,16 @@ export const Footer = () => {
             <div>
               <h4 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Enlaces Rápidos</h4>
               <ul className="space-y-2">
-                {[
-                  { name: "Inicio", href: "#inicio" },
-                  { name: "Información", href: "#informacion" },
-                  { name: "Categorías", href: "#categorias" },
-                ].map((link) => (
+                {quickLinks.map((link) => (
                   <li key={link.name}>
-                    <a href={link.href} className="text-white/80 hover:text-primary transition-colors text-sm">
+                    <a
+                      href={`/${link.target}`}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        handleQuickLink(link.target);
+                      }}
+                      className="text-white/80 hover:text-primary transition-colors text-sm"
+                    >
                       {link.name}
                     </a>
                   </li>
