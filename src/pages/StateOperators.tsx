@@ -26,7 +26,7 @@ export const stateOperators: Record<string, StateOperator> = {
   "baja-california-sur": { id: "bcs", stateName: "Baja California Sur", name: "Jorge Alvarado", email: "jorge94@hotmail.com" },
   "campeche": { id: "cam", stateName: "Campeche", name: "Emmanuel Talango", email: "asociaciondefutboldelestadodecampeche@hotmail.com" },
   "chiapas": { id: "chis", stateName: "Chiapas", name: "José Tacías", email: "tacias_gallegos@hotmail.com" },
-  "chihuahua": { id: "chih", stateName: "Chihuahua", name: "Por confirmar", email: "contacto@copatelmex.mx" },
+  "chihuahua": { id: "chih", stateName: "Chihuahua", name: "Francisco Adrián Valdez Galindo", email: "gallobany@gmail.com" },
   "ciudad-de-mexico": { id: "cdmx", stateName: "Ciudad de México", name: "Araceli Márquez", email: "asocfut@hotmail.com" },
   "coahuila": { id: "coah", stateName: "Coahuila", name: "Juan Elizalde", email: "elizaldejuan031@gmail.com" },
   "colima": { id: "col", stateName: "Colima", name: "Alejandro Ponce", email: "alejandropc17266@hotmail.com" },
