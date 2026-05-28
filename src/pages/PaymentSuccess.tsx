@@ -19,7 +19,7 @@ export default function PaymentSuccess() {
     
     if (!sessionId) {
       toast.error("ID de sesión no encontrado");
-      navigate("/register");
+      navigate("/inscripcion");
       return;
     }
 
@@ -36,7 +36,7 @@ export default function PaymentSuccess() {
           toast.success("¡Pago verificado exitosamente!");
         } else {
           toast.error("El pago no se ha completado");
-          setTimeout(() => navigate("/register"), 3000);
+          setTimeout(() => navigate("/inscripcion"), 3000);
         }
       } catch (error) {
         console.error("Error verifying payment:", error);
@@ -80,17 +80,17 @@ export default function PaymentSuccess() {
                 <div className="bg-muted p-6 rounded-lg space-y-4">
                   <h3 className="font-semibold text-lg">Próximos Pasos:</h3>
                   <ul className="space-y-2 list-disc list-inside">
-                    <li>Completa la información de tu equipo en el formulario de registro</li>
-                    <li>Sube los documentos requeridos de cada jugador</li>
-                    <li>Recibirás una confirmación por email una vez procesada tu inscripción</li>
+                    <li>Contacta al operador estatal correspondiente para continuar tu proceso.</li>
+                    <li>Ten a la mano la información de tu equipo y documentos requeridos.</li>
+                    <li>Si necesitas seguimiento, usa los datos de contacto de la pagina de inscripcion.</li>
                   </ul>
                 </div>
                 <div className="flex gap-4">
                   <Button 
-                    onClick={() => navigate("/register")} 
+                    onClick={() => navigate("/inscripcion")} 
                     className="flex-1"
                   >
-                    Continuar con la Inscripción
+                    Ir a Inscripcion
                   </Button>
                   <Button 
                     onClick={() => navigate("/")} 

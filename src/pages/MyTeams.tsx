@@ -334,10 +334,10 @@ export default function MyTeams() {
               <AlertCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <h2 className="text-xl font-semibold mb-2">No tienes equipos registrados</h2>
               <p className="text-muted-foreground mb-4">
-                Registra tu primer equipo para la Copa Telmex Telcel
+                Consulta al operador estatal para conocer el proceso de inscripcion.
               </p>
-              <Button onClick={() => navigate("/register")}>
-                Registrar Equipo
+              <Button onClick={() => navigate("/inscripcion")}>
+                Ver Contactos de Inscripcion
               </Button>
             </CardContent>
           </Card>

@@ -24,16 +24,16 @@ export default function PaymentCancelled() {
             <div className="bg-muted p-6 rounded-lg space-y-4">
               <h3 className="font-semibold text-lg">¿Necesitas ayuda?</h3>
               <p className="text-muted-foreground">
-                Si experimentaste algún problema durante el proceso de pago o tienes preguntas,
-                no dudes en contactarnos. Estamos aquí para ayudarte a completar tu inscripción.
+                Si tienes dudas sobre el proceso, contacta al operador estatal correspondiente
+                para recibir indicaciones sobre la inscripcion del torneo.
               </p>
             </div>
             <div className="flex gap-4">
               <Button 
-                onClick={() => navigate("/register")} 
+                onClick={() => navigate("/inscripcion")} 
                 className="flex-1"
               >
-                Intentar Nuevamente
+                Ver Contactos de Inscripcion
               </Button>
               <Button 
                 onClick={() => navigate("/")} 

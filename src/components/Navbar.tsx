@@ -120,7 +120,7 @@ export const Navbar = () => {
                         const element = document.querySelector(link.href.substring(1));
                         element?.scrollIntoView({ behavior: "smooth" });
                       }, 100);
-                    } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto" || link.href === "/calendario" || link.href === "/media" || link.href === "/noticias") {
+                    } else if (link.href === "/tournament-info" || link.href === "/schedule" || link.href === "/contacto" || link.href === "/calendario" || link.href === "/media" || link.href === "/noticias") {
                       e.preventDefault();
                       navigate(link.href);
                     }
@@ -245,7 +245,7 @@ export const Navbar = () => {
                           const element = document.querySelector(link.href.substring(1));
                           element?.scrollIntoView({ behavior: "smooth" });
                         }, 100);
-                      } else if (link.href === "/tournament-info" || link.href === "/register" || link.href === "/schedule" || link.href === "/contacto" || link.href === "/calendario" || link.href === "/media" || link.href === "/noticias") {
+                      } else if (link.href === "/tournament-info" || link.href === "/schedule" || link.href === "/contacto" || link.href === "/calendario" || link.href === "/media" || link.href === "/noticias") {
                         e.preventDefault();
                         navigate(link.href);
                       }
