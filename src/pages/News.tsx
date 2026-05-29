@@ -78,71 +78,104 @@ const News = () => {
 
         <section className="container mx-auto px-4 py-12 md:py-16">
           <div className="max-w-6xl mx-auto space-y-10">
-            <Card className="overflow-hidden border-0 shadow-[var(--shadow-lg)]">
-              <div className="grid lg:grid-cols-[1.05fr_0.95fr]">
-                <div className="relative min-h-[280px]">
-                  <img
-                    src={featuredLocalNewsArticle.coverImage}
-                    alt={featuredLocalNewsArticle.title}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    loading="eager"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/85 via-secondary/30 to-transparent" />
-                  <div className="absolute left-6 bottom-6">
-                    <Badge className="bg-primary text-white hover:bg-primary">Nota destacada</Badge>
-                  </div>
-                </div>
-                <CardContent className="p-6 md:p-10">
-                  <div className="flex flex-wrap gap-3 text-sm text-muted-foreground mb-4">
-                    <span className="inline-flex items-center gap-1.5">
-                      <Calendar className="w-4 h-4 text-primary" />
-                      {formatDate(featuredLocalNewsArticle.publishedAt)}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <MapPin className="w-4 h-4 text-primary" />
-                      {featuredLocalNewsArticle.location}
-                    </span>
-                  </div>
-                  <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-tight">
-                    {featuredLocalNewsArticle.title}
-                  </h2>
-                  <p className="mt-4 text-lg font-semibold text-accent">
-                    {featuredLocalNewsArticle.excerpt}
-                  </p>
-                  <p className="mt-5 text-muted-foreground leading-relaxed">
-                    {featuredLocalNewsArticle.lead}
-                  </p>
-                  <p className="mt-4 text-muted-foreground leading-relaxed">
-                    {featuredLocalNewsArticle.paragraphs[0]}
-                  </p>
-                  <Link
-                    to={`/noticias/${featuredLocalNewsArticle.id}`}
-                    className="mt-8 inline-flex items-center gap-2 rounded-full bg-secondary px-6 py-3 text-white font-semibold hover:bg-secondary/90 transition-colors"
-                  >
-                    Leer nota completa
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </CardContent>
-              </div>
-            </Card>
+            {(() => {
+              const featuredRemote = remoteArticles?.[0];
+              const restRemote = (remoteArticles || []).slice(1);
 
-            <div>
-              <div className="flex items-center justify-between gap-4 mb-6">
-                <h2 className="text-2xl md:text-3xl font-bold text-foreground">Más noticias</h2>
-                <Badge variant="outline" className="px-3 py-1 text-xs uppercase tracking-[0.2em]">
-                  {localNewsArticles.length + (remoteArticles?.length || 0)} entradas
-                </Badge>
-              </div>
+              const jaliscoCard: RemoteNewsArticle = {
+                id: featuredLocalNewsArticle.id,
+                title: featuredLocalNewsArticle.title,
+                content: featuredLocalNewsArticle.excerpt,
+                image_url: featuredLocalNewsArticle.coverImage,
+                published_at: featuredLocalNewsArticle.publishedAt,
+                is_featured: false,
+                source_url: null,
+                source_name: null,
+              };
 
-              {isLoading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Skeleton className="h-[180px] rounded-xl" />
-                  <Skeleton className="h-[180px] rounded-xl" />
-                </div>
-              ) : remoteArticles && remoteArticles.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {remoteArticles.map((article) => {
-                    const articleHref = article.source_url || `/noticias/${article.id}`;
+              const secondaryList = [...restRemote, jaliscoCard];
+
+              return (
+                <>
+                  {featuredRemote ? (
+                    <Card className="overflow-hidden border-0 shadow-[var(--shadow-lg)]">
+                      <div className="grid lg:grid-cols-[1.05fr_0.95fr]">
+                        <div className="relative min-h-[280px]">
+                          {featuredRemote.image_url && (
+                            <img
+                              src={featuredRemote.image_url}
+                              alt={featuredRemote.title}
+                              className="absolute inset-0 w-full h-full object-cover"
+                              loading="eager"
+                            />
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-secondary/85 via-secondary/30 to-transparent" />
+                          <div className="absolute left-6 bottom-6">
+                            <Badge className="bg-primary text-white hover:bg-primary">Nota destacada</Badge>
+                          </div>
+                        </div>
+                        <CardContent className="p-6 md:p-10">
+                          <div className="flex flex-wrap gap-3 text-sm text-muted-foreground mb-4">
+                            <span className="inline-flex items-center gap-1.5">
+                              <Calendar className="w-4 h-4 text-primary" />
+                              {formatDate(featuredRemote.published_at)}
+                            </span>
+                            {featuredRemote.source_name && (
+                              <span className="inline-flex items-center gap-1.5">
+                                <ExternalLink className="w-4 h-4 text-primary" />
+                                {featuredRemote.source_name}
+                              </span>
+                            )}
+                          </div>
+                          <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-tight">
+                            {featuredRemote.title}
+                          </h2>
+                          <p className="mt-5 text-muted-foreground leading-relaxed line-clamp-5">
+                            {getExcerpt(featuredRemote.content, 360)}
+                          </p>
+                          {featuredRemote.source_url ? (
+                            <a
+                              href={featuredRemote.source_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-8 inline-flex items-center gap-2 rounded-full bg-secondary px-6 py-3 text-white font-semibold hover:bg-secondary/90 transition-colors"
+                            >
+                              Leer nota completa
+                              <ArrowRight className="w-4 h-4" />
+                            </a>
+                          ) : (
+                            <Link
+                              to={`/noticias/${featuredRemote.id}`}
+                              className="mt-8 inline-flex items-center gap-2 rounded-full bg-secondary px-6 py-3 text-white font-semibold hover:bg-secondary/90 transition-colors"
+                            >
+                              Leer nota completa
+                              <ArrowRight className="w-4 h-4" />
+                            </Link>
+                          )}
+                        </CardContent>
+                      </div>
+                    </Card>
+                  ) : isLoading ? (
+                    <Skeleton className="h-[320px] rounded-xl" />
+                  ) : null}
+
+                  <div>
+                    <div className="flex items-center justify-between gap-4 mb-6">
+                      <h2 className="text-2xl md:text-3xl font-bold text-foreground">Más noticias</h2>
+                      <Badge variant="outline" className="px-3 py-1 text-xs uppercase tracking-[0.2em]">
+                        {localNewsArticles.length + (remoteArticles?.length || 0)} entradas
+                      </Badge>
+                    </div>
+
+                    {isLoading ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <Skeleton className="h-[180px] rounded-xl" />
+                        <Skeleton className="h-[180px] rounded-xl" />
+                      </div>
+                    ) : secondaryList.length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {secondaryList.map((article) => {
+                          const articleHref = article.source_url || `/noticias/${article.id}`;
                     const isExternal = Boolean(article.source_url);
 
                     return (
