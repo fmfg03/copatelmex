@@ -246,6 +246,9 @@ const News = () => {
                 </Card>
               )}
             </div>
+                </>
+              );
+            })()}
           </div>
         </section>
       </main>
