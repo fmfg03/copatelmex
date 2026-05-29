@@ -39,7 +39,21 @@ export const NewsSection = () => {
     },
   });
 
-  const secondary = articles || [];
+  const featured = articles?.[0];
+  const remoteSecondary = (articles || []).slice(1);
+
+  const localSecondary: NewsArticle = {
+    id: featuredLocalNewsArticle.id,
+    title: featuredLocalNewsArticle.title,
+    content: featuredLocalNewsArticle.excerpt,
+    image_url: featuredLocalNewsArticle.coverImage,
+    published_at: featuredLocalNewsArticle.publishedAt,
+    is_featured: false,
+    source_url: null,
+    source_name: null,
+  };
+
+  const secondary = [...remoteSecondary, localSecondary].slice(0, 3);
 
   const getExcerpt = (content: string, maxLength: number) => {
     const text = content.replace(/<[^>]*>/g, "");
