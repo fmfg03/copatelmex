@@ -101,38 +101,45 @@ export const NewsSection = () => {
         {/* Featured + Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Featured Article */}
-          <Card
-            className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer"
-            onClick={() => navigate(`/noticias/${featuredLocalNewsArticle.id}`)}
-          >
-            <div className="relative h-64 lg:h-full min-h-[300px] overflow-hidden">
-              <img
-                src={featuredLocalNewsArticle.coverImage}
-                alt={featuredLocalNewsArticle.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                loading="eager"
-              />
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                <div className="flex items-center gap-2 mb-3">
-                  <Badge className="bg-accent text-accent-foreground text-xs">
-                    Destacado
-                  </Badge>
-                </div>
-                <h3 className="text-xl md:text-2xl font-bold leading-tight mb-2">
-                  {featuredLocalNewsArticle.title}
-                </h3>
-                <p className="text-white/80 text-sm mb-3 line-clamp-2">
-                  {featuredLocalNewsArticle.excerpt}
-                </p>
-                <div className="flex items-center gap-2 text-white/60 text-xs">
-                  <Calendar className="w-3 h-3" />
-                  {formatDate(featuredLocalNewsArticle.publishedAt)}
+          {featured ? (
+            <Card
+              className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+              onClick={() => handleArticleClick(featured)}
+            >
+              <div className="relative h-64 lg:h-full min-h-[300px] overflow-hidden">
+                {featured.image_url ? (
+                  <img
+                    src={featured.image_url}
+                    alt={featured.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="eager"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-secondary/20 to-primary/20" />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Badge className="bg-accent text-accent-foreground text-xs">
+                      Destacado
+                    </Badge>
+                  </div>
+                  <h3 className="text-xl md:text-2xl font-bold leading-tight mb-2">
+                    {featured.title}
+                  </h3>
+                  <p className="text-white/80 text-sm mb-3 line-clamp-2">
+                    {getExcerpt(featured.content, 160)}
+                  </p>
+                  <div className="flex items-center gap-2 text-white/60 text-xs">
+                    <Calendar className="w-3 h-3" />
+                    {formatDate(featured.published_at)}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+          ) : (
+            <Skeleton className="h-[300px] lg:h-full rounded-xl" />
+          )}
 
           {/* Secondary Articles */}
           <div className="flex flex-col gap-4">
