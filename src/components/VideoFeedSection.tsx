@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, Trophy, Users, Star } from "lucide-react";
+import { Play, Trophy, Users, Star, Volume2, VolumeX } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import tournamentFeedAsset from "@/assets/tournament-feed-horizontal.mp4.asset.json";
 
@@ -10,6 +10,15 @@ export const VideoFeedSection = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    const next = !isMuted;
+    video.muted = next;
+    setIsMuted(next);
+  };
 
   const stats = [
     { icon: Trophy, value: "26", label: "Ediciones" },
@@ -97,6 +106,17 @@ export const VideoFeedSection = () => {
                   playsInline
                   preload="none"
                 />
+                <button
+                  onClick={toggleMute}
+                  className="absolute bottom-4 right-4 z-10 bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white rounded-full p-2 transition-colors"
+                  aria-label={isMuted ? "Activar sonido" : "Silenciar"}
+                >
+                  {isMuted ? (
+                    <VolumeX className="w-5 h-5" />
+                  ) : (
+                    <Volume2 className="w-5 h-5" />
+                  )}
+                </button>
               </div>
               <div className="p-4 bg-card">
                 <p className="text-muted-foreground text-sm text-center font-medium">
