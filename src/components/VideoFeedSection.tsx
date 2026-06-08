@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, Trophy, Users, Star } from "lucide-react";
+import { Play, Trophy, Users, Star, Volume2, VolumeX } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import tournamentFeedAsset from "@/assets/tournament-feed-horizontal.mp4.asset.json";
 
