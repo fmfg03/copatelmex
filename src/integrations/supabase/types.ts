@@ -1843,6 +1843,48 @@ export type Database = {
         }
         Relationships: []
       }
+      tournament_config_public: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          max_players_per_team: number | null
+          max_teams_per_category: number | null
+          min_players_per_team: number | null
+          registration_enabled: boolean | null
+          require_birth_certificate: boolean | null
+          require_curp: boolean | null
+          require_medical_certificate: boolean | null
+          require_photo: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          max_players_per_team?: number | null
+          max_teams_per_category?: number | null
+          min_players_per_team?: number | null
+          registration_enabled?: boolean | null
+          require_birth_certificate?: boolean | null
+          require_curp?: boolean | null
+          require_medical_certificate?: boolean | null
+          require_photo?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          max_players_per_team?: number | null
+          max_teams_per_category?: number | null
+          min_players_per_team?: number | null
+          registration_enabled?: boolean | null
+          require_birth_certificate?: boolean | null
+          require_curp?: boolean | null
+          require_medical_certificate?: boolean | null
+          require_photo?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       calculate_check_digit: { Args: { id_base: string }; Returns: string }
