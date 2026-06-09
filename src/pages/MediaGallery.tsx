@@ -47,9 +47,18 @@ const isDirectVideoFile = (url: string) => {
   }
 };
 
+type Orientation = "portrait" | "landscape";
+
 const MediaGallery = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
+  const [orientations, setOrientations] = useState<Record<string, Orientation>>({});
+
+  const handleMediaDims = (id: string, width: number, height: number) => {
+    if (!width || !height) return;
+    const next: Orientation = height > width ? "portrait" : "landscape";
+    setOrientations((prev) => (prev[id] === next ? prev : { ...prev, [id]: next }));
+  };
 
   // Fetch gallery photos
   const { data: photos } = useQuery({
@@ -213,17 +222,24 @@ const MediaGallery = () => {
           {/* Videos Tab */}
           <TabsContent value="videos" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {videos?.map((video) => (
+              {videos?.map((video) => {
+                const orientation = orientations[video.id] ?? "landscape";
+                const aspectClass = orientation === "portrait" ? "aspect-[9/16]" : "aspect-video";
+                return (
                 <Card key={video.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="aspect-video bg-muted relative overflow-hidden">
+                  <div className={`${aspectClass} bg-black relative overflow-hidden mx-auto w-full ${orientation === "portrait" ? "max-w-[60%]" : ""}`}>
                     {playingVideoId === video.id ? (
                       isDirectVideoFile(video.video_url) ? (
                         <video
                           src={video.video_url}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                           controls
                           autoPlay
                           playsInline
+                          onLoadedMetadata={(e) => {
+                            const el = e.currentTarget;
+                            handleMediaDims(video.id, el.videoWidth, el.videoHeight);
+                          }}
                         />
                       ) : getEmbeddedVideoUrl(video.video_url) ? (
                         <iframe
@@ -249,7 +265,23 @@ const MediaGallery = () => {
                           <img
                             src={video.thumbnail_url}
                             alt={video.title}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-contain"
+                            onLoad={(e) => {
+                              const el = e.currentTarget;
+                              handleMediaDims(video.id, el.naturalWidth, el.naturalHeight);
+                            }}
+                          />
+                        ) : isDirectVideoFile(video.video_url) ? (
+                          <video
+                            src={video.video_url}
+                            className="w-full h-full object-contain"
+                            preload="metadata"
+                            muted
+                            playsInline
+                            onLoadedMetadata={(e) => {
+                              const el = e.currentTarget;
+                              handleMediaDims(video.id, el.videoWidth, el.videoHeight);
+                            }}
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
@@ -301,7 +333,8 @@ const MediaGallery = () => {
                     })()}
                   </CardContent>
                 </Card>
-              ))}
+                );
+              })}
             </div>
 
             {!videos || videos.length === 0 && (
