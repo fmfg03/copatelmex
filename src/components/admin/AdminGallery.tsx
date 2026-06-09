@@ -747,10 +747,13 @@ export const AdminGallery = () => {
     }
   };
 
-  const handleSaveStream = async () => {
-    const normalizedTitle = streamForm.title.trim() || streamTitleInputRef.current?.value.trim() || "";
-    const normalizedScheduledTime = streamForm.scheduled_time || streamDateTimeInputRef.current?.value || "";
-    const normalizedStreamUrl = streamForm.stream_url.trim() || streamUrlInputRef.current?.value.trim() || "";
+  const handleSaveStream = async (event?: React.FormEvent<HTMLFormElement>) => {
+    event?.preventDefault();
+
+    const formData = event ? new FormData(event.currentTarget) : null;
+    const normalizedTitle = String(formData?.get("stream_title") || streamForm.title || streamTitleInputRef.current?.value || "").trim();
+    const normalizedScheduledTime = String(formData?.get("stream_scheduled_time") || streamForm.scheduled_time || streamDateTimeInputRef.current?.value || "").trim();
+    const normalizedStreamUrl = String(formData?.get("stream_url") || streamForm.stream_url || streamUrlInputRef.current?.value || "").trim();
 
     if (!normalizedTitle || !normalizedStreamUrl || !normalizedScheduledTime) {
       toast({
@@ -1429,10 +1432,10 @@ export const AdminGallery = () => {
             <DialogDescription>Registra links de YouTube o Facebook para eventos programados, en vivo o finalizados.</DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-4">
+          <form className="grid gap-4" onSubmit={handleSaveStream}>
             <div className="grid gap-2">
               <Label htmlFor="stream-title">Título</Label>
-              <Input id="stream-title" ref={streamTitleInputRef} value={streamForm.title} onChange={(event) => setStreamForm((current) => ({ ...current, title: event.target.value }))} />
+              <Input id="stream-title" name="stream_title" ref={streamTitleInputRef} value={streamForm.title} onChange={(event) => setStreamForm((current) => ({ ...current, title: event.target.value }))} />
             </div>
 
             <div className="grid gap-2">
@@ -1471,25 +1474,25 @@ export const AdminGallery = () => {
 
               <div className="grid gap-2">
                 <Label htmlFor="stream-scheduled-time">Fecha y hora</Label>
-                <Input id="stream-scheduled-time" ref={streamDateTimeInputRef} type="datetime-local" value={streamForm.scheduled_time} onChange={(event) => setStreamForm((current) => ({ ...current, scheduled_time: event.target.value }))} />
+                <Input id="stream-scheduled-time" name="stream_scheduled_time" ref={streamDateTimeInputRef} type="datetime-local" value={streamForm.scheduled_time} onChange={(event) => setStreamForm((current) => ({ ...current, scheduled_time: event.target.value }))} />
               </div>
             </div>
 
             <div className="grid gap-2">
               <Label htmlFor="stream-url">URL</Label>
-              <Input id="stream-url" ref={streamUrlInputRef} placeholder="https://www.youtube.com/watch?v=..." value={streamForm.stream_url} onChange={(event) => setStreamForm((current) => ({ ...current, stream_url: event.target.value }))} />
+              <Input id="stream-url" name="stream_url" ref={streamUrlInputRef} placeholder="https://www.youtube.com/watch?v=..." value={streamForm.stream_url} onChange={(event) => setStreamForm((current) => ({ ...current, stream_url: event.target.value }))} />
             </div>
-          </div>
 
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setStreamDialogOpen(false)} disabled={savingStream}>
-              Cancelar
-            </Button>
-            <Button onClick={handleSaveStream} disabled={savingStream}>
-              {savingStream ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
-              Guardar transmisión
-            </Button>
-          </DialogFooter>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setStreamDialogOpen(false)} disabled={savingStream}>
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={savingStream}>
+                {savingStream ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
+                Guardar transmisión
+              </Button>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
     </>
