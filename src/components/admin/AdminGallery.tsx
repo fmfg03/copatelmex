@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
-import { Calendar, Image as ImageIcon, Loader2, Pencil, Plus, Radio, Trash2, Upload, Video } from "lucide-react";
+import { Calendar, Image as ImageIcon, Loader2, Pencil, Plus, Radio, Trash2, Upload, Video, X } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -83,6 +83,16 @@ type StreamFormState = {
   scheduled_time: string;
   status: string;
   stream_url: string;
+};
+
+type BulkGalleryPhotoItem = {
+  file: File;
+  preview: string;
+  title: string;
+  description: string;
+  uploading: boolean;
+  uploaded: boolean;
+  error: string | null;
 };
 
 const emptyPhotoForm: PhotoFormState = {
@@ -219,6 +229,7 @@ export const AdminGallery = () => {
   const [loading, setLoading] = useState(true);
 
   const [photoDialogOpen, setPhotoDialogOpen] = useState(false);
+  const [bulkPhotoDialogOpen, setBulkPhotoDialogOpen] = useState(false);
   const [videoDialogOpen, setVideoDialogOpen] = useState(false);
   const [streamDialogOpen, setStreamDialogOpen] = useState(false);
 
@@ -231,14 +242,19 @@ export const AdminGallery = () => {
   const [editingStream, setEditingStream] = useState<LiveStream | null>(null);
 
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [bulkPhotoItems, setBulkPhotoItems] = useState<BulkGalleryPhotoItem[]>([]);
+  const [bulkPhotoCategoryId, setBulkPhotoCategoryId] = useState("none");
+  const [bulkPhotoDate, setBulkPhotoDate] = useState(new Date().toISOString().slice(0, 10));
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
 
   const [savingPhoto, setSavingPhoto] = useState(false);
+  const [savingBulkPhotos, setSavingBulkPhotos] = useState(false);
   const [savingVideo, setSavingVideo] = useState(false);
   const [savingStream, setSavingStream] = useState(false);
 
   const photoInputRef = useRef<HTMLInputElement>(null);
+  const bulkPhotoInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
   const streamTitleInputRef = useRef<HTMLInputElement>(null);
@@ -293,6 +309,16 @@ export const AdminGallery = () => {
     if (photoInputRef.current) photoInputRef.current.value = "";
   };
 
+  const resetBulkPhotoDialog = () => {
+    setBulkPhotoItems((current) => {
+      current.forEach((item) => URL.revokeObjectURL(item.preview));
+      return [];
+    });
+    setBulkPhotoCategoryId("none");
+    setBulkPhotoDate(new Date().toISOString().slice(0, 10));
+    if (bulkPhotoInputRef.current) bulkPhotoInputRef.current.value = "";
+  };
+
   const resetVideoDialog = () => {
     setEditingVideo(null);
     setVideoForm(emptyVideoForm);
@@ -328,6 +354,11 @@ export const AdminGallery = () => {
   const openVideoCreate = () => {
     resetVideoDialog();
     setVideoDialogOpen(true);
+  };
+
+  const openBulkPhotoCreate = () => {
+    resetBulkPhotoDialog();
+    setBulkPhotoDialogOpen(true);
   };
 
   const openVideoEdit = (video: FeaturedVideo) => {
@@ -387,6 +418,131 @@ export const AdminGallery = () => {
 
     setVideoFile(file);
     setVideoForm((current) => ({ ...current, video_url: file.name }));
+  };
+
+  const processBulkPhotoFiles = (files: File[]) => {
+    const validFiles = files.filter((file) => validateImageFile(file));
+
+    if (validFiles.length === 0) {
+      return;
+    }
+
+    const newItems: BulkGalleryPhotoItem[] = validFiles.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+      title: file.name.replace(/\.[^.]+$/, ""),
+      description: "",
+      uploading: false,
+      uploaded: false,
+      error: null,
+    }));
+
+    setBulkPhotoItems((current) => [...current, ...newItems]);
+  };
+
+  const handleBulkPhotoFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files ? Array.from(event.target.files) : [];
+    processBulkPhotoFiles(files);
+  };
+
+  const updateBulkPhotoItem = (index: number, patch: Partial<BulkGalleryPhotoItem>) => {
+    setBulkPhotoItems((current) =>
+      current.map((item, itemIndex) => (itemIndex === index ? { ...item, ...patch } : item)),
+    );
+  };
+
+  const removeBulkPhotoItem = (index: number) => {
+    setBulkPhotoItems((current) => {
+      const next = [...current];
+      URL.revokeObjectURL(next[index].preview);
+      next.splice(index, 1);
+      return next;
+    });
+  };
+
+  const handleSaveBulkPhotos = async () => {
+    if (!bulkPhotoDate) {
+      toast({
+        title: "Fecha requerida",
+        description: "Define una fecha para el lote",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (bulkPhotoItems.length === 0) {
+      toast({
+        title: "Sin fotos",
+        description: "Selecciona al menos una imagen para subir",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const hasMissingTitle = bulkPhotoItems.some((item) => !item.title.trim());
+    if (hasMissingTitle) {
+      toast({
+        title: "Título requerido",
+        description: "Todas las fotos del lote deben tener título",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSavingBulkPhotos(true);
+
+    let successCount = 0;
+    let errorCount = 0;
+
+    for (let index = 0; index < bulkPhotoItems.length; index += 1) {
+      const item = bulkPhotoItems[index];
+      if (item.uploaded) continue;
+
+      updateBulkPhotoItem(index, { uploading: true, error: null });
+
+      try {
+        const upload = await uploadPublicFile("photos", item.file);
+        const { error } = await supabase.from("gallery_photos").insert({
+          title: item.title.trim(),
+          description: item.description.trim() || null,
+          category_id: bulkPhotoCategoryId === "none" ? null : bulkPhotoCategoryId,
+          photo_date: bulkPhotoDate,
+          image_url: upload.publicUrl,
+        });
+
+        if (error) throw error;
+
+        updateBulkPhotoItem(index, { uploading: false, uploaded: true, error: null });
+        successCount += 1;
+      } catch (error: any) {
+        console.error("Error uploading bulk gallery photo:", error);
+        updateBulkPhotoItem(index, {
+          uploading: false,
+          uploaded: false,
+          error: error?.message || "No se pudo subir esta foto",
+        });
+        errorCount += 1;
+      }
+    }
+
+    setSavingBulkPhotos(false);
+    await loadData();
+
+    if (errorCount === 0) {
+      toast({
+        title: "Carga completada",
+        description: `Se subieron ${successCount} foto(s) correctamente`,
+      });
+      setBulkPhotoDialogOpen(false);
+      resetBulkPhotoDialog();
+      return;
+    }
+
+    toast({
+      title: "Carga parcial",
+      description: `${successCount} foto(s) subidas y ${errorCount} con error`,
+      variant: "destructive",
+    });
   };
 
   const handleThumbnailFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -747,10 +903,16 @@ export const AdminGallery = () => {
                 <h3 className="text-lg font-medium">Galería de Fotos</h3>
                 <p className="text-sm text-muted-foreground">Sube imágenes al bucket público y organízalas por categoría.</p>
               </div>
-              <Button onClick={openPhotoCreate}>
-                <Plus className="mr-2 h-4 w-4" />
-                Agregar foto
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={openBulkPhotoCreate}>
+                  <Upload className="mr-2 h-4 w-4" />
+                  Carga masiva
+                </Button>
+                <Button onClick={openPhotoCreate}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Agregar foto
+                </Button>
+              </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -911,6 +1073,124 @@ export const AdminGallery = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      <Dialog
+        open={bulkPhotoDialogOpen}
+        onOpenChange={(open) => {
+          setBulkPhotoDialogOpen(open);
+          if (!open) resetBulkPhotoDialog();
+        }}
+      >
+        <DialogContent className="max-w-5xl">
+          <DialogHeader>
+            <DialogTitle>Carga masiva de fotos</DialogTitle>
+            <DialogDescription>Selecciona varias imágenes, ajusta sus títulos y súbelas en un solo lote.</DialogDescription>
+          </DialogHeader>
+
+          <div className="grid gap-4">
+            <div className="grid gap-4 md:grid-cols-3">
+              <div className="grid gap-2 md:col-span-1">
+                <Label htmlFor="bulk-photo-file">Seleccionar imágenes</Label>
+                <Input
+                  id="bulk-photo-file"
+                  ref={bulkPhotoInputRef}
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png,image/webp"
+                  multiple
+                  onChange={handleBulkPhotoFileChange}
+                />
+              </div>
+
+              <div className="grid gap-2">
+                <Label>Categoría del lote</Label>
+                <Select value={bulkPhotoCategoryId} onValueChange={setBulkPhotoCategoryId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecciona una categoría" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Sin categoría</SelectItem>
+                    {categoryOptions.map((category) => (
+                      <SelectItem key={category.value} value={category.value}>
+                        {category.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="bulk-photo-date">Fecha del lote</Label>
+                <Input id="bulk-photo-date" type="date" value={bulkPhotoDate} onChange={(event) => setBulkPhotoDate(event.target.value)} />
+              </div>
+            </div>
+
+            {bulkPhotoItems.length > 0 ? (
+              <div className="grid max-h-[60vh] gap-4 overflow-y-auto pr-1 md:grid-cols-2">
+                {bulkPhotoItems.map((item, index) => (
+                  <Card key={`${item.file.name}-${index}`} className={item.uploaded ? "border-green-500" : ""}>
+                    <CardContent className="space-y-4 p-4">
+                      <div className="relative overflow-hidden rounded-lg border">
+                        <img src={item.preview} alt={item.title} className="h-48 w-full object-cover" />
+                        {!item.uploading && !item.uploaded ? (
+                          <button
+                            type="button"
+                            onClick={() => removeBulkPhotoItem(index)}
+                            className="absolute right-2 top-2 rounded-full bg-background/90 p-1 text-foreground shadow"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        ) : null}
+                      </div>
+
+                      <div className="grid gap-2">
+                        <Label htmlFor={`bulk-photo-title-${index}`}>Título</Label>
+                        <Input
+                          id={`bulk-photo-title-${index}`}
+                          value={item.title}
+                          onChange={(event) => updateBulkPhotoItem(index, { title: event.target.value, error: null })}
+                          disabled={item.uploading || item.uploaded}
+                        />
+                      </div>
+
+                      <div className="grid gap-2">
+                        <Label htmlFor={`bulk-photo-description-${index}`}>Descripción</Label>
+                        <Textarea
+                          id={`bulk-photo-description-${index}`}
+                          value={item.description}
+                          onChange={(event) => updateBulkPhotoItem(index, { description: event.target.value, error: null })}
+                          disabled={item.uploading || item.uploaded}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="truncate text-muted-foreground">{item.file.name}</span>
+                        {item.uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                        {item.uploaded ? <Badge variant="secondary">Subida</Badge> : null}
+                      </div>
+
+                      {item.error ? <p className="text-sm text-destructive">{item.error}</p> : null}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-lg border border-dashed p-10 text-center text-muted-foreground">
+                Selecciona varias imágenes para preparar el lote.
+              </div>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setBulkPhotoDialogOpen(false)} disabled={savingBulkPhotos}>
+              Cancelar
+            </Button>
+            <Button onClick={handleSaveBulkPhotos} disabled={savingBulkPhotos || bulkPhotoItems.length === 0}>
+              {savingBulkPhotos ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
+              Subir lote
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <Dialog
         open={photoDialogOpen}

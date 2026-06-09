@@ -12,8 +12,44 @@ import { Calendar, Download, Play, Image as ImageIcon, Video, Radio } from "luci
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
+const getEmbeddedVideoUrl = (url: string) => {
+  try {
+    const parsedUrl = new URL(url);
+    const hostname = parsedUrl.hostname.replace(/^www\./, "");
+
+    if (hostname === "youtube.com" || hostname === "m.youtube.com") {
+      const videoId = parsedUrl.searchParams.get("v");
+      return videoId ? `https://www.youtube.com/embed/${videoId}?rel=0` : null;
+    }
+
+    if (hostname === "youtu.be") {
+      const videoId = parsedUrl.pathname.replace("/", "");
+      return videoId ? `https://www.youtube.com/embed/${videoId}?rel=0` : null;
+    }
+
+    if (hostname === "vimeo.com") {
+      const videoId = parsedUrl.pathname.split("/").filter(Boolean)[0];
+      return videoId ? `https://player.vimeo.com/video/${videoId}` : null;
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+const isDirectVideoFile = (url: string) => {
+  try {
+    const pathname = new URL(url).pathname.toLowerCase();
+    return pathname.endsWith(".mp4") || pathname.endsWith(".webm") || pathname.endsWith(".ogg") || pathname.includes("/storage/v1/object/public/");
+  } catch {
+    return false;
+  }
+};
+
 const MediaGallery = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
   // Fetch gallery photos
   const { data: photos } = useQuery({
@@ -179,21 +215,52 @@ const MediaGallery = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {videos?.map((video) => (
                 <Card key={video.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="aspect-video bg-muted relative group cursor-pointer">
-                    {video.thumbnail_url ? (
-                      <img
-                        src={video.thumbnail_url}
-                        alt={video.title}
-                        className="w-full h-full object-cover"
-                      />
+                  <div className="aspect-video bg-muted relative overflow-hidden">
+                    {playingVideoId === video.id ? (
+                      isDirectVideoFile(video.video_url) ? (
+                        <video
+                          src={video.video_url}
+                          className="w-full h-full object-cover"
+                          controls
+                          autoPlay
+                          playsInline
+                        />
+                      ) : getEmbeddedVideoUrl(video.video_url) ? (
+                        <iframe
+                          src={getEmbeddedVideoUrl(video.video_url) as string}
+                          title={video.title}
+                          className="w-full h-full"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        />
+                      ) : (
+                        <div className="w-full h-full flex flex-col items-center justify-center gap-3 p-4 text-center">
+                          <Video className="h-12 w-12 text-muted-foreground" />
+                          <p className="text-sm text-muted-foreground">No se pudo embeber este video. Usa el enlace directo.</p>
+                        </div>
+                      )
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Video className="h-12 w-12 text-muted-foreground" />
-                      </div>
+                      <button
+                        type="button"
+                        className="group relative h-full w-full cursor-pointer"
+                        onClick={() => setPlayingVideoId(video.id)}
+                      >
+                        {video.thumbnail_url ? (
+                          <img
+                            src={video.thumbnail_url}
+                            alt={video.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <Video className="h-12 w-12 text-muted-foreground" />
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity group-hover:bg-black/50">
+                          <Play className="h-16 w-16 text-white" />
+                        </div>
+                      </button>
                     )}
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Play className="h-16 w-16 text-white" />
-                    </div>
                   </div>
                   <CardHeader>
                     <div className="flex items-start justify-between gap-2">
@@ -208,17 +275,22 @@ const MediaGallery = () => {
                       <Badge variant="secondary" className="w-fit">{video.categories.name}</Badge>
                     )}
                   </CardHeader>
-                  {video.description && (
-                    <CardContent>
+                  <CardContent>
+                    {video.description ? (
                       <p className="text-sm text-muted-foreground mb-4">{video.description}</p>
-                      <Button asChild className="w-full">
+                    ) : null}
+                    <div className="flex gap-2">
+                      <Button className="flex-1" onClick={() => setPlayingVideoId(video.id)}>
+                        <Play className="h-4 w-4 mr-2" />
+                        {playingVideoId === video.id ? "Reproduciendo" : "Ver aquí"}
+                      </Button>
+                      <Button asChild variant="outline" className="flex-1">
                         <a href={video.video_url} target="_blank" rel="noopener noreferrer">
-                          <Play className="h-4 w-4 mr-2" />
-                          Ver Video
+                          Abrir enlace
                         </a>
                       </Button>
-                    </CardContent>
-                  )}
+                    </div>
+                  </CardContent>
                 </Card>
               ))}
             </div>
