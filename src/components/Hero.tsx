@@ -196,33 +196,6 @@ export const Hero = () => {
         </div>
       </section>
 
-      {/* Welcome Section with Video */}
-      <section className="py-16 md:py-24 bg-secondary">
-        <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-5xl font-black text-white mb-4 font-display">
-                ¡Bienvenido Jugador!
-              </h2>
-              <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto">
-                Revive los mejores momentos de la Final Copa Telmex Telcel
-              </p>
-            </div>
-            
-            {/* YouTube Video Embed */}
-            <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20">
-              <iframe
-                src={`https://www.youtube.com/embed/${youtubeVideoId}?rel=0&start=${videoStartTime}`}
-                title="Final Copa Telmex Telcel"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                className="absolute inset-0 w-full h-full"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 };
