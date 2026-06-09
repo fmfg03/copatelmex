@@ -755,10 +755,28 @@ export const AdminGallery = () => {
     const normalizedScheduledTime = String(formData?.get("stream_scheduled_time") || streamForm.scheduled_time || streamDateTimeInputRef.current?.value || "").trim();
     const normalizedStreamUrl = String(formData?.get("stream_url") || streamForm.stream_url || streamUrlInputRef.current?.value || "").trim();
 
-    if (!normalizedTitle || !normalizedStreamUrl || !normalizedScheduledTime) {
+    if (!normalizedTitle) {
       toast({
-        title: "Campos requeridos",
-        description: "Título, fecha y URL son obligatorios",
+        title: "Título requerido",
+        description: "El título de la transmisión es obligatorio",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!normalizedScheduledTime) {
+      toast({
+        title: "Fecha y hora requeridas",
+        description: "La fecha y hora de la transmisión son obligatorias",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!normalizedStreamUrl) {
+      toast({
+        title: "URL requerida",
+        description: "La URL de la transmisión es obligatoria",
         variant: "destructive",
       });
       return;

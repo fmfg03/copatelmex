@@ -16,6 +16,7 @@ import sponsorZucaritas from "@/assets/sponsor-zucaritas.png";
 import sponsorPowerade from "@/assets/sponsor-powerade.png";
 import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
 import { CONVOCATORIA_PATH, downloadConvocatoria } from "@/lib/downloads";
+import { VideoFeedSection } from "@/components/VideoFeedSection";
 export default function TournamentInfo() {
   const navigate = useNavigate();
   return <div className="min-h-screen">
@@ -47,6 +48,8 @@ export default function TournamentInfo() {
           </div>
         </div>
       </section>
+
+      <VideoFeedSection />
 
       {/* Video de Bienvenida */}
       <section className="py-16 bg-gradient-to-br from-background via-muted/30 to-background">
