@@ -47,9 +47,18 @@ const isDirectVideoFile = (url: string) => {
   }
 };
 
+type Orientation = "portrait" | "landscape";
+
 const MediaGallery = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
+  const [orientations, setOrientations] = useState<Record<string, Orientation>>({});
+
+  const handleMediaDims = (id: string, width: number, height: number) => {
+    if (!width || !height) return;
+    const next: Orientation = height > width ? "portrait" : "landscape";
+    setOrientations((prev) => (prev[id] === next ? prev : { ...prev, [id]: next }));
+  };
 
   // Fetch gallery photos
   const { data: photos } = useQuery({
