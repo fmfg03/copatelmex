@@ -42,21 +42,7 @@ export const TournamentInfo = () => {
               Información del Torneo
             </h2>
             <div className="w-24 h-1 bg-primary mx-auto mb-8"></div>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto font-medium leading-relaxed text-justify">
-              COPA TELMEX TELCEL es un torneo que tiene como principales objetivos la asistencia social a personas, sectores y regiones de escasos recursos, comunidades indígenas y grupos vulnerables por edad, sexo o problemas de discapacidad, mediante su inclusión en la sociedad a través de la promoción del deporte y la activación física; lo anterior, como medida de prevención de problemas de carácter social que afectan actualmente a la población mexicana como lo puede ser el alcoholismo, drogadicción, la delincuencia, entre otros.
-            </p>
-          </div>
-
-          <section className="space-y-8">
-            <div className="text-center">
-              <h3 className="text-3xl font-bold text-secondary mb-4">Bienvenida del Jugador</h3>
-              <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Conoce el spot oficial del torneo y la historia de vida que inspira a miles de jugadores en todo el país.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 mb-10">
               <div className="space-y-4">
                 <div className="text-center lg:text-left">
                   <h4 className="text-2xl font-bold text-secondary">Spot Copa Telmex Telcel</h4>
@@ -77,7 +63,11 @@ export const TournamentInfo = () => {
                 </div>
               </div>
             </div>
-          </section>
+
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto font-medium leading-relaxed text-justify">
+              COPA TELMEX TELCEL es un torneo que tiene como principales objetivos la asistencia social a personas, sectores y regiones de escasos recursos, comunidades indígenas y grupos vulnerables por edad, sexo o problemas de discapacidad, mediante su inclusión en la sociedad a través de la promoción del deporte y la activación física; lo anterior, como medida de prevención de problemas de carácter social que afectan actualmente a la población mexicana como lo puede ser el alcoholismo, drogadicción, la delincuencia, entre otros.
+            </p>
+          </div>
 
           {/* Por qué es el más grande */}
           <Card className="border-2 border-primary/20 bg-gradient-to-br from-background to-primary/5 animate-scale-in">

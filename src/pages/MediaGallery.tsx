@@ -279,17 +279,26 @@ const MediaGallery = () => {
                     {video.description ? (
                       <p className="text-sm text-muted-foreground mb-4">{video.description}</p>
                     ) : null}
+                    {(() => {
+                      const isDirectFile = isDirectVideoFile(video.video_url);
+                      const hasEmbeddedUrl = Boolean(getEmbeddedVideoUrl(video.video_url));
+
+                      return (
                     <div className="flex gap-2">
                       <Button className="flex-1" onClick={() => setPlayingVideoId(video.id)}>
                         <Play className="h-4 w-4 mr-2" />
                         {playingVideoId === video.id ? "Reproduciendo" : "Ver aquí"}
                       </Button>
-                      <Button asChild variant="outline" className="flex-1">
-                        <a href={video.video_url} target="_blank" rel="noopener noreferrer">
-                          Abrir enlace
-                        </a>
-                      </Button>
+                      {!isDirectFile && hasEmbeddedUrl ? (
+                        <Button asChild variant="outline" className="flex-1">
+                          <a href={video.video_url} target="_blank" rel="noopener noreferrer">
+                            Abrir enlace
+                          </a>
+                        </Button>
+                      ) : null}
                     </div>
+                      );
+                    })()}
                   </CardContent>
                 </Card>
               ))}
