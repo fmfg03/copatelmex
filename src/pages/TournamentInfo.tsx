@@ -16,7 +16,6 @@ import sponsorZucaritas from "@/assets/sponsor-zucaritas.png";
 import sponsorPowerade from "@/assets/sponsor-powerade.png";
 import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
 import { CONVOCATORIA_PATH, downloadConvocatoria } from "@/lib/downloads";
-import { VideoFeedSection } from "@/components/VideoFeedSection";
 export default function TournamentInfo() {
   const navigate = useNavigate();
   return <div className="min-h-screen">
@@ -49,8 +48,6 @@ export default function TournamentInfo() {
         </div>
       </section>
 
-      <VideoFeedSection />
-
       {/* Video de Bienvenida */}
       <section className="py-16 bg-gradient-to-br from-background via-muted/30 to-background">
         <div className="container mx-auto px-4">
@@ -62,8 +59,26 @@ export default function TournamentInfo() {
                 Vive la experiencia única de jugar en instalaciones de clase mundial y competir al más alto nivel
               </p>
             </div>
-            <div className="aspect-video bg-muted rounded-xl shadow-2xl overflow-hidden">
-              <iframe className="w-full h-full" src="https://www.youtube.com/embed/eic4VntNlXw?rel=0&start=74" title="Final Copa Telmex Telcel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+              <div className="space-y-4">
+                <div className="text-center lg:text-left">
+                  <h3 className="text-2xl font-bold text-secondary">Spot Copa Telmex Telcel</h3>
+                  <p className="text-muted-foreground">Conoce el spot oficial del torneo.</p>
+                </div>
+                <div className="aspect-video bg-muted rounded-xl shadow-2xl overflow-hidden">
+                  <iframe className="w-full h-full" src="https://www.youtube.com/embed/Nbmfcz33fF0?rel=0" title="Spot Copa Telmex Telcel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="text-center lg:text-left">
+                  <h3 className="text-2xl font-bold text-secondary">Historia de Vida</h3>
+                  <p className="text-muted-foreground">Bienvenida del jugador e inspiración para competir al más alto nivel.</p>
+                </div>
+                <div className="aspect-video bg-muted rounded-xl shadow-2xl overflow-hidden">
+                  <iframe className="w-full h-full" src="https://www.youtube.com/embed/eic4VntNlXw?rel=0&start=74" title="Historia de vida Copa Telmex Telcel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                </div>
+              </div>
             </div>
             <div className="mt-8 text-center">
               <Card className="max-w-3xl mx-auto">

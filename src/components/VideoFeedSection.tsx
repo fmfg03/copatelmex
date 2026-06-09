@@ -1,21 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, Trophy, Users, Star, Volume2, VolumeX } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import tournamentFeed from "@/assets/Copa_telcel_promo_final3.mp4";
+import tournamentFeedAsset from "@/assets/tournament-feed-horizontal.mp4.asset.json";
+
+const tournamentFeed = tournamentFeedAsset.url;
 
 export const VideoFeedSection = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const miniVideoRef = useRef<HTMLVideoElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [showMiniPlayer, setShowMiniPlayer] = useState(false);
 
   const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
     const next = !isMuted;
-    if (videoRef.current) videoRef.current.muted = next;
-    if (miniVideoRef.current) miniVideoRef.current.muted = next;
+    video.muted = next;
     setIsMuted(next);
   };
 
@@ -51,60 +52,21 @@ export const VideoFeedSection = () => {
   }, []);
 
   useEffect(() => {
-    if (!shouldLoadVideo) {
+    const video = videoRef.current;
+
+    if (!video || !shouldLoadVideo) {
       return;
     }
 
-    const mainVideo = videoRef.current;
-    const miniVideo = miniVideoRef.current;
-
-    if (showMiniPlayer) {
-      if (mainVideo) {
-        mainVideo.pause();
-      }
-      if (miniVideo) {
-        miniVideo.currentTime = mainVideo?.currentTime || miniVideo.currentTime;
-        miniVideo.muted = isMuted;
-        miniVideo.play().catch(() => undefined);
-      }
+    if (isVisible) {
+      video.play().catch(() => undefined);
       return;
     }
 
-    if (miniVideo) {
-      if (mainVideo) {
-        mainVideo.currentTime = miniVideo.currentTime || mainVideo.currentTime;
-      }
-      miniVideo.pause();
-    }
-
-    if (mainVideo) {
-      mainVideo.muted = isMuted;
-      if (isVisible) {
-        mainVideo.play().catch(() => undefined);
-      } else {
-        mainVideo.pause();
-      }
-    }
-  }, [isMuted, isVisible, shouldLoadVideo, showMiniPlayer]);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const handleScroll = () => {
-      const rect = section.getBoundingClientRect();
-      const shouldPin = rect.top < -180;
-      setShowMiniPlayer(shouldPin);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    video.pause();
+  }, [isVisible, shouldLoadVideo]);
 
   return (
-    <>
     <section ref={sectionRef} className="py-16 bg-gradient-to-br from-secondary via-secondary/95 to-secondary relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(252,211,77,0.15),transparent_50%)]"></div>
@@ -131,7 +93,7 @@ export const VideoFeedSection = () => {
                 </div>
                 <div>
                   <h3 className="text-secondary font-bold text-base">Copa Telmex Telcel</h3>
-                  <p className="text-secondary/70 text-sm">Copa Telcel Promo</p>
+                  <p className="text-secondary/70 text-sm">Lo mejor del torneo</p>
                 </div>
               </div>
               <div className="relative aspect-video bg-black">
@@ -204,37 +166,5 @@ export const VideoFeedSection = () => {
         </div>
       </div>
     </section>
-    {showMiniPlayer ? (
-      <div className="fixed bottom-4 left-1/2 z-40 w-[min(360px,calc(100vw-1.5rem))] -translate-x-1/2 md:bottom-6 md:w-[420px]">
-        <div className="overflow-hidden rounded-2xl border border-primary/30 bg-card shadow-2xl">
-          <div className="flex items-center justify-between bg-gradient-to-r from-primary to-primary/80 px-4 py-3">
-            <div>
-              <p className="font-bold text-secondary text-sm">Copa Telmex Telcel</p>
-              <p className="text-secondary/70 text-xs">Copa Telcel Promo</p>
-            </div>
-            <button
-              onClick={toggleMute}
-              className="rounded-full bg-black/15 p-2 text-white transition-colors hover:bg-black/25"
-              aria-label={isMuted ? "Activar sonido" : "Silenciar"}
-            >
-              {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-            </button>
-          </div>
-          <div className="relative aspect-video bg-black">
-            <video
-              ref={miniVideoRef}
-              src={shouldLoadVideo ? tournamentFeed : undefined}
-              className="h-full w-full object-cover"
-              muted
-              loop
-              playsInline
-              preload="none"
-              controls
-            />
-          </div>
-        </div>
-      </div>
-    ) : null}
-    </>
   );
 };
