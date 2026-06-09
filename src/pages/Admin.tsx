@@ -141,7 +141,7 @@ const Admin = () => {
               </TabsTrigger>
               <TabsTrigger value="gallery" className="flex items-center gap-2">
                 <Image className="w-4 h-4" />
-                <span className="hidden sm:inline">Galería</span>
+                <span className="hidden sm:inline">Multimedia</span>
               </TabsTrigger>
               {/* Pagos oculto - este torneo es gratuito */}
               {/* <TabsTrigger value="payments" className="flex items-center gap-2">
