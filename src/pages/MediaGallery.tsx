@@ -38,6 +38,25 @@ const getEmbeddedVideoUrl = (url: string) => {
   }
 };
 
+const getEmbeddedStreamUrl = (url: string, platform?: string | null) => {
+  if (platform === "facebook") {
+    try {
+      const parsedUrl = new URL(url);
+      if (parsedUrl.hostname.includes("facebook.com") || parsedUrl.hostname.includes("fb.watch")) {
+        return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&width=1280`;
+      }
+    } catch {
+      return null;
+    }
+  }
+
+  if (platform === "embedded") {
+    return url;
+  }
+
+  return getEmbeddedVideoUrl(url);
+};
+
 const isDirectVideoFile = (url: string) => {
   try {
     const pathname = new URL(url).pathname.toLowerCase();
@@ -59,6 +78,7 @@ const MediaGallery = () => {
     const next: Orientation = height > width ? "portrait" : "landscape";
     setOrientations((prev) => (prev[id] === next ? prev : { ...prev, [id]: next }));
   };
+  const [playingStreamId, setPlayingStreamId] = useState<string | null>(null);
 
   // Fetch gallery photos
   const { data: photos } = useQuery({
@@ -371,6 +391,28 @@ const MediaGallery = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
+                    {playingStreamId === stream.id && (getEmbeddedStreamUrl(stream.stream_url, stream.platform) || isDirectVideoFile(stream.stream_url)) ? (
+                      <div className="aspect-video bg-muted rounded-lg overflow-hidden">
+                        {isDirectVideoFile(stream.stream_url) ? (
+                          <video
+                            src={stream.stream_url}
+                            className="w-full h-full object-cover"
+                            controls
+                            autoPlay
+                            playsInline
+                          />
+                        ) : (
+                          <iframe
+                            src={getEmbeddedStreamUrl(stream.stream_url, stream.platform) as string}
+                            className="w-full h-full"
+                            title={stream.title}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                          />
+                        )}
+                      </div>
+                    ) : null}
+
                     {stream.description && (
                       <p className="text-sm text-muted-foreground">{stream.description}</p>
                     )}
@@ -396,35 +438,25 @@ const MediaGallery = () => {
                         </Button>
                       )}
                       
-                      {stream.status === 'live' && (
-                        <Button asChild size="sm" className="flex-1">
-                          <a href={stream.stream_url} target="_blank" rel="noopener noreferrer">
-                            <Play className="h-4 w-4 mr-2" />
-                            Ver Ahora
-                          </a>
+                      {getEmbeddedStreamUrl(stream.stream_url, stream.platform) || isDirectVideoFile(stream.stream_url) ? (
+                        <Button
+                          variant={stream.status === "finished" ? "secondary" : "default"}
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => setPlayingStreamId(stream.id)}
+                        >
+                          <Play className="h-4 w-4 mr-2" />
+                          {stream.status === "finished" ? "Ver Repetición Aquí" : "Ver Aquí"}
                         </Button>
-                      )}
+                      ) : null}
 
-                      {stream.status === 'finished' && (
-                        <Button asChild variant="secondary" size="sm" className="flex-1">
-                          <a href={stream.stream_url} target="_blank" rel="noopener noreferrer">
-                            <Play className="h-4 w-4 mr-2" />
-                            Ver Repetición
-                          </a>
-                        </Button>
-                      )}
+                      <Button asChild variant="outline" size="sm" className="flex-1">
+                        <a href={stream.stream_url} target="_blank" rel="noopener noreferrer">
+                          <Play className="h-4 w-4 mr-2" />
+                          {stream.status === "finished" ? "Abrir Repetición" : "Abrir Enlace"}
+                        </a>
+                      </Button>
                     </div>
-
-                    {stream.status === 'live' && stream.platform === 'embedded' && (
-                      <div className="aspect-video bg-muted rounded-lg overflow-hidden mt-4">
-                        <iframe
-                          src={stream.stream_url}
-                          className="w-full h-full"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
               ))}
