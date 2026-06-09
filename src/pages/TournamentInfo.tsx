@@ -48,53 +48,6 @@ export default function TournamentInfo() {
         </div>
       </section>
 
-      {/* Video de Bienvenida */}
-      <section className="py-16 bg-gradient-to-br from-background via-muted/30 to-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-secondary mb-4">Bienvenida del Jugador</h2>
-              <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Vive la experiencia única de jugar en instalaciones de clase mundial y competir al más alto nivel
-              </p>
-            </div>
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-              <div className="space-y-4">
-                <div className="text-center lg:text-left">
-                  <h3 className="text-2xl font-bold text-secondary">Spot Copa Telmex Telcel</h3>
-                  <p className="text-muted-foreground">Conoce el spot oficial del torneo.</p>
-                </div>
-                <div className="aspect-video bg-muted rounded-xl shadow-2xl overflow-hidden">
-                  <iframe className="w-full h-full" src="https://www.youtube.com/embed/Nbmfcz33fF0?rel=0" title="Spot Copa Telmex Telcel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="text-center lg:text-left">
-                  <h3 className="text-2xl font-bold text-secondary">Historia de Vida</h3>
-                  <p className="text-muted-foreground">Bienvenida del jugador e inspiración para competir al más alto nivel.</p>
-                </div>
-                <div className="aspect-video bg-muted rounded-xl shadow-2xl overflow-hidden">
-                  <iframe className="w-full h-full" src="https://www.youtube.com/embed/eic4VntNlXw?rel=0&start=74" title="Historia de vida Copa Telmex Telcel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-                </div>
-              </div>
-            </div>
-            <div className="mt-8 text-center">
-              <Card className="max-w-3xl mx-auto">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-secondary mb-4">Una Oportunidad Única</h3>
-                  <p className="text-muted-foreground mb-4 text-justify">
-                    Copa Telmex Telcel es un torneo que tiene como principales objetivos la asistencia social a personas, sectores y regiones de escasos recursos, comunidades indígenas y grupos vulnerables.
-                  </p>
-                  <p className="text-muted-foreground text-justify">Impulsa la inclusión de personas y comunidades de escasos recursos mediante el deporte. Incluye a grupos vulnerables para fomentar la activación física y la integración social, previniendo problemas de carácter social que afectan a la población mexicana.</p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Quick Facts */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
