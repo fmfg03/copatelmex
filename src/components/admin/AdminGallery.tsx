@@ -241,6 +241,9 @@ export const AdminGallery = () => {
   const photoInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
+  const streamTitleInputRef = useRef<HTMLInputElement>(null);
+  const streamDateTimeInputRef = useRef<HTMLInputElement>(null);
+  const streamUrlInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     void loadData();
@@ -589,7 +592,11 @@ export const AdminGallery = () => {
   };
 
   const handleSaveStream = async () => {
-    if (!streamForm.title.trim() || !streamForm.stream_url.trim() || !streamForm.scheduled_time) {
+    const normalizedTitle = streamForm.title.trim() || streamTitleInputRef.current?.value.trim() || "";
+    const normalizedScheduledTime = streamForm.scheduled_time || streamDateTimeInputRef.current?.value || "";
+    const normalizedStreamUrl = streamForm.stream_url.trim() || streamUrlInputRef.current?.value.trim() || "";
+
+    if (!normalizedTitle || !normalizedStreamUrl || !normalizedScheduledTime) {
       toast({
         title: "Campos requeridos",
         description: "Título, fecha y URL son obligatorios",
@@ -598,7 +605,7 @@ export const AdminGallery = () => {
       return;
     }
 
-    if (!isValidHttpUrl(streamForm.stream_url.trim())) {
+    if (!isValidHttpUrl(normalizedStreamUrl)) {
       toast({
         title: "URL inválida",
         description: "La transmisión debe usar una URL http o https",
@@ -611,12 +618,12 @@ export const AdminGallery = () => {
 
     try {
       const payload = {
-        title: streamForm.title.trim(),
+        title: normalizedTitle,
         description: streamForm.description.trim() || null,
         platform: streamForm.platform,
         status: streamForm.status,
-        stream_url: streamForm.stream_url.trim(),
-        scheduled_time: new Date(streamForm.scheduled_time).toISOString(),
+        stream_url: normalizedStreamUrl,
+        scheduled_time: new Date(normalizedScheduledTime).toISOString(),
       };
 
       if (editingStream) {
@@ -1145,7 +1152,7 @@ export const AdminGallery = () => {
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="stream-title">Título</Label>
-              <Input id="stream-title" value={streamForm.title} onChange={(event) => setStreamForm((current) => ({ ...current, title: event.target.value }))} />
+              <Input id="stream-title" ref={streamTitleInputRef} value={streamForm.title} onChange={(event) => setStreamForm((current) => ({ ...current, title: event.target.value }))} />
             </div>
 
             <div className="grid gap-2">
@@ -1184,13 +1191,13 @@ export const AdminGallery = () => {
 
               <div className="grid gap-2">
                 <Label htmlFor="stream-scheduled-time">Fecha y hora</Label>
-                <Input id="stream-scheduled-time" type="datetime-local" value={streamForm.scheduled_time} onChange={(event) => setStreamForm((current) => ({ ...current, scheduled_time: event.target.value }))} />
+                <Input id="stream-scheduled-time" ref={streamDateTimeInputRef} type="datetime-local" value={streamForm.scheduled_time} onChange={(event) => setStreamForm((current) => ({ ...current, scheduled_time: event.target.value }))} />
               </div>
             </div>
 
             <div className="grid gap-2">
               <Label htmlFor="stream-url">URL</Label>
-              <Input id="stream-url" placeholder="https://www.youtube.com/watch?v=..." value={streamForm.stream_url} onChange={(event) => setStreamForm((current) => ({ ...current, stream_url: event.target.value }))} />
+              <Input id="stream-url" ref={streamUrlInputRef} placeholder="https://www.youtube.com/watch?v=..." value={streamForm.stream_url} onChange={(event) => setStreamForm((current) => ({ ...current, stream_url: event.target.value }))} />
             </div>
           </div>
 
