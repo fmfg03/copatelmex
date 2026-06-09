@@ -149,10 +149,14 @@ const validateImageFile = (file: File) => {
 };
 
 const validateVideoFile = (file: File) => {
-  if (file.type !== "video/mp4") {
+  const validTypes = ["video/mp4", "video/quicktime"];
+  const fileName = file.name.toLowerCase();
+  const hasValidExtension = fileName.endsWith(".mp4") || fileName.endsWith(".mov");
+
+  if (!validTypes.includes(file.type) && !hasValidExtension) {
     toast({
       title: "Formato inválido",
-      description: "Solo se permiten videos MP4",
+      description: "Solo se permiten videos MP4 o MOV",
       variant: "destructive",
     });
     return false;
@@ -640,7 +644,7 @@ export const AdminGallery = () => {
     if (videoForm.source_mode === "upload" && !videoFile && !existingUploadUrl) {
       toast({
         title: "Video requerido",
-        description: "Sube un archivo MP4 o cambia a URL externa",
+        description: "Sube un archivo MP4/MOV o cambia a URL externa",
         variant: "destructive",
       });
       return;
@@ -979,7 +983,7 @@ export const AdminGallery = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-medium">Shorts y Videos</h3>
-                <p className="text-sm text-muted-foreground">Sube MP4 al storage o publica links externos de YouTube o Vimeo.</p>
+                <p className="text-sm text-muted-foreground">Sube MP4 o MOV al storage o publica links externos de YouTube o Vimeo.</p>
               </div>
               <Button onClick={openVideoCreate}>
                 <Plus className="mr-2 h-4 w-4" />
@@ -1011,7 +1015,7 @@ export const AdminGallery = () => {
                   <CardContent className="space-y-4">
                     <div className="flex flex-wrap gap-2">
                       {video.categories?.name ? <Badge variant="secondary">{video.categories.name}</Badge> : null}
-                      <Badge variant="secondary">{getStoragePathFromUrl(video.video_url) ? "Archivo MP4" : "URL externa"}</Badge>
+                      <Badge variant="secondary">{getStoragePathFromUrl(video.video_url) ? "Archivo subido" : "URL externa"}</Badge>
                     </div>
                     <a href={video.video_url} target="_blank" rel="noopener noreferrer" className="block truncate text-sm text-primary underline">
                       {video.video_url}
@@ -1296,7 +1300,7 @@ export const AdminGallery = () => {
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>{editingVideo ? "Editar video" : "Agregar video"}</DialogTitle>
-            <DialogDescription>Publica un MP4 en storage o pega una URL externa de YouTube o Vimeo.</DialogDescription>
+            <DialogDescription>Publica un MP4 o MOV en storage o pega una URL externa de YouTube o Vimeo.</DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-4">
@@ -1359,7 +1363,7 @@ export const AdminGallery = () => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="upload">Subir archivo MP4</SelectItem>
+                  <SelectItem value="upload">Subir archivo MP4/MOV</SelectItem>
                   <SelectItem value="external">Pegar URL externa</SelectItem>
                 </SelectContent>
               </Select>
@@ -1367,8 +1371,8 @@ export const AdminGallery = () => {
 
             {videoForm.source_mode === "upload" ? (
               <div className="grid gap-2">
-                <Label htmlFor="video-file">Archivo MP4</Label>
-                <Input id="video-file" ref={videoInputRef} type="file" accept="video/mp4" onChange={handleVideoFileChange} />
+                <Label htmlFor="video-file">Archivo MP4 o MOV</Label>
+                <Input id="video-file" ref={videoInputRef} type="file" accept="video/mp4,video/quicktime,.mov" onChange={handleVideoFileChange} />
                 <p className="text-xs text-muted-foreground">Tamaño máximo recomendado: 100 MB.</p>
                 {editingVideo && !videoFile ? (
                   <p className="text-xs text-muted-foreground">Se conservará el archivo actual si no subes uno nuevo.</p>

@@ -47,6 +47,38 @@ export const TournamentInfo = () => {
             </p>
           </div>
 
+          <section className="space-y-8">
+            <div className="text-center">
+              <h3 className="text-3xl font-bold text-secondary mb-4">Bienvenida del Jugador</h3>
+              <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                Conoce el spot oficial del torneo y la historia de vida que inspira a miles de jugadores en todo el país.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+              <div className="space-y-4">
+                <div className="text-center lg:text-left">
+                  <h4 className="text-2xl font-bold text-secondary">Spot Copa Telmex Telcel</h4>
+                  <p className="text-muted-foreground">Conoce el spot oficial del torneo.</p>
+                </div>
+                <div className="aspect-video bg-muted rounded-xl shadow-2xl overflow-hidden">
+                  <iframe className="w-full h-full" src="https://www.youtube.com/embed/Nbmfcz33fF0?rel=0" title="Spot Copa Telmex Telcel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="text-center lg:text-left">
+                  <h4 className="text-2xl font-bold text-secondary">Historia de Vida</h4>
+                  <p className="text-muted-foreground">Bienvenida del jugador e inspiración para competir al más alto nivel.</p>
+                </div>
+                <div className="aspect-video bg-muted rounded-xl shadow-2xl overflow-hidden">
+                  <iframe className="w-full h-full" src="https://www.youtube.com/embed/eic4VntNlXw?rel=0&start=74" title="Historia de vida Copa Telmex Telcel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Por qué es el más grande */}
           <Card className="border-2 border-primary/20 bg-gradient-to-br from-background to-primary/5 animate-scale-in">
             <CardContent className="p-8">

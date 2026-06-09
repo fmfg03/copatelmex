@@ -41,7 +41,7 @@ const getEmbeddedVideoUrl = (url: string) => {
 const isDirectVideoFile = (url: string) => {
   try {
     const pathname = new URL(url).pathname.toLowerCase();
-    return pathname.endsWith(".mp4") || pathname.endsWith(".webm") || pathname.endsWith(".ogg") || pathname.includes("/storage/v1/object/public/");
+    return pathname.endsWith(".mp4") || pathname.endsWith(".mov") || pathname.endsWith(".webm") || pathname.endsWith(".ogg") || pathname.includes("/storage/v1/object/public/");
   } catch {
     return false;
   }
