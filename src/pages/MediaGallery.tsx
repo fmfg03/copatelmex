@@ -333,7 +333,8 @@ const MediaGallery = () => {
                     })()}
                   </CardContent>
                 </Card>
-              ))}
+                );
+              })}
             </div>
 
             {!videos || videos.length === 0 && (
