@@ -7,7 +7,7 @@ import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Calendar, ArrowRight, Newspaper, ExternalLink, MapPin } from "lucide-react";
+import { Calendar, ArrowRight, Newspaper, ExternalLink, MapPin, Globe } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { featuredLocalNewsArticle, localNewsArticles } from "@/content/localNews";
