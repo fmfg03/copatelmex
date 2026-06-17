@@ -67,11 +67,19 @@ const News = () => {
                 Archivo de noticias
               </div>
               <h1 className="mt-5 text-4xl md:text-6xl font-black tracking-tight leading-tight">
-                Noticias y reportajes del torneo
+                Tu fuente oficial de información de la Copa Telmex Telcel
               </h1>
-              <p className="mt-5 text-lg md:text-xl text-white/85 max-w-2xl">
-                Cobertura editorial, aperturas regionales e historias que acompañan el camino rumbo a la Copa Telmex Telcel 2026.
-              </p>
+              <div className="mt-6 max-w-2xl space-y-5 text-white/90">
+                <p className="text-lg md:text-xl">
+                  <span className="font-bold">Entérate de lo más relevante del torneo:</span> resultados, historias, noticias exclusivas y todo lo que marca el camino rumbo a la Copa Telmex Telcel 2026.
+                </p>
+                <div className="border-t border-white/20 pt-5 flex gap-3">
+                  <Globe className="w-6 h-6 flex-shrink-0 mt-1" />
+                  <p className="text-base md:text-lg">
+                    <span className="font-bold">Además, descubre lo mejor del fútbol internacional:</span> noticias, análisis y grandes historias del deporte mundial.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
