@@ -327,23 +327,31 @@ export default function Schedule() {
   const loadKnockoutMatches = async () => {
     const { data } = await supabase
       .from("matches")
-      .select(
-        `
-        *,
-        home_team:teams!matches_home_team_id_fkey(team_name),
-        away_team:teams!matches_away_team_id_fkey(team_name)
-      `
-      )
+      .select(`*`)
       .in("phase", ["Octavos", "Cuartos", "Semifinal", "Final"])
       .order("match_date", { ascending: true });
 
     if (!data) return;
 
+    const teamIds = Array.from(
+      new Set(
+        data.flatMap((m: any) => [m.home_team_id, m.away_team_id]).filter(Boolean)
+      )
+    );
+
+    let teamsMap = new Map<string, string>();
+    if (teamIds.length > 0) {
+      const { data: teamsData } = await supabase.rpc("get_public_teams", {
+        p_team_ids: teamIds,
+      });
+      (teamsData || []).forEach((t: any) => teamsMap.set(t.id, t.team_name));
+    }
+
     const knockoutData: KnockoutMatch[] = data.map((match: any, index) => ({
       round: match.phase,
       position: index,
-      home_team: match.home_team?.team_name || "TBD",
-      away_team: match.away_team?.team_name || "TBD",
+      home_team: (match.home_team_id && teamsMap.get(match.home_team_id)) || "TBD",
+      away_team: (match.away_team_id && teamsMap.get(match.away_team_id)) || "TBD",
       home_score: match.status === "completed" ? match.home_score : null,
       away_score: match.status === "completed" ? match.away_score : null,
       status: match.status,
@@ -351,6 +359,7 @@ export default function Schedule() {
 
     setKnockoutMatches(knockoutData);
   };
+
 
   useEffect(() => {
     loadMatches();
