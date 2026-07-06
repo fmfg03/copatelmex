@@ -4,6 +4,7 @@ import listRecentNewsTool from "./tools/list-recent-news";
 import listTeamsTool from "./tools/list-teams";
 import listMatchesTool from "./tools/list-matches";
 import getStandingsTool from "./tools/get-standings";
+declare const process: { env: Record<string, string | undefined> };
 
 export default defineMcp({
   name: "copa-telmex-telcel-mcp",

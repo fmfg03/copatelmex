@@ -1,5 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { createClient } from "@supabase/supabase-js";
+declare const process: { env: Record<string, string | undefined> };
 
 export default defineTool({
   name: "list_categories",
