@@ -1893,6 +1893,33 @@ export type Database = {
         Returns: boolean
       }
       generate_payment_reference: { Args: never; Returns: string }
+      get_public_teams: {
+        Args: { p_team_ids?: string[] }
+        Returns: {
+          academy_name: string
+          country: string
+          id: string
+          shield_url: string
+          state: string
+          team_name: string
+        }[]
+      }
+      get_public_tournament_config: {
+        Args: never
+        Returns: {
+          created_at: string
+          id: string
+          max_players_per_team: number
+          max_teams_per_category: number
+          min_players_per_team: number
+          registration_enabled: boolean
+          require_birth_certificate: boolean
+          require_curp: boolean
+          require_medical_certificate: boolean
+          require_photo: boolean
+          updated_at: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1913,6 +1940,14 @@ export type Database = {
       update_team_standings: {
         Args: { p_category_id?: string }
         Returns: undefined
+      }
+      validate_invitation_code: {
+        Args: { p_code: string }
+        Returns: {
+          invitation_id: string
+          reason: string
+          valid: boolean
+        }[]
       }
     }
     Enums: {
