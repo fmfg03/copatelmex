@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "copa-telmex-telcel-mcp",
+      "version": "0.1.0",
+      "title": "Copa Telmex Telcel MCP"
+    },
+    "tools": [
+      {
+        "name": "list_categories",
+        "title": "List tournament categories",
+        "description": "Lists all tournament categories (Varonil, Juvenil, Femenil) with age ranges and roster limits.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_recent_news",
+        "title": "List recent news",
+        "description": "Lists the most recent published news articles for the Copa Telmex Telcel tournament.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "description": "Max articles to return (default 10)."
+            },
+            "featured_only": {
+              "type": "boolean",
+              "description": "If true, only featured articles."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_teams",
+        "title": "List registered teams",
+        "description": "Lists teams participating in the tournament (public info: name, academy, state, country).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "string",
+              "description": "Filter by Mexican state name."
+            },
+            "search": {
+              "type": "string",
+              "description": "Case-insensitive substring match on team name."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_matches",
+        "title": "List tournament matches",
+        "description": "Lists tournament matches with dates, scores, phase and status. Filter by category or status.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "category_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "scheduled",
+                "in_progress",
+                "completed",
+                "cancelled"
+              ]
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_standings",
+        "title": "Get category standings",
+        "description": "Returns the standings table (played/won/drawn/lost/goals/points) for a given category.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "category_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Category UUID (see list_categories)."
+            }
+          },
+          "required": [
+            "category_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
