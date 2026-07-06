@@ -123,14 +123,7 @@ export default function Schedule() {
     setLoading(true);
     let query = supabase
       .from("matches")
-      .select(
-        `
-        *,
-        home_team:teams!matches_home_team_id_fkey(id, team_name),
-        away_team:teams!matches_away_team_id_fkey(id, team_name),
-        category:categories(id, name)
-      `
-      )
+      .select(`*, category:categories(id, name)`)
       .order("match_date", { ascending: true });
 
     if (selectedCategory !== "all") {
@@ -150,12 +143,35 @@ export default function Schedule() {
     }
 
     const { data } = await query;
-    setMatches(data || []);
+    const rows = data || [];
+
+    const teamIds = Array.from(
+      new Set(
+        rows.flatMap((m: any) => [m.home_team_id, m.away_team_id]).filter(Boolean)
+      )
+    );
+
+    let teamsMap = new Map<string, { id: string; team_name: string }>();
+    if (teamIds.length > 0) {
+      const { data: teamsData } = await supabase.rpc("get_public_teams", {
+        p_team_ids: teamIds,
+      });
+      (teamsData || []).forEach((t: any) => {
+        teamsMap.set(t.id, { id: t.id, team_name: t.team_name });
+      });
+    }
+
+    const enriched: Match[] = rows.map((m: any) => ({
+      ...m,
+      home_team: m.home_team_id ? teamsMap.get(m.home_team_id) || null : null,
+      away_team: m.away_team_id ? teamsMap.get(m.away_team_id) || null : null,
+    }));
+
+    setMatches(enriched);
     setLoading(false);
   };
 
   const loadStandings = async () => {
-    // Usar la tabla team_standings que ya tiene los datos calculados
     const { data: standingsData } = await supabase
       .from("team_standings")
       .select(
@@ -170,7 +186,6 @@ export default function Schedule() {
         goals_against,
         goal_difference,
         points,
-        teams(team_name),
         categories(name)
       `
       )
@@ -181,10 +196,22 @@ export default function Schedule() {
 
     if (!standingsData) return;
 
+    const teamIds = Array.from(
+      new Set(standingsData.map((s: any) => s.team_id).filter(Boolean))
+    );
+
+    let teamsMap = new Map<string, string>();
+    if (teamIds.length > 0) {
+      const { data: teamsData } = await supabase.rpc("get_public_teams", {
+        p_team_ids: teamIds,
+      });
+      (teamsData || []).forEach((t: any) => teamsMap.set(t.id, t.team_name));
+    }
+
     const standings = standingsData.map((standing: any) => ({
       team_id: standing.team_id,
       category_id: standing.category_id,
-      team_name: standing.teams?.team_name || "Unknown",
+      team_name: teamsMap.get(standing.team_id) || "Unknown",
       category_name: standing.categories?.name || "Unknown",
       played: standing.played,
       won: standing.won,
@@ -198,6 +225,7 @@ export default function Schedule() {
 
     setStandings(standings);
   };
+
 
   const loadTopScorers = async () => {
     const { data } = await supabase
