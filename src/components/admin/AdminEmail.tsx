@@ -221,7 +221,13 @@ export const AdminEmail = () => {
             </div>
             <div className="border-t pt-4">
               {selectedEmail?.html_content ? (
-                <div dangerouslySetInnerHTML={{ __html: selectedEmail.html_content }} />
+                <iframe
+                  title="Contenido del correo"
+                  sandbox=""
+                  srcDoc={selectedEmail.html_content}
+                  className="w-full min-h-[320px] border rounded-md bg-white"
+                />
+
               ) : (
                 <p className="whitespace-pre-wrap">{selectedEmail?.text_content || "Sin contenido"}</p>
               )}

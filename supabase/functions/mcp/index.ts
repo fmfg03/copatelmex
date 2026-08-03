@@ -3,22 +3,72 @@
 // supabase function: mcp
 // Bundled from src/lib/mcp/index.ts by @lovable.dev/mcp-js.
 // src/lib/mcp/index.ts
-import { defineMcp } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.20.0";
 
 // src/lib/mcp/tools/list-categories.ts
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.20.0";
+
+// src/lib/mcp/supabase.ts
 import { createClient } from "npm:@supabase/supabase-js@^2.74.0";
+function runtimeEnv(name) {
+  const runtime = globalThis;
+  return runtime.Deno?.env?.get?.(name) ?? runtime.process?.env?.[name];
+}
+function configuredEnv(names) {
+  for (const name of names) {
+    const value = runtimeEnv(name)?.trim();
+    if (value) return value;
+  }
+  return void 0;
+}
+function supabaseProjectUrl() {
+  const url = configuredEnv(["SUPABASE_URL", "VITE_SUPABASE_URL"]);
+  if (!url) throw new Error("SUPABASE_URL (or VITE_SUPABASE_URL) is required");
+  return url;
+}
+function supabasePublishableKey() {
+  const direct = configuredEnv([
+    "SUPABASE_PUBLISHABLE_KEY",
+    "VITE_SUPABASE_PUBLISHABLE_KEY"
+  ]);
+  if (direct) return direct;
+  const keyset = runtimeEnv("SUPABASE_PUBLISHABLE_KEYS");
+  if (keyset) {
+    try {
+      const parsed = JSON.parse(keyset);
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        const keys = parsed;
+        const key = [keys.default, ...Object.values(keys)].find((v) => typeof v === "string" && v.trim().startsWith("sb_publishable_"))?.trim();
+        if (key) return key;
+      }
+    } catch {
+    }
+  }
+  const legacy = configuredEnv(["SUPABASE_ANON_KEY", "VITE_SUPABASE_ANON_KEY"]);
+  if (legacy) return legacy;
+  throw new Error("SUPABASE_PUBLISHABLE_KEY, SUPABASE_PUBLISHABLE_KEYS, or SUPABASE_ANON_KEY is required");
+}
+function supabaseForUser(ctx) {
+  const token = ctx.getToken();
+  if (!token) throw new Error("supabaseForUser requires a verified OAuth token");
+  return createClient(supabaseProjectUrl(), supabasePublishableKey(), {
+    global: { headers: { Authorization: `Bearer ${token}` } },
+    auth: { persistSession: false, autoRefreshToken: false }
+  });
+}
+
+// src/lib/mcp/tools/list-categories.ts
 var list_categories_default = defineTool({
   name: "list_categories",
   title: "List tournament categories",
   description: "Lists all tournament categories (Varonil, Juvenil, Femenil) with age ranges and roster limits.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async () => {
-    const supabase = createClient(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY
-    );
+  handler: async (_input, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser(ctx);
     const { data, error } = await supabase.from("categories").select("id, name, year_born, description, max_players_per_team, registration_closed").order("name");
     if (error) {
       return { content: [{ type: "text", text: error.message }], isError: true };
@@ -32,7 +82,6 @@ var list_categories_default = defineTool({
 
 // src/lib/mcp/tools/list-recent-news.ts
 import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.20.0";
-import { createClient as createClient2 } from "npm:@supabase/supabase-js@^2.74.0";
 import { z } from "npm:zod@^3.25.76";
 var list_recent_news_default = defineTool2({
   name: "list_recent_news",
@@ -43,11 +92,11 @@ var list_recent_news_default = defineTool2({
     featured_only: z.boolean().optional().describe("If true, only featured articles.")
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async ({ limit, featured_only }) => {
-    const supabase = createClient2(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY
-    );
+  handler: async ({ limit, featured_only }, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser(ctx);
     let query = supabase.from("news").select("id, title, content, image_url, source_url, source_name, is_featured, published_at").order("published_at", { ascending: false }).limit(limit ?? 10);
     if (featured_only) query = query.eq("is_featured", true);
     const { data, error } = await query;
@@ -61,7 +110,6 @@ var list_recent_news_default = defineTool2({
 
 // src/lib/mcp/tools/list-teams.ts
 import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.20.0";
-import { createClient as createClient3 } from "npm:@supabase/supabase-js@^2.74.0";
 import { z as z2 } from "npm:zod@^3.25.76";
 var list_teams_default = defineTool3({
   name: "list_teams",
@@ -73,11 +121,11 @@ var list_teams_default = defineTool3({
     limit: z2.number().int().min(1).max(200).optional()
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async ({ state, search, limit }) => {
-    const supabase = createClient3(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY
-    );
+  handler: async ({ state, search, limit }, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser(ctx);
     let query = supabase.from("teams_public").select("id, team_name, academy_name, shield_url, state, country").limit(limit ?? 50);
     if (state) query = query.eq("state", state);
     if (search) query = query.ilike("team_name", `%${search}%`);
@@ -92,7 +140,6 @@ var list_teams_default = defineTool3({
 
 // src/lib/mcp/tools/list-matches.ts
 import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.20.0";
-import { createClient as createClient4 } from "npm:@supabase/supabase-js@^2.74.0";
 import { z as z3 } from "npm:zod@^3.25.76";
 var list_matches_default = defineTool4({
   name: "list_matches",
@@ -104,11 +151,11 @@ var list_matches_default = defineTool4({
     limit: z3.number().int().min(1).max(200).optional()
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async ({ category_id, status, limit }) => {
-    const supabase = createClient4(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY
-    );
+  handler: async ({ category_id, status, limit }, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser(ctx);
     let query = supabase.from("matches").select("id, category_id, home_team_id, away_team_id, match_date, field_number, phase, home_score, away_score, status").order("match_date", { ascending: true }).limit(limit ?? 50);
     if (category_id) query = query.eq("category_id", category_id);
     if (status) query = query.eq("status", status);
@@ -123,7 +170,6 @@ var list_matches_default = defineTool4({
 
 // src/lib/mcp/tools/get-standings.ts
 import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.20.0";
-import { createClient as createClient5 } from "npm:@supabase/supabase-js@^2.74.0";
 import { z as z4 } from "npm:zod@^3.25.76";
 var get_standings_default = defineTool5({
   name: "get_standings",
@@ -133,11 +179,11 @@ var get_standings_default = defineTool5({
     category_id: z4.string().uuid().describe("Category UUID (see list_categories).")
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async ({ category_id }) => {
-    const supabase = createClient5(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY
-    );
+  handler: async ({ category_id }, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser(ctx);
     const { data, error } = await supabase.from("team_standings").select("team_id, played, won, drawn, lost, goals_for, goals_against, goal_difference, points").eq("category_id", category_id).order("points", { ascending: false });
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
     return {
@@ -148,11 +194,16 @@ var get_standings_default = defineTool5({
 });
 
 // src/lib/mcp/index.ts
+var projectRef = "yrrqjcnthnleqiblwlom";
 var mcp_default = defineMcp({
   name: "copa-telmex-telcel-mcp",
   title: "Copa Telmex Telcel MCP",
   version: "0.1.0",
-  instructions: "Public read-only tools for the Copa Telmex Telcel amateur football tournament. Use list_categories to discover category IDs, list_teams and list_matches to explore participants and fixtures, get_standings for a category's table, and list_recent_news for tournament news.",
+  instructions: "Read-only tools for the Copa Telmex Telcel amateur football tournament. Use list_categories to discover category IDs, list_teams and list_matches to explore participants and fixtures, get_standings for a category's table, and list_recent_news for tournament news.",
+  auth: auth.oauth.issuer({
+    issuer: `https://${projectRef}.supabase.co/auth/v1`,
+    acceptedAudiences: "authenticated"
+  }),
   tools: [
     list_categories_default,
     list_recent_news_default,

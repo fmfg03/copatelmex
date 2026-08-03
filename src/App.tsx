@@ -21,6 +21,7 @@ import MyTeams from "./pages/MyTeams";
 import StateOperators from "./pages/StateOperators";
 import News from "./pages/News";
 import NewsDetail from "./pages/NewsDetail";
+import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,6 +52,7 @@ const App = () => (
           <Route path="/my-teams" element={<MyTeams />} />
             <Route path="/inscripcion" element={<StateOperators />} />
             <Route path="/noticias/:id" element={<NewsDetail />} />
+            <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -45,9 +45,23 @@ export default function Auth() {
     return () => subscription.unsubscribe();
   }, []);
 
+  const getNextPath = () => {
+    const raw = new URLSearchParams(window.location.search).get("next");
+    if (raw && raw.startsWith("/") && !raw.startsWith("//")) return raw;
+    return null;
+  };
+
   const verifyAdminAccess = async (userId: string) => {
     if (!userId) {
       return false;
+    }
+
+    // When arriving from an authorization flow (e.g. MCP OAuth consent),
+    // any signed-in user is allowed to continue to the requested page.
+    const nextPath = getNextPath();
+    if (nextPath) {
+      navigate(nextPath);
+      return true;
     }
 
     const { data: roleData, error } = await supabase
@@ -70,6 +84,7 @@ export default function Auth() {
     navigate("/admin");
     return true;
   };
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
