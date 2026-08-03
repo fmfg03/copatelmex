@@ -3,7 +3,7 @@
 // supabase function: mcp
 // Bundled from src/lib/mcp/index.ts by @lovable.dev/mcp-js.
 // src/lib/mcp/index.ts
-import { defineMcp } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.20.0";
 
 // src/lib/mcp/tools/list-categories.ts
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.20.0";
@@ -194,11 +194,16 @@ var get_standings_default = defineTool5({
 });
 
 // src/lib/mcp/index.ts
+var projectRef = "yrrqjcnthnleqiblwlom";
 var mcp_default = defineMcp({
   name: "copa-telmex-telcel-mcp",
   title: "Copa Telmex Telcel MCP",
   version: "0.1.0",
-  instructions: "Public read-only tools for the Copa Telmex Telcel amateur football tournament. Use list_categories to discover category IDs, list_teams and list_matches to explore participants and fixtures, get_standings for a category's table, and list_recent_news for tournament news.",
+  instructions: "Read-only tools for the Copa Telmex Telcel amateur football tournament. Use list_categories to discover category IDs, list_teams and list_matches to explore participants and fixtures, get_standings for a category's table, and list_recent_news for tournament news.",
+  auth: auth.oauth.issuer({
+    issuer: `https://${projectRef}.supabase.co/auth/v1`,
+    acceptedAudiences: "authenticated"
+  }),
   tools: [
     list_categories_default,
     list_recent_news_default,
