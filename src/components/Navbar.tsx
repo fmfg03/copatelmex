@@ -74,7 +74,7 @@ export const Navbar = () => {
   const navLinks = [
     { name: "Inicio", href: "/", disabled: false },
     { name: "Información", href: "/tournament-info", disabled: false },
-    { name: "Reglamento", href: "/reglamento-lineamientos-ctt-2026.pdf", disabled: false },
+    { name: "Reglamento", href: "/reglamento-lineamientos-ctt-2026.pdf", disabled: false, newTab: true },
     { name: "Calendario", href: "/calendario", disabled: false },
     { name: "Multimedia", href: "/media", disabled: false },
     { name: "Noticias", href: "/noticias", disabled: false },
@@ -104,6 +104,8 @@ export const Navbar = () => {
               <div key={link.name} className="relative group">
                 <a
                   href={link.disabled ? "#" : link.href}
+                  target={link.newTab && !link.disabled ? "_blank" : undefined}
+                  rel={link.newTab && !link.disabled ? "noopener noreferrer" : undefined}
                   onClick={(e) => {
                     if (link.disabled) {
                       e.preventDefault();
@@ -228,6 +230,8 @@ export const Navbar = () => {
                 <div key={link.name} className="relative group">
                   <a
                     href={link.disabled ? "#" : link.href}
+                    target={link.newTab && !link.disabled ? "_blank" : undefined}
+                    rel={link.newTab && !link.disabled ? "noopener noreferrer" : undefined}
                     onClick={(e) => {
                       if (link.disabled) {
                         e.preventDefault();
