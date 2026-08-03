@@ -1,6 +1,5 @@
 import { defineTool } from "@lovable.dev/mcp-js";
-import { createClient } from "@supabase/supabase-js";
-declare const process: { env: Record<string, string | undefined> };
+import { supabaseForUser } from "../supabase";
 
 export default defineTool({
   name: "list_categories",
@@ -9,11 +8,11 @@ export default defineTool({
     "Lists all tournament categories (Varonil, Juvenil, Femenil) with age ranges and roster limits.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async () => {
-    const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY!,
-    );
+  handler: async (_input, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser(ctx);
     const { data, error } = await supabase
       .from("categories")
       .select("id, name, year_born, description, max_players_per_team, registration_closed")
