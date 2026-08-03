@@ -1,13 +1,7 @@
-import { Award, Shield, Star, Users, Calendar, MapPin, Download, CheckCircle, Play, Eye, Trophy } from "lucide-react";
+import { Shield, Star, Users, Calendar, Trophy } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useNavigate } from "react-router-dom";
 
 export const TournamentInfo = () => {
-  const navigate = useNavigate();
-  
   const features = [
     {
       icon: Trophy,
@@ -42,19 +36,9 @@ export const TournamentInfo = () => {
               Información del Torneo
             </h2>
             <div className="w-24 h-1 bg-primary mx-auto mb-8"></div>
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 mb-10">
-              <div className="space-y-4">
-                <div className="text-center lg:text-left">
-                  <h4 className="text-2xl font-bold text-secondary">Spot Copa Telmex Telcel</h4>
-                  <p className="text-muted-foreground">Conoce el spot oficial del torneo.</p>
-                </div>
-                <div className="aspect-video bg-muted rounded-xl shadow-2xl overflow-hidden">
-                  <iframe className="w-full h-full" src="https://www.youtube.com/embed/Nbmfcz33fF0?rel=0" title="Spot Copa Telmex Telcel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="text-center lg:text-left">
+            <div className="mb-10">
+              <div className="mx-auto max-w-3xl space-y-4">
+                <div className="text-center">
                   <h4 className="text-2xl font-bold text-secondary">Historia de Vida</h4>
                   <p className="text-muted-foreground">Bienvenida del jugador e inspiración para competir al más alto nivel.</p>
                 </div>

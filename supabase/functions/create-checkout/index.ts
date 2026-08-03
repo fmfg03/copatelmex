@@ -8,11 +8,14 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 // Validation schema for checkout
 const checkoutSchema = z.object({
-  amount: z.number().positive('Monto debe ser positivo').max(1000000, 'Monto excede límite'),
-  numberOfTeams: z.number().int('Debe ser entero').positive('Debe ser positivo').max(50, 'Máximo 50 equipos'),
-  registrationIds: z.string().max(2000, 'IDs muy largos')
+  registrationIds: z.union([
+    z.array(z.string().regex(UUID_REGEX, 'ID de registro inválido')).min(1, 'Se requiere al menos un registro').max(50, 'Máximo 50 registros'),
+    z.string().max(2000, 'IDs muy largos')
+  ])
 });
 
 const logStep = (step: string) => {
@@ -27,6 +30,10 @@ serve(async (req) => {
   const supabaseClient = createClient(
     Deno.env.get("SUPABASE_URL") ?? "",
     Deno.env.get("SUPABASE_ANON_KEY") ?? ""
+  );
+  const supabaseAdmin = createClient(
+    Deno.env.get("SUPABASE_URL") ?? "",
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
   );
 
   try {
@@ -64,9 +71,64 @@ serve(async (req) => {
       );
     }
 
-    const { amount, numberOfTeams, registrationIds } = validation.data;
-    
-    logStep(`Processing payment for ${numberOfTeams} teams, amount: $${amount}`);
+    const registrationIds = Array.isArray(validation.data.registrationIds)
+      ? validation.data.registrationIds
+      : validation.data.registrationIds.split(",").map((id) => id.trim()).filter(Boolean);
+    const uniqueRegistrationIds = [...new Set(registrationIds)];
+
+    if (uniqueRegistrationIds.length !== registrationIds.length) {
+      throw new Error("No se permiten registros duplicados");
+    }
+
+    if (uniqueRegistrationIds.length === 0 || uniqueRegistrationIds.length > 50) {
+      throw new Error("Cantidad de registros inválida");
+    }
+
+    for (const registrationId of uniqueRegistrationIds) {
+      if (!UUID_REGEX.test(registrationId)) {
+        throw new Error("ID de registro inválido");
+      }
+    }
+
+    const { data: config, error: configError } = await supabaseAdmin
+      .from("tournament_config")
+      .select("registration_fee, payment_enabled")
+      .limit(1)
+      .maybeSingle();
+
+    if (configError) throw configError;
+    if (!config?.payment_enabled) throw new Error("Los pagos no están habilitados");
+
+    const registrationFee = Number(config.registration_fee);
+    if (!Number.isFinite(registrationFee) || registrationFee <= 0) {
+      throw new Error("Cuota de registro no configurada");
+    }
+
+    const { data: registrations, error: registrationsError } = await supabaseAdmin
+      .from("registrations")
+      .select("id, payment_status, teams!inner(id, user_id)")
+      .in("id", uniqueRegistrationIds);
+
+    if (registrationsError) throw registrationsError;
+    if (!registrations || registrations.length !== uniqueRegistrationIds.length) {
+      throw new Error("Uno o más registros no existen");
+    }
+
+    const unauthorizedRegistration = registrations.find((registration: any) => registration.teams?.user_id !== user.id);
+    if (unauthorizedRegistration) {
+      throw new Error("No puedes pagar registros de otro usuario");
+    }
+
+    const alreadyPaidRegistration = registrations.find((registration) => registration.payment_status === "paid");
+    if (alreadyPaidRegistration) {
+      throw new Error("Uno o más registros ya están pagados");
+    }
+
+    const numberOfTeams = registrations.length;
+    const amount = registrationFee * numberOfTeams;
+    const registrationIdsParam = uniqueRegistrationIds.join(",");
+
+    logStep(`Processing payment for ${numberOfTeams} registrations, amount: $${amount}`);
 
     // Get user profile for additional information
     const { data: profile } = await supabaseClient
@@ -114,13 +176,13 @@ serve(async (req) => {
               name: `Inscripción Copa Club América 2025 - ${numberOfTeams} equipo${numberOfTeams > 1 ? 's' : ''}`,
               description: `Registro de ${numberOfTeams} equipo${numberOfTeams > 1 ? 's' : ''} para el torneo`,
             },
-            unit_amount: amount * 100, // Convert to cents
+            unit_amount: Math.round(amount * 100),
           },
           quantity: 1,
         },
       ],
       mode: "payment",
-      success_url: `${req.headers.get("origin")}/register?payment=success&session_id={CHECKOUT_SESSION_ID}&registration_ids=${registrationIds}`,
+      success_url: `${req.headers.get("origin")}/register?payment=success&session_id={CHECKOUT_SESSION_ID}&registration_ids=${registrationIdsParam}`,
       cancel_url: `${req.headers.get("origin")}/register?payment=cancelled`,
       billing_address_collection: "required",
       phone_number_collection: {
@@ -132,13 +194,13 @@ serve(async (req) => {
         tournament: "Copa Club América 2025",
         product_type: "tournament_registration",
         number_of_teams: numberOfTeams.toString(),
-        registration_ids: registrationIds
+        registration_ids: registrationIdsParam
       },
       payment_intent_data: {
         metadata: {
           user_id: user.id,
           tournament: "Copa Club América 2025",
-          registration_ids: registrationIds
+          registration_ids: registrationIdsParam
         },
         description: `Inscripción Copa Club América 2025 - ${numberOfTeams} equipo${numberOfTeams > 1 ? 's' : ''}`,
         statement_descriptor: "CLUB AMERICA CUP",

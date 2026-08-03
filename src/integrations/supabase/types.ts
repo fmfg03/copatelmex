@@ -1894,29 +1894,29 @@ export type Database = {
       }
       generate_payment_reference: { Args: never; Returns: string }
       get_public_teams: {
-        Args: { p_team_ids?: string[] }
+        Args: { p_team_ids?: string[] | null }
         Returns: {
-          academy_name: string
-          country: string
+          academy_name: string | null
+          country: string | null
           id: string
-          shield_url: string
-          state: string
+          shield_url: string | null
+          state: string | null
           team_name: string
         }[]
       }
       get_public_tournament_config: {
         Args: never
         Returns: {
-          created_at: string
+          created_at: string | null
           id: string
-          max_players_per_team: number
-          max_teams_per_category: number
-          min_players_per_team: number
-          registration_enabled: boolean
-          require_birth_certificate: boolean
-          require_curp: boolean
-          require_medical_certificate: boolean
-          require_photo: boolean
+          max_players_per_team: number | null
+          max_teams_per_category: number | null
+          min_players_per_team: number | null
+          registration_enabled: boolean | null
+          require_birth_certificate: boolean | null
+          require_curp: boolean | null
+          require_medical_certificate: boolean | null
+          require_photo: boolean | null
           updated_at: string
         }[]
       }
@@ -1937,6 +1937,14 @@ export type Database = {
         }
         Returns: undefined
       }
+      redeem_invitation_code: {
+        Args: { p_code: string }
+        Returns: {
+          invitation_id: string | null
+          reason: string
+          redeemed: boolean
+        }[]
+      }
       update_team_standings: {
         Args: { p_category_id?: string }
         Returns: undefined
@@ -1944,7 +1952,7 @@ export type Database = {
       validate_invitation_code: {
         Args: { p_code: string }
         Returns: {
-          invitation_id: string
+          invitation_id: string | null
           reason: string
           valid: boolean
         }[]

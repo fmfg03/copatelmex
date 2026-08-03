@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
+import { PromoSpotSection } from "@/components/PromoSpotSection";
 import { TournamentInfo } from "@/components/TournamentInfo";
 import { SponsorsCarousel } from "@/components/SponsorsCarousel";
 import { Categories } from "@/components/Categories";
@@ -13,6 +14,7 @@ const Index = () => {
     <div className="min-h-screen">
       <Navbar />
       <Hero />
+      <PromoSpotSection />
       <TournamentInfo />
       <Categories />
       <SponsorsCarousel />

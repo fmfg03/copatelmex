@@ -60,6 +60,11 @@ interface Goalkeeper {
   average: number;
 }
 
+interface PublicTeam {
+  id: string;
+  team_name: string;
+}
+
 interface KnockoutMatch {
   round: string;
   position: number;
@@ -119,6 +124,14 @@ export default function Schedule() {
     setCategories(data || []);
   };
 
+  const loadPublicTeams = async (teamIds: string[]) => {
+    const uniqueTeamIds = [...new Set(teamIds.filter(Boolean))];
+    if (uniqueTeamIds.length === 0) return new Map<string, PublicTeam>();
+
+    const { data } = await supabase.rpc("get_public_teams", { p_team_ids: uniqueTeamIds });
+    return new Map((data || []).map((team) => [team.id, team]));
+  };
+
   const loadMatches = async () => {
     setLoading(true);
     let query = supabase
@@ -143,31 +156,12 @@ export default function Schedule() {
     }
 
     const { data } = await query;
-    const rows = data || [];
-
-    const teamIds = Array.from(
-      new Set(
-        rows.flatMap((m: any) => [m.home_team_id, m.away_team_id]).filter(Boolean)
-      )
-    );
-
-    let teamsMap = new Map<string, { id: string; team_name: string }>();
-    if (teamIds.length > 0) {
-      const { data: teamsData } = await supabase.rpc("get_public_teams", {
-        p_team_ids: teamIds,
-      });
-      (teamsData || []).forEach((t: any) => {
-        teamsMap.set(t.id, { id: t.id, team_name: t.team_name });
-      });
-    }
-
-    const enriched: Match[] = rows.map((m: any) => ({
-      ...m,
-      home_team: m.home_team_id ? teamsMap.get(m.home_team_id) || null : null,
-      away_team: m.away_team_id ? teamsMap.get(m.away_team_id) || null : null,
-    }));
-
-    setMatches(enriched);
+    const teamMap = await loadPublicTeams((data || []).flatMap((match: any) => [match.home_team_id, match.away_team_id]));
+    setMatches((data || []).map((match: any) => ({
+      ...match,
+      home_team: match.home_team_id ? teamMap.get(match.home_team_id) || null : null,
+      away_team: match.away_team_id ? teamMap.get(match.away_team_id) || null : null,
+    })));
     setLoading(false);
   };
 
@@ -196,22 +190,11 @@ export default function Schedule() {
 
     if (!standingsData) return;
 
-    const teamIds = Array.from(
-      new Set(standingsData.map((s: any) => s.team_id).filter(Boolean))
-    );
-
-    let teamsMap = new Map<string, string>();
-    if (teamIds.length > 0) {
-      const { data: teamsData } = await supabase.rpc("get_public_teams", {
-        p_team_ids: teamIds,
-      });
-      (teamsData || []).forEach((t: any) => teamsMap.set(t.id, t.team_name));
-    }
-
+    const teamMap = await loadPublicTeams(standingsData.map((standing: any) => standing.team_id));
     const standings = standingsData.map((standing: any) => ({
       team_id: standing.team_id,
       category_id: standing.category_id,
-      team_name: teamsMap.get(standing.team_id) || "Unknown",
+      team_name: teamMap.get(standing.team_id)?.team_name || "Unknown",
       category_name: standing.categories?.name || "Unknown",
       played: standing.played,
       won: standing.won,
@@ -239,8 +222,7 @@ export default function Schedule() {
           last_name,
           registration_id,
           registrations!inner(
-            team_id,
-            teams!inner(team_name)
+            team_id
           )
         )
       `
@@ -251,11 +233,12 @@ export default function Schedule() {
 
     if (!data) return;
 
+    const teamMap = await loadPublicTeams(data.map((stat: any) => stat.players?.registrations?.team_id).filter(Boolean));
     const scorers = data.map((stat: any) => ({
       player_id: stat.player_id,
       first_name: stat.players.first_name,
       last_name: stat.players.last_name,
-      team_name: stat.players.registrations.teams.team_name,
+      team_name: teamMap.get(stat.players.registrations.team_id)?.team_name || "Unknown",
       goals: stat.goals,
     }));
 
@@ -300,12 +283,9 @@ export default function Schedule() {
 
     // Get team names and create goalkeeper stats (mock data for now)
     const topKeepers: Goalkeeper[] = [];
+    const teamMap = await loadPublicTeams([...goalsMap.keys()]);
     for (const [teamId, stats] of goalsMap.entries()) {
-      const { data: teamData } = await supabase
-        .from("teams_public")
-        .select("team_name")
-        .eq("id", teamId)
-        .single();
+      const teamData = teamMap.get(teamId);
 
       if (teamData && stats.played > 0) {
         topKeepers.push({
@@ -333,25 +313,12 @@ export default function Schedule() {
 
     if (!data) return;
 
-    const teamIds = Array.from(
-      new Set(
-        data.flatMap((m: any) => [m.home_team_id, m.away_team_id]).filter(Boolean)
-      )
-    );
-
-    let teamsMap = new Map<string, string>();
-    if (teamIds.length > 0) {
-      const { data: teamsData } = await supabase.rpc("get_public_teams", {
-        p_team_ids: teamIds,
-      });
-      (teamsData || []).forEach((t: any) => teamsMap.set(t.id, t.team_name));
-    }
-
+    const teamMap = await loadPublicTeams(data.flatMap((match: any) => [match.home_team_id, match.away_team_id]));
     const knockoutData: KnockoutMatch[] = data.map((match: any, index) => ({
       round: match.phase,
       position: index,
-      home_team: (match.home_team_id && teamsMap.get(match.home_team_id)) || "TBD",
-      away_team: (match.away_team_id && teamsMap.get(match.away_team_id)) || "TBD",
+      home_team: teamMap.get(match.home_team_id)?.team_name || "TBD",
+      away_team: teamMap.get(match.away_team_id)?.team_name || "TBD",
       home_score: match.status === "completed" ? match.home_score : null,
       away_score: match.status === "completed" ? match.away_score : null,
       status: match.status,

@@ -57,9 +57,10 @@ export const createMissingProfileSchema = z.object({
 
 // Schema for create-checkout
 export const createCheckoutSchema = z.object({
-  amount: z.number().positive('Monto debe ser positivo').max(1000000, 'Monto excede límite'),
-  numberOfTeams: z.number().int('Debe ser entero').positive('Debe ser positivo').max(50, 'Máximo 50 equipos'),
-  registrationIds: z.string().max(1000, 'IDs muy largos')
+  registrationIds: z.union([
+    z.array(uuidSchema).min(1, 'Se requiere al menos un registro').max(50, 'Máximo 50 registros'),
+    z.string().max(2000, 'IDs muy largos')
+  ])
 });
 
 // Schema for verify-payment

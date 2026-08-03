@@ -74,7 +74,7 @@ export const Navbar = () => {
   const navLinks = [
     { name: "Inicio", href: "/", disabled: false },
     { name: "Información", href: "/tournament-info", disabled: false },
-    { name: "Reglamento", href: "/reglamento", disabled: true },
+    { name: "Reglamento", href: "/reglamento-lineamientos-ctt-2026.pdf", disabled: false },
     { name: "Calendario", href: "/calendario", disabled: false },
     { name: "Multimedia", href: "/media", disabled: false },
     { name: "Noticias", href: "/noticias", disabled: false },

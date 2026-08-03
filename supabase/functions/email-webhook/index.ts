@@ -23,12 +23,15 @@ Deno.serve(async (req) => {
 
   try {
     const webhookSecret = Deno.env.get('EMAIL_WEBHOOK_SECRET');
-    if (webhookSecret) {
-      const url = new URL(req.url);
-      const providedToken = url.searchParams.get('token') || req.headers.get('x-webhook-secret');
-      if (!providedToken || providedToken !== webhookSecret) {
-        return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
-      }
+    if (!webhookSecret) {
+      console.error('EMAIL_WEBHOOK_SECRET is not configured');
+      return new Response(JSON.stringify({ error: 'Webhook authentication is not configured' }), { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
+    const url = new URL(req.url);
+    const providedToken = req.headers.get('x-webhook-secret') || url.searchParams.get('token');
+    if (!providedToken || providedToken !== webhookSecret) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
