@@ -52,6 +52,7 @@ const App = () => (
           <Route path="/my-teams" element={<MyTeams />} />
             <Route path="/inscripcion" element={<StateOperators />} />
             <Route path="/noticias/:id" element={<NewsDetail />} />
+            <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
