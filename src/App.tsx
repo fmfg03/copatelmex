@@ -21,6 +21,7 @@ import MyTeams from "./pages/MyTeams";
 import StateOperators from "./pages/StateOperators";
 import News from "./pages/News";
 import NewsDetail from "./pages/NewsDetail";
+import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
