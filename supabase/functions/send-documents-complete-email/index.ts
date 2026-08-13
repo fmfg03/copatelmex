@@ -6,15 +6,84 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json", ...corsHeaders },
+  });
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { teamName, categoryName, userEmail, userName, playerCount, registrationId } = await req.json();
-    if (!userEmail || !teamName || !categoryName) throw new Error("Missing required fields");
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      { auth: { autoRefreshToken: false, persistSession: false } },
+    );
+
+    // --- Authentication ---
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) return json({ error: "No autorizado" }, 401);
+
+    const jwt = authHeader.replace("Bearer ", "");
+    const { data: userData, error: userError } = await supabase.auth.getUser(jwt);
+    const user = userData?.user;
+    if (userError || !user) return json({ error: "No autorizado" }, 401);
+
+    const { data: roleRow } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", user.id)
+      .eq("role", "admin")
+      .maybeSingle();
+    const isAdmin = !!roleRow;
+
+    // --- Input ---
+    const body = await req.json().catch(() => ({}));
+    const registrationId = String(body?.registrationId ?? "");
+    if (!UUID_REGEX.test(registrationId)) {
+      return json({ error: "registrationId inválido" }, 400);
+    }
+
+    // --- Load registration server-side (never trust client-supplied data) ---
+    const { data: registration, error: regError } = await supabase
+      .from("registrations")
+      .select("id, teams!inner(id, team_name, user_id), categories!inner(name)")
+      .eq("id", registrationId)
+      .maybeSingle();
+
+    if (regError || !registration) return json({ error: "Registro no encontrado" }, 404);
+
+    const team = registration.teams as unknown as { team_name: string; user_id: string };
+    const category = registration.categories as unknown as { name: string };
+
+    // --- Authorization: admin or the owner of the registration ---
+    if (!isAdmin && team.user_id !== user.id) {
+      return json({ error: "No autorizado" }, 403);
+    }
 
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-    if (!RESEND_API_KEY) throw new Error("RESEND_API_KEY is not configured");
+    if (!RESEND_API_KEY) return json({ error: "Servicio de correo no disponible" }, 503);
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("email, full_name")
+      .eq("id", team.user_id)
+      .maybeSingle();
+
+    if (!profile?.email) return json({ error: "El equipo no tiene correo registrado" }, 400);
+
+    const { count: playerCount } = await supabase
+      .from("players")
+      .select("id", { count: "exact", head: true })
+      .eq("registration_id", registrationId);
+
+    const teamName = team.team_name;
+    const categoryName = category.name;
+    const userName = profile.full_name;
 
     const emailHtml = `<!DOCTYPE html><html><body style="font-family:sans-serif;margin:0;padding:0;background:#f5f5f5;">
       <div style="max-width:600px;margin:0 auto;background:#fff;">
@@ -31,7 +100,7 @@ serve(async (req) => {
             <h3 style="margin:0 0 15px;color:#0a3d2a;">Detalles del Equipo</h3>
             <p><strong>Equipo:</strong> ${teamName}</p>
             <p><strong>Categoría:</strong> ${categoryName}</p>
-            <p><strong>Jugadores:</strong> ${playerCount} registrados</p>
+            <p><strong>Jugadores:</strong> ${playerCount ?? 0} registrados</p>
           </div>
           <div style="background:#fef3c7;border-radius:8px;padding:20px;margin:25px 0;">
             <h4 style="margin:0 0 10px;color:#92400e;">📋 Próximos pasos:</h4>
@@ -51,17 +120,27 @@ serve(async (req) => {
     const emailResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": `Bearer ${RESEND_API_KEY}` },
-      body: JSON.stringify({ from: "Copa Telmex Telcel <onboarding@resend.dev>", to: [userEmail], subject: `✅ Documentación completa - ${teamName} (${categoryName})`, html: emailHtml }),
+      body: JSON.stringify({
+        from: "Copa Telmex Telcel <onboarding@resend.dev>",
+        to: [profile.email],
+        subject: `✅ Documentación completa - ${teamName} (${categoryName})`,
+        html: emailHtml,
+      }),
     });
 
-    const emailResult = await emailResponse.json();
-    if (!emailResponse.ok) throw new Error(emailResult.message || "Failed to send email");
+    if (!emailResponse.ok) {
+      console.error("[send-documents-complete-email] Resend error", emailResponse.status);
+      return json({ error: "No se pudo enviar el correo" }, 502);
+    }
 
-    const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-    await supabase.from("registrations").update({ notes: "Documentación completa - En revisión" }).eq("id", registrationId);
+    await supabase
+      .from("registrations")
+      .update({ notes: "Documentación completa - En revisión" })
+      .eq("id", registrationId);
 
-    return new Response(JSON.stringify({ success: true, data: emailResult }), { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } });
-  } catch (error: unknown) {
-    return new Response(JSON.stringify({ error: (error as Error).message }), { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } });
+    return json({ success: true });
+  } catch (error) {
+    console.error("[send-documents-complete-email] Error:", error instanceof Error ? error.message : "Unknown");
+    return json({ error: "Error interno" }, 500);
   }
 });
