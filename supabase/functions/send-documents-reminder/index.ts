@@ -9,11 +9,31 @@ const corsHeaders = {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-  try {
-    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-    if (!RESEND_API_KEY) throw new Error("RESEND_API_KEY is not configured");
+  const jsonResponse = (body: unknown, status = 200) =>
+    new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json", ...corsHeaders } });
 
-    const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+  try {
+    const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+
+    // --- Admin-only endpoint ---
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) return jsonResponse({ error: "No autorizado" }, 401);
+
+    const { data: userData, error: userError } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
+    if (userError || !userData?.user) return jsonResponse({ error: "No autorizado" }, 401);
+
+    const { data: roleRow } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userData.user.id)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (!roleRow) return jsonResponse({ error: "Se requieren permisos de administrador" }, 403);
+
+    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+    if (!RESEND_API_KEY) return jsonResponse({ error: "Servicio de correo no disponible" }, 503);
 
     const { data: registrations, error: regError } = await supabase
       .from("registrations")
