@@ -43,7 +43,7 @@ export const TournamentInfo = () => {
                   <p className="text-muted-foreground">Bienvenida del jugador e inspiración para competir al más alto nivel.</p>
                 </div>
                 <div className="aspect-video bg-muted rounded-xl shadow-2xl overflow-hidden">
-                  <iframe className="w-full h-full" src="https://www.youtube.com/embed/eic4VntNlXw?rel=0&start=74" title="Historia de vida Copa Telmex Telcel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                  <iframe className="w-full h-full" src="https://www.youtube.com/embed/iv3wUmtNPFE?rel=0&start=8" title="Historia de vida Copa Telmex Telcel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                 </div>
               </div>
             </div>
