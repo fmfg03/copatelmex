@@ -31,18 +31,23 @@ Deno.serve(async (req) => {
   try {
     const twilioAuthToken = Deno.env.get('TWILIO_AUTH_TOKEN')
     const twilioSignature = req.headers.get('X-Twilio-Signature')
+
+    // Signature validation is mandatory: reject everything when the token is not configured.
+    if (!twilioAuthToken) {
+      console.error('TWILIO_AUTH_TOKEN is not configured; rejecting webhook request')
+      return new Response('<?xml version="1.0" encoding="UTF-8"?><Response></Response>', { headers: { ...corsHeaders, 'Content-Type': 'text/xml' }, status: 503 })
+    }
+
     const formData = await req.formData()
     const paramsForSig: Record<string, string> = {}
     formData.forEach((value, key) => { paramsForSig[key] = value.toString() })
 
-    if (twilioAuthToken) {
-      if (!twilioSignature) {
-        return new Response('<?xml version="1.0" encoding="UTF-8"?><Response></Response>', { headers: { ...corsHeaders, 'Content-Type': 'text/xml' }, status: 403 })
-      }
-      const isValid = await validateTwilioSignature(req.url, paramsForSig, twilioSignature, twilioAuthToken)
-      if (!isValid) {
-        return new Response('<?xml version="1.0" encoding="UTF-8"?><Response></Response>', { headers: { ...corsHeaders, 'Content-Type': 'text/xml' }, status: 403 })
-      }
+    if (!twilioSignature) {
+      return new Response('<?xml version="1.0" encoding="UTF-8"?><Response></Response>', { headers: { ...corsHeaders, 'Content-Type': 'text/xml' }, status: 403 })
+    }
+    const isValid = await validateTwilioSignature(req.url, paramsForSig, twilioSignature, twilioAuthToken)
+    if (!isValid) {
+      return new Response('<?xml version="1.0" encoding="UTF-8"?><Response></Response>', { headers: { ...corsHeaders, 'Content-Type': 'text/xml' }, status: 403 })
     }
 
     const payload = {
