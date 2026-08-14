@@ -99,7 +99,7 @@ export const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-1 min-w-0 flex-1 justify-center">
             {navLinks.map((link) => (
               <div key={link.name} className="relative group">
                 <a
@@ -127,7 +127,7 @@ export const Navbar = () => {
                       navigate(link.href);
                     }
                   }}
-                  className={`px-4 py-2 text-white rounded-lg transition-all duration-fast font-semibold text-sm tracking-wide ${
+                  className={`px-2 xl:px-4 py-2 whitespace-nowrap text-white rounded-lg transition-all duration-fast font-semibold text-sm tracking-wide ${
                     link.disabled 
                       ? "cursor-not-allowed opacity-60" 
                       : "hover:text-primary"
@@ -147,7 +147,7 @@ export const Navbar = () => {
           </div>
 
           {/* User Menu */}
-          <div className="hidden md:flex items-center space-x-3">
+          <div className="hidden md:flex items-center gap-2 xl:gap-3 shrink-0">
             <Button
               onClick={() => navigate("/inscripcion")}
               className="bg-white text-secondary hover:bg-white/90 font-bold"
@@ -160,11 +160,13 @@ export const Navbar = () => {
                 <DropdownMenuTrigger asChild>
                    <Button
                     variant="outline"
-                    className="text-white bg-white/10 hover:bg-primary hover:text-white border-white/30"
+                    className="text-white bg-white/10 hover:bg-primary hover:text-white border-white/30 max-w-[180px]"
                   >
-                    <User className="w-4 h-4 mr-2" />
-                    ¡Hola, {user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0]}!
-                    <ChevronDown className="w-4 h-4 ml-2" />
+                    <User className="w-4 h-4 mr-2 shrink-0" />
+                    <span className="truncate">
+                      ¡Hola, {user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0]}!
+                    </span>
+                    <ChevronDown className="w-4 h-4 ml-2 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56 bg-popover">
@@ -209,7 +211,7 @@ export const Navbar = () => {
               title="Fundación Telmex, A.C."
               width="120"
               height="40"
-              className="h-10 w-auto object-contain"
+              className="h-8 xl:h-10 w-auto object-contain shrink-0"
             />
           </div>
 
