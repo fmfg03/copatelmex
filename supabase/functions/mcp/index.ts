@@ -3,13 +3,13 @@
 // supabase function: mcp
 // Bundled from src/lib/mcp/index.ts by @lovable.dev/mcp-js.
 // src/lib/mcp/index.ts
-import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.26.2";
 
 // src/lib/mcp/tools/list-categories.ts
-import { defineTool } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { defineTool } from "npm:@lovable.dev/mcp-js@0.26.2";
 
 // src/lib/mcp/supabase.ts
-import { createClient } from "npm:@supabase/supabase-js@^2.74.0";
+import { createClient } from "npm:@supabase/supabase-js@^2.112.3";
 function runtimeEnv(name) {
   const runtime = globalThis;
   return runtime.Deno?.env?.get?.(name) ?? runtime.process?.env?.[name];
@@ -81,7 +81,7 @@ var list_categories_default = defineTool({
 });
 
 // src/lib/mcp/tools/list-recent-news.ts
-import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.26.2";
 import { z } from "npm:zod@^3.25.76";
 var list_recent_news_default = defineTool2({
   name: "list_recent_news",
@@ -109,7 +109,7 @@ var list_recent_news_default = defineTool2({
 });
 
 // src/lib/mcp/tools/list-teams.ts
-import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.26.2";
 import { z as z2 } from "npm:zod@^3.25.76";
 var list_teams_default = defineTool3({
   name: "list_teams",
@@ -139,7 +139,7 @@ var list_teams_default = defineTool3({
 });
 
 // src/lib/mcp/tools/list-matches.ts
-import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.26.2";
 import { z as z3 } from "npm:zod@^3.25.76";
 var list_matches_default = defineTool4({
   name: "list_matches",
@@ -169,7 +169,7 @@ var list_matches_default = defineTool4({
 });
 
 // src/lib/mcp/tools/get-standings.ts
-import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.2";
 import { z as z4 } from "npm:zod@^3.25.76";
 var get_standings_default = defineTool5({
   name: "get_standings",
@@ -214,5 +214,5 @@ var mcp_default = defineMcp({
 });
 
 // lovable-mcp-supabase-entry.ts
-import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.20.1/stacks/supabase";
+import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.26.2/stacks/supabase";
 Deno.serve(createSupabaseHandler(mcp_default, { functionName: "mcp" }));
