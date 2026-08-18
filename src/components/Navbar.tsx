@@ -84,7 +84,7 @@ export const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-secondary dark:bg-secondary/95 shadow-md border-b border-transparent dark:border-border backdrop-blur-sm">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between gap-3 h-20">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <img 
@@ -99,7 +99,7 @@ export const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1 min-w-0 flex-1 justify-center">
+          <div className="hidden xl:flex items-center gap-1 min-w-0 flex-1 justify-center">
             {navLinks.map((link) => (
               <div key={link.name} className="relative group">
                 <a
@@ -127,7 +127,7 @@ export const Navbar = () => {
                       navigate(link.href);
                     }
                   }}
-                  className={`px-2 xl:px-4 py-2 whitespace-nowrap text-white rounded-lg transition-all duration-fast font-semibold text-sm tracking-wide ${
+                  className={`px-2 2xl:px-3 py-2 whitespace-nowrap text-white rounded-lg transition-all duration-fast font-semibold text-sm tracking-wide ${
                     link.disabled 
                       ? "cursor-not-allowed opacity-60" 
                       : "hover:text-primary"
@@ -147,7 +147,7 @@ export const Navbar = () => {
           </div>
 
           {/* User Menu */}
-          <div className="hidden md:flex items-center gap-2 xl:gap-3 shrink-0">
+          <div className="hidden xl:flex items-center gap-2 shrink-0">
             <Button
               onClick={() => navigate("/inscripcion")}
               className="bg-white text-secondary hover:bg-white/90 font-bold"
@@ -211,14 +211,14 @@ export const Navbar = () => {
               title="Fundación Telmex, A.C."
               width="120"
               height="40"
-              className="h-8 xl:h-10 w-auto object-contain shrink-0"
+              className="h-8 2xl:h-10 w-auto object-contain shrink-0"
             />
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-white hover:text-primary rounded-lg transition-colors"
+            className="xl:hidden p-2 text-white hover:text-primary rounded-lg transition-colors"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -226,7 +226,7 @@ export const Navbar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden pb-4 animate-accordion-down">
+          <div className="xl:hidden pb-4 animate-accordion-down">
             <div className="flex flex-col space-y-2">
               {navLinks.map((link) => (
                 <div key={link.name} className="relative group">
