@@ -274,6 +274,17 @@ export const Navbar = () => {
                 </div>
               ))}
               <div className="px-4 py-2">
+                <Button
+                  onClick={() => {
+                    setIsOpen(false);
+                    navigate("/inscripcion");
+                  }}
+                  className="w-full bg-white text-secondary hover:bg-white/90 font-bold"
+                >
+                  Quiero inscribir a mi equipo
+                </Button>
+              </div>
+              <div className="px-4 py-2">
                 <ThemeToggle />
               </div>
               <div className="flex justify-center py-2">
