@@ -188,11 +188,10 @@ export const PlayerDocumentUpload = ({
 
       if (deleteError) throw deleteError;
 
-      const updates = {
-        [type === 'photo' ? 'photo_url' : 'birth_certificate_url']: null,
-        documents_complete: false,
-        documents_verified: false,
-      };
+      const updates =
+        type === 'photo'
+          ? { photo_url: null, documents_complete: false, documents_verified: false }
+          : { birth_certificate_url: null, documents_complete: false, documents_verified: false };
 
       const { error: updateError } = await supabase
         .from("players")
