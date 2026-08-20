@@ -97,7 +97,21 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
           <ListOrdered className="w-3.5 h-3.5" />
         </ToolBtn>
         <div className="w-px bg-border mx-0.5" />
+        <ToolBtn onClick={() => editor.chain().focus().setTextAlign("left").run()} active={editor.isActive({ textAlign: "left" })} title="Alinear a la izquierda">
+          <AlignLeft className="w-3.5 h-3.5" />
+        </ToolBtn>
+        <ToolBtn onClick={() => editor.chain().focus().setTextAlign("center").run()} active={editor.isActive({ textAlign: "center" })} title="Centrar">
+          <AlignCenter className="w-3.5 h-3.5" />
+        </ToolBtn>
+        <ToolBtn onClick={() => editor.chain().focus().setTextAlign("right").run()} active={editor.isActive({ textAlign: "right" })} title="Alinear a la derecha">
+          <AlignRight className="w-3.5 h-3.5" />
+        </ToolBtn>
+        <ToolBtn onClick={() => editor.chain().focus().setTextAlign("justify").run()} active={editor.isActive({ textAlign: "justify" })} title="Justificar">
+          <AlignJustify className="w-3.5 h-3.5" />
+        </ToolBtn>
+        <div className="w-px bg-border mx-0.5" />
         <ToolBtn onClick={() => editor.chain().focus().undo().run()} title="Deshacer">
+
           <Undo className="w-3.5 h-3.5" />
         </ToolBtn>
         <ToolBtn onClick={() => editor.chain().focus().redo().run()} title="Rehacer">
