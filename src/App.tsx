@@ -7,6 +7,7 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { FloatingDownload } from "@/components/FloatingDownload";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import DocumentsPortal from "./pages/DocumentsPortal";
 import TournamentInfo from "./pages/TournamentInfo";
 import Schedule from "./pages/Schedule";
@@ -37,6 +38,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/register" element={<Navigate to="/inscripcion" replace />} />
           <Route path="/documents" element={<DocumentsPortal />} />
           <Route path="/tournament-info" element={<TournamentInfo />} />
