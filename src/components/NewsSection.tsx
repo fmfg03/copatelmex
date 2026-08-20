@@ -56,7 +56,12 @@ export const NewsSection = () => {
   const secondary = [...remoteSecondary, localSecondary].slice(0, 3);
 
   const getExcerpt = (content: string, maxLength: number) => {
-    const text = content.replace(/<[^>]*>/g, "");
+    const text = content
+      .replace(/<br\s*\/?>/gi, " ")
+      .replace(/<\/p>/gi, " ")
+      .replace(/<[^>]*>/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength).trim() + "…";
   };
