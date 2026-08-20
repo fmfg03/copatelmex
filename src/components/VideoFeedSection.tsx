@@ -10,9 +10,11 @@ const fanzoneFeed = fanzoneAsset.url;
 export const VideoFeedSection = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const fanzoneRef = useRef<HTMLVideoElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [fanzoneMuted, setFanzoneMuted] = useState(true);
 
   const toggleMute = () => {
     const video = videoRef.current;
@@ -20,6 +22,14 @@ export const VideoFeedSection = () => {
     const next = !isMuted;
     video.muted = next;
     setIsMuted(next);
+  };
+
+  const toggleFanzoneMute = () => {
+    const video = fanzoneRef.current;
+    if (!video) return;
+    const next = !fanzoneMuted;
+    video.muted = next;
+    setFanzoneMuted(next);
   };
 
   const stats = [
