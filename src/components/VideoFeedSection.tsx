@@ -65,17 +65,20 @@ export const VideoFeedSection = () => {
 
   useEffect(() => {
     const video = videoRef.current;
+    const fanzone = fanzoneRef.current;
 
-    if (!video || !shouldLoadVideo) {
+    if (!video || !fanzone || !shouldLoadVideo) {
       return;
     }
 
     if (isVisible) {
       video.play().catch(() => undefined);
+      fanzone.play().catch(() => undefined);
       return;
     }
 
     video.pause();
+    fanzone.pause();
   }, [isVisible, shouldLoadVideo]);
 
   return (
