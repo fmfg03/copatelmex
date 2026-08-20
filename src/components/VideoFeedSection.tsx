@@ -2,15 +2,19 @@ import { useEffect, useRef, useState } from "react";
 import { Play, Trophy, Users, Star, Volume2, VolumeX } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import tournamentFeedAsset from "@/assets/tournament-feed-horizontal.mp4.asset.json";
+import fanzoneAsset from "@/assets/CTT_25_FANZONE.mp4.asset.json";
 
 const tournamentFeed = tournamentFeedAsset.url;
+const fanzoneFeed = fanzoneAsset.url;
 
 export const VideoFeedSection = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const fanzoneRef = useRef<HTMLVideoElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [fanzoneMuted, setFanzoneMuted] = useState(true);
 
   const toggleMute = () => {
     const video = videoRef.current;
@@ -18,6 +22,14 @@ export const VideoFeedSection = () => {
     const next = !isMuted;
     video.muted = next;
     setIsMuted(next);
+  };
+
+  const toggleFanzoneMute = () => {
+    const video = fanzoneRef.current;
+    if (!video) return;
+    const next = !fanzoneMuted;
+    video.muted = next;
+    setFanzoneMuted(next);
   };
 
   const stats = [
@@ -53,17 +65,20 @@ export const VideoFeedSection = () => {
 
   useEffect(() => {
     const video = videoRef.current;
+    const fanzone = fanzoneRef.current;
 
-    if (!video || !shouldLoadVideo) {
+    if (!video || !fanzone || !shouldLoadVideo) {
       return;
     }
 
     if (isVisible) {
       video.play().catch(() => undefined);
+      fanzone.play().catch(() => undefined);
       return;
     }
 
     video.pause();
+    fanzone.pause();
   }, [isVisible, shouldLoadVideo]);
 
   return (
@@ -84,9 +99,50 @@ export const VideoFeedSection = () => {
             </p>
           </div>
 
-          {/* Horizontal Video */}
-          <div className="mb-12">
-            <div className="bg-card rounded-2xl shadow-2xl overflow-hidden border-2 border-primary/30 max-w-4xl mx-auto">
+          {/* Videos lado a lado */}
+          <div className="mb-12 grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+            {/* Fanzone Video */}
+            <div className="bg-card rounded-2xl shadow-2xl overflow-hidden border-2 border-primary/30">
+              <div className="bg-gradient-to-r from-primary to-primary/80 p-4 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                  <Play className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-secondary font-bold text-base">Fan Zone</h3>
+                  <p className="text-secondary/70 text-sm">La energía de la afición</p>
+                </div>
+              </div>
+              <div className="relative aspect-video bg-black">
+                <video
+                  ref={fanzoneRef}
+                  src={shouldLoadVideo ? fanzoneFeed : undefined}
+                  className="w-full h-full object-cover"
+                  muted
+                  loop
+                  playsInline
+                  preload="none"
+                />
+                <button
+                  onClick={toggleFanzoneMute}
+                  className="absolute bottom-4 right-4 z-10 bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white rounded-full p-2 transition-colors"
+                  aria-label={fanzoneMuted ? "Activar sonido" : "Silenciar"}
+                >
+                  {fanzoneMuted ? (
+                    <VolumeX className="w-5 h-5" />
+                  ) : (
+                    <Volume2 className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
+              <div className="p-4 bg-card">
+                <p className="text-muted-foreground text-sm text-center font-medium">
+                  ¡Vive la pasión de la Copa Telmex Telcel!
+                </p>
+              </div>
+            </div>
+
+            {/* Existing Tournament Video */}
+            <div className="bg-card rounded-2xl shadow-2xl overflow-hidden border-2 border-primary/30">
               <div className="bg-gradient-to-r from-primary to-primary/80 p-4 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                   <Play className="w-5 h-5 text-white" />
