@@ -7,6 +7,7 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { FloatingDownload } from "@/components/FloatingDownload";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import DocumentsPortal from "./pages/DocumentsPortal";
 import TournamentInfo from "./pages/TournamentInfo";
 import Schedule from "./pages/Schedule";
