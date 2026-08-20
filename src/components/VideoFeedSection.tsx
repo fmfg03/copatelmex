@@ -100,7 +100,7 @@ export const VideoFeedSection = () => {
           </div>
 
           {/* Videos lado a lado */}
-          <div className="mb-12 grid md:grid-cols-[minmax(0,0.75fr)_minmax(0,1fr)] gap-6 max-w-6xl mx-auto items-start">
+          <div className="mb-12 grid md:grid-cols-[minmax(0,0.75fr)_minmax(0,1fr)] gap-6 max-w-6xl mx-auto items-center">
             {/* Fanzone Video (vertical) */}
             <div className="bg-card rounded-2xl shadow-2xl overflow-hidden border-2 border-primary/30 w-full max-w-sm mx-auto">
               <div className="bg-gradient-to-r from-primary to-primary/80 p-4 flex items-center gap-3">
