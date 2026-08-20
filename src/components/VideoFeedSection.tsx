@@ -100,9 +100,9 @@ export const VideoFeedSection = () => {
           </div>
 
           {/* Videos lado a lado */}
-          <div className="mb-12 grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-            {/* Fanzone Video */}
-            <div className="bg-card rounded-2xl shadow-2xl overflow-hidden border-2 border-primary/30">
+          <div className="mb-12 grid md:grid-cols-[minmax(0,0.75fr)_minmax(0,1fr)] gap-6 max-w-6xl mx-auto items-start">
+            {/* Fanzone Video (vertical) */}
+            <div className="bg-card rounded-2xl shadow-2xl overflow-hidden border-2 border-primary/30 w-full max-w-sm mx-auto">
               <div className="bg-gradient-to-r from-primary to-primary/80 p-4 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                   <Play className="w-5 h-5 text-white" />
@@ -112,16 +112,17 @@ export const VideoFeedSection = () => {
                   <p className="text-secondary/70 text-sm">La energía de la afición</p>
                 </div>
               </div>
-              <div className="relative aspect-video bg-black">
+              <div className="relative aspect-[9/16] bg-black">
                 <video
                   ref={fanzoneRef}
                   src={shouldLoadVideo ? fanzoneFeed : undefined}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   muted
                   loop
                   playsInline
                   preload="none"
                 />
+
                 <button
                   onClick={toggleFanzoneMute}
                   className="absolute bottom-4 right-4 z-10 bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white rounded-full p-2 transition-colors"
