@@ -43,6 +43,17 @@ const NewsDetail = () => {
     return format(new Date(date), "d 'de' MMMM, yyyy", { locale: es });
   };
 
+  const formatArticleContent = (content: string) => {
+    const hasHtmlTags = /<[^>]+>/.test(content);
+    if (!hasHtmlTags) {
+      return content
+        .split(/\n\n+/)
+        .map((paragraph) => `<p>${paragraph.replace(/\n/g, "<br/>")}</p>`)
+        .join("");
+    }
+    return content;
+  };
+
   // Show loading while redirecting external articles
   if (!localArticle && article?.source_url) {
     return (
@@ -121,7 +132,7 @@ const NewsDetail = () => {
                 />
               </div>
 
-              <div className="prose max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-ul:text-foreground/90 prose-ol:text-foreground/90 prose-p:my-3 prose-headings:my-3">
+              <div className="prose max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-ul:text-foreground/90 prose-ol:text-foreground/90 prose-headings:my-6 prose-li:my-1 [&_p]:my-6">
                 <p className="text-xl font-semibold text-accent leading-8">{localArticle.excerpt}</p>
                 <p>{localArticle.lead}</p>
                 <p>{localArticle.paragraphs[0]}</p>
@@ -137,7 +148,7 @@ const NewsDetail = () => {
                   />
                 </div>
 
-                <div className="prose max-w-none dark:prose-invert prose-p:text-foreground/90 prose-ul:text-foreground/90">
+                <div className="prose max-w-none dark:prose-invert prose-p:text-foreground/90 prose-ul:text-foreground/90 prose-li:my-1 [&_p]:my-6 [&_ul]:my-6">
                   <p>{localArticle.paragraphs[1]}</p>
                   <p>Las regiones son:</p>
                   <ul>
@@ -166,7 +177,7 @@ const NewsDetail = () => {
                   </div>
                 </div>
 
-                <div className="prose max-w-none dark:prose-invert prose-p:text-foreground/90">
+                <div className="prose max-w-none dark:prose-invert prose-p:text-foreground/90 prose-li:my-1 [&_p]:my-6">
                   <p>{localArticle.paragraphs[2]}</p>
                   <p>{localArticle.paragraphs[3]}</p>
                   <p>{localArticle.paragraphs[4]}</p>
@@ -210,8 +221,8 @@ const NewsDetail = () => {
               )}
 
               <div
-                className="prose max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-ul:text-foreground/90 prose-ol:text-foreground/90 prose-p:my-2 prose-headings:my-3 [&_br]:leading-normal"
-                dangerouslySetInnerHTML={{ __html: article.content }}
+                className="prose max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-ul:text-foreground/90 prose-ol:text-foreground/90 prose-headings:my-6 prose-li:my-1 [&_br]:leading-normal [&_p]:my-6 [&_blockquote]:my-6 [&_figure]:my-6"
+                dangerouslySetInnerHTML={{ __html: formatArticleContent(article.content) }}
               />
             </article>
           )}
