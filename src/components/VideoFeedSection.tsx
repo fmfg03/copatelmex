@@ -99,9 +99,50 @@ export const VideoFeedSection = () => {
             </p>
           </div>
 
-          {/* Horizontal Video */}
-          <div className="mb-12">
-            <div className="bg-card rounded-2xl shadow-2xl overflow-hidden border-2 border-primary/30 max-w-4xl mx-auto">
+          {/* Videos lado a lado */}
+          <div className="mb-12 grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+            {/* Fanzone Video */}
+            <div className="bg-card rounded-2xl shadow-2xl overflow-hidden border-2 border-primary/30">
+              <div className="bg-gradient-to-r from-primary to-primary/80 p-4 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                  <Play className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-secondary font-bold text-base">Fan Zone</h3>
+                  <p className="text-secondary/70 text-sm">La energía de la afición</p>
+                </div>
+              </div>
+              <div className="relative aspect-video bg-black">
+                <video
+                  ref={fanzoneRef}
+                  src={shouldLoadVideo ? fanzoneFeed : undefined}
+                  className="w-full h-full object-cover"
+                  muted
+                  loop
+                  playsInline
+                  preload="none"
+                />
+                <button
+                  onClick={toggleFanzoneMute}
+                  className="absolute bottom-4 right-4 z-10 bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white rounded-full p-2 transition-colors"
+                  aria-label={fanzoneMuted ? "Activar sonido" : "Silenciar"}
+                >
+                  {fanzoneMuted ? (
+                    <VolumeX className="w-5 h-5" />
+                  ) : (
+                    <Volume2 className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
+              <div className="p-4 bg-card">
+                <p className="text-muted-foreground text-sm text-center font-medium">
+                  ¡Vive la pasión de la Copa Telmex Telcel!
+                </p>
+              </div>
+            </div>
+
+            {/* Existing Tournament Video */}
+            <div className="bg-card rounded-2xl shadow-2xl overflow-hidden border-2 border-primary/30">
               <div className="bg-gradient-to-r from-primary to-primary/80 p-4 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                   <Play className="w-5 h-5 text-white" />
