@@ -19,7 +19,7 @@ export default defineTool({
     const supabase = supabaseForUser(ctx);
     let query = supabase
       .from("news")
-      .select("id, title, content, image_url, source_url, source_name, is_featured, published_at")
+      .select("id, title, content, image_url, image_source, source_url, source_name, is_featured, published_at")
       .order("published_at", { ascending: false })
       .limit(limit ?? 10);
     if (featured_only) query = query.eq("is_featured", true);

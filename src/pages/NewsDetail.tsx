@@ -131,6 +131,7 @@ const NewsDetail = () => {
                   loading="eager"
                 />
               </div>
+              <p className="-mt-4 mb-8 text-sm text-muted-foreground">Imagen: Archivo</p>
 
               <div className="prose max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-ul:text-foreground/90 prose-ol:text-foreground/90 prose-headings:my-6 prose-li:my-1 [&_p]:my-6">
                 <p className="text-xl font-semibold text-accent leading-8">{localArticle.excerpt}</p>
@@ -211,13 +212,16 @@ const NewsDetail = () => {
               </div>
 
               {article.image_url && (
-                <div className="rounded-xl overflow-hidden mb-8">
-                  <img
-                    src={article.image_url}
-                    alt={article.title}
-                    className="w-full h-auto max-h-[500px] object-cover"
-                  />
-                </div>
+                <>
+                  <div className="rounded-xl overflow-hidden mb-3">
+                    <img
+                      src={article.image_url}
+                      alt={article.title}
+                      className="w-full h-auto max-h-[500px] object-cover"
+                    />
+                  </div>
+                  <p className="mb-8 text-sm text-muted-foreground">Imagen: {article.image_source || "Archivo"}</p>
+                </>
               )}
 
               <div

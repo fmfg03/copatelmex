@@ -17,6 +17,7 @@ interface NewsArticle {
   id: string;
   title: string;
   content: string;
+  image_source: string;
   image_url: string | null;
   published_at: string | null;
   is_featured: boolean | null;
@@ -41,6 +42,7 @@ const emptyForm = {
   title: "",
   content: "",
   image_url: "",
+  image_source: "Archivo",
   is_featured: false,
 };
 
@@ -122,6 +124,7 @@ export const AdminNews = () => {
       title: article.title,
       content: article.content,
       image_url: article.image_url || "",
+      image_source: article.image_source || "Archivo",
       is_featured: article.is_featured || false,
     });
     setDialogOpen(true);
@@ -173,6 +176,7 @@ export const AdminNews = () => {
         title: form.title.trim(),
         content: form.content.trim(),
         image_url: form.image_url.trim() || null,
+        image_source: form.image_source.trim() || "Archivo",
         is_featured: form.is_featured,
         published_at: new Date().toISOString(),
       };
@@ -256,6 +260,7 @@ export const AdminNews = () => {
         title: importPreview.title.trim(),
         content: importPreview.excerpt.trim(),
         image_url: importPreview.image_url,
+        image_source: "Archivo",
         source_url: importPreview.source_url,
         source_name: importPreview.source_name,
         is_featured: false,
@@ -416,6 +421,15 @@ export const AdminNews = () => {
                 {form.image_url && (
                   <img src={form.image_url} alt="Preview" className="w-full h-32 object-cover rounded-md mt-1" onError={(e) => (e.currentTarget.style.display = "none")} />
                 )}
+                <div className="space-y-2">
+                  <Label htmlFor="image_source">Fuente de imagen</Label>
+                  <Input
+                    id="image_source"
+                    value={form.image_source}
+                    onChange={(e) => setForm({ ...form, image_source: e.target.value })}
+                    placeholder="Archivo"
+                  />
+                </div>
               </div>
               <div className="flex items-center gap-3">
                 <Switch id="is_featured" checked={form.is_featured} onCheckedChange={(checked) => setForm({ ...form, is_featured: checked })} />
@@ -476,6 +490,7 @@ export const AdminNews = () => {
                           {article.published_at
                             ? format(new Date(article.published_at), "d MMM yyyy, HH:mm", { locale: es })
                             : "Sin fecha"}
+                          <span>Imagen: {article.image_source || "Archivo"}</span>
                         </div>
                       </div>
                       <div className="flex items-center gap-1 flex-shrink-0">

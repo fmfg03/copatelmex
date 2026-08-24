@@ -17,6 +17,7 @@ interface RemoteNewsArticle {
   title: string;
   content: string;
   image_url: string | null;
+  image_source: string;
   published_at: string | null;
   is_featured: boolean | null;
   source_url: string | null;
@@ -100,6 +101,7 @@ const News = () => {
                 title: featuredLocalNewsArticle.title,
                 content: featuredLocalNewsArticle.excerpt,
                 image_url: featuredLocalNewsArticle.coverImage,
+                image_source: "Archivo",
                 published_at: featuredLocalNewsArticle.publishedAt,
                 is_featured: false,
                 source_url: null,
@@ -138,6 +140,9 @@ const News = () => {
                                 <ExternalLink className="w-4 h-4 text-primary" />
                                 {featuredRemote.source_name}
                               </span>
+                            )}
+                            {featuredRemote.image_url && (
+                              <span>Imagen: {featuredRemote.image_source || "Archivo"}</span>
                             )}
                           </div>
                           <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-tight">
@@ -230,10 +235,15 @@ const News = () => {
                                 {getExcerpt(article.content, 140)}
                               </p>
                               <div className="mt-4 flex items-center justify-between gap-3">
-                                <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-                                  <Calendar className="w-3 h-3" />
-                                  {formatDate(article.published_at)}
-                                </span>
+                                <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+                                  <span className="inline-flex items-center gap-1.5">
+                                    <Calendar className="w-3 h-3" />
+                                    {formatDate(article.published_at)}
+                                  </span>
+                                  {article.image_url && (
+                                    <span>Imagen: {article.image_source || "Archivo"}</span>
+                                  )}
+                                </div>
                                 <a
                                   href={articleHref}
                                   target={isExternal ? "_blank" : undefined}

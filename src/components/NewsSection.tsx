@@ -14,6 +14,7 @@ interface NewsArticle {
   title: string;
   content: string;
   image_url: string | null;
+  image_source: string;
   published_at: string | null;
   is_featured: boolean | null;
   source_url: string | null;
@@ -47,6 +48,7 @@ export const NewsSection = () => {
     title: featuredLocalNewsArticle.title,
     content: featuredLocalNewsArticle.excerpt,
     image_url: featuredLocalNewsArticle.coverImage,
+    image_source: "Archivo",
     published_at: featuredLocalNewsArticle.publishedAt,
     is_featured: false,
     source_url: null,
@@ -138,6 +140,9 @@ export const NewsSection = () => {
                   <div className="flex items-center gap-2 text-white/60 text-xs">
                     <Calendar className="w-3 h-3" />
                     {formatDate(featured.published_at)}
+                    {featured.image_url && (
+                      <span>Imagen: {featured.image_source || "Archivo"}</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -199,6 +204,11 @@ export const NewsSection = () => {
                             </Badge>
                           )}
                         </div>
+                        {article.image_url && (
+                          <p className="text-[11px] text-muted-foreground">
+                            Imagen: {article.image_source || "Archivo"}
+                          </p>
+                        )}
                       </div>
                       {/* Arrow */}
                       <div className="hidden sm:flex items-center pr-4">

@@ -227,6 +227,7 @@ async function processImportJob(params: {
           title: article.title,
           content: article.excerpt,
           image_url: article.image_url,
+          image_source: "Archivo",
           source_url: article.source_url,
           source_name: article.source_name,
           is_featured: false,
