@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Download, Play, Image as ImageIcon, Video, Radio } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { isVisibleMediaCategory } from "@/lib/mediaCategories";
 
 const getEmbeddedVideoUrl = (url: string) => {
   try {
@@ -153,6 +154,8 @@ const MediaGallery = () => {
     window.open(url, '_blank');
   };
 
+  const mediaCategories = categories?.filter(isVisibleMediaCategory) || [];
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -189,7 +192,7 @@ const MediaGallery = () => {
               >
                 Todas
               </Button>
-              {categories?.map((cat) => (
+              {mediaCategories.map((cat) => (
                 <Button
                   key={cat.id}
                   variant={selectedCategory === cat.id ? "default" : "outline"}
@@ -214,7 +217,7 @@ const MediaGallery = () => {
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <CardTitle className="text-lg">{photo.title}</CardTitle>
-                      {photo.categories && (
+                      {isVisibleMediaCategory(photo.categories) && (
                         <Badge variant="secondary">{photo.categories.name}</Badge>
                       )}
                     </div>
@@ -323,7 +326,7 @@ const MediaGallery = () => {
                         {video.video_type === 'summary' && 'Resumen'}
                       </Badge>
                     </div>
-                    {video.categories && (
+                    {isVisibleMediaCategory(video.categories) && (
                       <Badge variant="secondary" className="w-fit">{video.categories.name}</Badge>
                     )}
                   </CardHeader>

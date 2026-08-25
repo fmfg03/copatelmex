@@ -13,6 +13,7 @@ import { toast } from "@/hooks/use-toast";
 import { Calendar, Image as ImageIcon, Loader2, Pencil, Plus, Radio, Trash2, Upload, Video, X } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { isVisibleMediaCategory } from "@/lib/mediaCategories";
 
 const GALLERY_MEDIA_BUCKET = "gallery-media";
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
@@ -302,7 +303,7 @@ export const AdminGallery = () => {
   };
 
   const categoryOptions = useMemo(
-    () => categories.map((category) => ({ value: category.id, label: category.name })),
+    () => categories.filter(isVisibleMediaCategory).map((category) => ({ value: category.id, label: category.name })),
     [categories],
   );
 
@@ -348,7 +349,7 @@ export const AdminGallery = () => {
     setPhotoForm({
       title: photo.title,
       description: photo.description || "",
-      category_id: photo.category_id || "none",
+      category_id: isVisibleMediaCategory(photo.categories) ? photo.category_id || "none" : "none",
       photo_date: photo.photo_date,
       image_url: photo.image_url,
     });
@@ -371,7 +372,7 @@ export const AdminGallery = () => {
     setVideoForm({
       title: video.title,
       description: video.description || "",
-      category_id: video.category_id || "none",
+      category_id: isVisibleMediaCategory(video.categories) ? video.category_id || "none" : "none",
       video_type: video.video_type || "highlight",
       source_mode: getStoragePathFromUrl(video.video_url) ? "upload" : "external",
       video_url: video.video_url,
@@ -954,7 +955,7 @@ export const AdminGallery = () => {
                           {format(new Date(photo.photo_date), "dd 'de' MMMM, yyyy", { locale: es })}
                         </CardDescription>
                       </div>
-                      {photo.categories?.name ? <Badge variant="secondary">{photo.categories.name}</Badge> : null}
+                      {isVisibleMediaCategory(photo.categories) ? <Badge variant="secondary">{photo.categories?.name}</Badge> : null}
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -1014,7 +1015,7 @@ export const AdminGallery = () => {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex flex-wrap gap-2">
-                      {video.categories?.name ? <Badge variant="secondary">{video.categories.name}</Badge> : null}
+                      {isVisibleMediaCategory(video.categories) ? <Badge variant="secondary">{video.categories?.name}</Badge> : null}
                       <Badge variant="secondary">{getStoragePathFromUrl(video.video_url) ? "Archivo subido" : "URL externa"}</Badge>
                     </div>
                     <a href={video.video_url} target="_blank" rel="noopener noreferrer" className="block truncate text-sm text-primary underline">
