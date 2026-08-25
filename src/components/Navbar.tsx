@@ -22,6 +22,8 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const desktopVisibility = user ? "hidden 2xl:flex" : "hidden xl:flex";
+  const compactVisibility = user ? "2xl:hidden" : "xl:hidden";
 
   const handleChangePassword = async () => {
     if (!user?.email) return;
@@ -99,7 +101,7 @@ export const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden xl:flex items-center gap-1 min-w-0 flex-1 justify-center">
+          <div className={`${desktopVisibility} items-center gap-1 min-w-0 flex-1 justify-center`}>
             {navLinks.map((link) => (
               <div key={link.name} className="relative group">
                 <a
@@ -147,7 +149,7 @@ export const Navbar = () => {
           </div>
 
           {/* User Menu */}
-          <div className="hidden xl:flex items-center gap-2 shrink-0">
+          <div className={`${desktopVisibility} items-center gap-2 shrink-0`}>
             <Button
               onClick={() => navigate("/inscripcion")}
               className="bg-white text-secondary hover:bg-white/90 font-bold"
@@ -218,7 +220,7 @@ export const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="xl:hidden p-2 text-white hover:text-primary rounded-lg transition-colors"
+            className={`${compactVisibility} p-2 text-white hover:text-primary rounded-lg transition-colors`}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -226,7 +228,7 @@ export const Navbar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="xl:hidden pb-4 animate-accordion-down">
+          <div className={`${compactVisibility} pb-4 animate-accordion-down`}>
             <div className="flex flex-col space-y-2">
               {navLinks.map((link) => (
                 <div key={link.name} className="relative group">
