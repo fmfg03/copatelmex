@@ -2,12 +2,14 @@ import sponsorKeuka from "@/assets/sponsor-keuka.png";
 import sponsorZucaritas from "@/assets/sponsor-zucaritas.png";
 import sponsorPowerade from "@/assets/sponsor-powerade.png";
 import sponsorClaroSports from "@/assets/sponsor-claro-sports.png";
+import sponsorAdidasAsset from "@/assets/sponsor-adidas.png.asset.json";
 
 const sponsors = [
   { src: sponsorKeuka, alt: "Keuka", dark: false, url: "https://keuka.com.mx/" },
   { src: sponsorZucaritas, alt: "Zucaritas", dark: false, url: null },
   { src: sponsorPowerade, alt: "Powerade", dark: false, url: "https://www.coca-cola.com/mx/es/brands/powerade" },
   { src: sponsorClaroSports, alt: "Claro Sports", dark: false, url: "https://www.clarosports.com/" },
+  { src: sponsorAdidasAsset.url, alt: "Adidas", dark: false, url: null },
 ];
 
 // Duplicate sponsors for seamless infinite loop
