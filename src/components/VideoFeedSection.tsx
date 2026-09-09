@@ -156,7 +156,7 @@ export const VideoFeedSection = () => {
               <div className="relative aspect-video bg-black">
                 <video
                   ref={videoRef}
-                  src={shouldLoadVideo ? tournamentFeed : undefined}
+                  src={shouldLoadVideo ? zucaritasFeed : undefined}
                   className="w-full h-full object-cover"
                   muted
                   loop
