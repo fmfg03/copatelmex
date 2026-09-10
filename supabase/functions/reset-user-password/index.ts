@@ -134,7 +134,7 @@ Deno.serve(async (req) => {
       type: 'recovery',
       email: userEmail!,
       options: {
-        redirectTo: `${Deno.env.get('SUPABASE_URL')?.replace('.supabase.co', '.lovableproject.com')}/auth`
+        redirectTo: `${Deno.env.get('SITE_URL')}/auth`
       }
     })
 
