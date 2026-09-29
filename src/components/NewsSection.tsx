@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { featuredLocalNewsArticle } from "@/content/localNews";
+import { NewsImage } from "@/components/NewsImage";
 
 interface NewsArticle {
   id: string;
@@ -113,17 +114,16 @@ export const NewsSection = () => {
               className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer"
               onClick={() => handleArticleClick(featured)}
             >
+              <NewsImage
+                src={featured.image_url}
+                alt={featured.title}
+                source={featured.image_source}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="eager"
+              >
+                {({ image, attribution }) => (
               <div className="relative h-64 lg:h-full min-h-[300px] overflow-hidden">
-                {featured.image_url ? (
-                  <img
-                    src={featured.image_url}
-                    alt={featured.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="eager"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-secondary/20 to-primary/20" />
-                )}
+                {image}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                   <div className="flex items-center gap-2 mb-3">
@@ -140,12 +140,12 @@ export const NewsSection = () => {
                   <div className="flex items-center gap-2 text-white/60 text-xs">
                     <Calendar className="w-3 h-3" />
                     {formatDate(featured.published_at)}
-                    {featured.image_url && (
-                      <span>Imagen: {featured.image_source || "Archivo"}</span>
-                    )}
+                    <span>{attribution}</span>
                   </div>
                 </div>
               </div>
+                )}
+              </NewsImage>
             </Card>
           ) : (
             <Skeleton className="h-[300px] lg:h-full rounded-xl" />
@@ -167,20 +167,17 @@ export const NewsSection = () => {
                   className="group overflow-hidden border hover:border-primary/30 hover:shadow-md transition-all duration-300 cursor-pointer"
                 >
                   <CardContent className="p-0">
+                    <NewsImage
+                      src={article.image_url}
+                      alt={article.title}
+                      source={article.image_source}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    >
+                      {({ image, attribution }) => (
                     <div className="flex gap-4">
                       {/* Thumbnail */}
                       <div className="w-28 h-28 sm:w-36 sm:h-32 flex-shrink-0 overflow-hidden">
-                        {article.image_url ? (
-                          <img
-                            src={article.image_url}
-                            alt={article.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-secondary/20 to-primary/20 flex items-center justify-center">
-                            <Newspaper className="w-8 h-8 text-muted-foreground/40" />
-                          </div>
-                        )}
+                        {image}
                       </div>
                       {/* Content */}
                       <div className="flex flex-col justify-center py-3 pr-4 flex-1 min-w-0">
@@ -204,17 +201,15 @@ export const NewsSection = () => {
                             </Badge>
                           )}
                         </div>
-                        {article.image_url && (
-                          <p className="text-[11px] text-muted-foreground">
-                            Imagen: {article.image_source || "Archivo"}
-                          </p>
-                        )}
+                        <p className="text-[11px] text-muted-foreground">{attribution}</p>
                       </div>
                       {/* Arrow */}
                       <div className="hidden sm:flex items-center pr-4">
                         <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
                       </div>
                     </div>
+                      )}
+                    </NewsImage>
                   </CardContent>
                 </Card>
               ))

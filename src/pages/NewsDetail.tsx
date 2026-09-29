@@ -11,6 +11,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { useEffect } from "react";
 import { getLocalNewsArticleById } from "@/content/localNews";
+import { NewsImage } from "@/components/NewsImage";
+import copaLogo from "@/assets/copa-telmex-logo.png";
 
 const NewsDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -51,7 +53,40 @@ const NewsDetail = () => {
         .map((paragraph) => `<p>${paragraph.replace(/\n/g, "<br/>")}</p>`)
         .join("");
     }
-    return content;
+    // Template contents are inert: inspect legacy URLs before any image can load.
+    const template = document.createElement("template");
+    template.innerHTML = content;
+    template.content.querySelectorAll("img").forEach((image) => {
+      const src = image.getAttribute("src");
+      if (!src) return;
+      let url: URL;
+      try {
+        url = new URL(src, "https://copatelmextelcel.com.mx");
+      } catch {
+        return;
+      }
+      if (
+        url.hostname !== "yrrqjcnthnleqiblwlom.supabase.co" &&
+        !url.pathname.startsWith("/__l5e/")
+      ) return;
+
+      const inertDocument = template.content.ownerDocument;
+      const fallback = inertDocument.createElement("div");
+      fallback.setAttribute("role", "img");
+      fallback.setAttribute("aria-label", `Imagen institucional de Copa Telmex Telcel para: ${image.alt || "esta noticia"}`);
+      fallback.className = "flex min-h-28 flex-col items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-secondary/10 to-primary/10 p-4";
+      const logo = inertDocument.createElement("img");
+      logo.setAttribute("src", copaLogo);
+      logo.alt = "";
+      logo.className = "w-24 max-w-full max-h-24 object-contain";
+      const label = inertDocument.createElement("span");
+      label.setAttribute("aria-hidden", "true");
+      label.className = "text-center text-sm font-medium text-secondary";
+      label.textContent = "Imagen institucional";
+      fallback.append(logo, label);
+      image.replaceWith(fallback);
+    });
+    return template.innerHTML;
   };
 
   // Show loading while redirecting external articles
@@ -211,18 +246,22 @@ const NewsDetail = () => {
                 </div>
               </div>
 
-              {article.image_url && (
+              <NewsImage
+                src={article.image_url}
+                alt={article.title}
+                source={article.image_source}
+                className="w-full h-auto max-h-[500px] object-cover"
+                loading="eager"
+              >
+                {({ image, attribution }) => (
                 <>
                   <div className="rounded-xl overflow-hidden mb-3">
-                    <img
-                      src={article.image_url}
-                      alt={article.title}
-                      className="w-full h-auto max-h-[500px] object-cover"
-                    />
+                    {image}
                   </div>
-                  <p className="mb-8 text-sm text-muted-foreground">Imagen: {article.image_source || "Archivo"}</p>
+                  <p className="mb-8 text-sm text-muted-foreground">{attribution}</p>
                 </>
-              )}
+                )}
+              </NewsImage>
 
               <div
                 className="prose max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-ul:text-foreground/90 prose-ol:text-foreground/90 prose-headings:my-6 prose-li:my-1 [&_br]:leading-normal [&_p]:my-6 [&_blockquote]:my-6 [&_figure]:my-6"
