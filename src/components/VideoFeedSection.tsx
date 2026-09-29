@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, Trophy, Users, Star, Volume2, VolumeX } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import zucaritasFeedAsset from "@/assets/Zucaritas_Proteina_II_10s.mp4.asset.json";
-import fanzoneAsset from "@/assets/CTT_25_FANZONE.mp4.asset.json";
+import { homeVideoAssets } from "@/lib/homeVideoAssets";
 
-const zucaritasFeed = zucaritasFeedAsset.url;
-const fanzoneFeed = fanzoneAsset.url;
+const zucaritasFeed = homeVideoAssets.tournament;
+const fanzoneFeed = homeVideoAssets.fanzone;
 
 export const VideoFeedSection = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
