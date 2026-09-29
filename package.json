@@ -9,7 +9,8 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test:home-videos": "node scripts/check-home-videos.mjs"
+    "test:home-videos": "node scripts/check-home-videos.mjs",
+    "test:news-media": "node scripts/check-news-media.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

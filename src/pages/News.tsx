@@ -11,6 +11,7 @@ import { Calendar, ArrowRight, Newspaper, ExternalLink, MapPin, Globe } from "lu
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { featuredLocalNewsArticle, localNewsArticles } from "@/content/localNews";
+import { NewsImage } from "@/components/NewsImage";
 
 interface RemoteNewsArticle {
   id: string;
@@ -114,16 +115,17 @@ const News = () => {
                 <>
                   {featuredRemote ? (
                     <Card className="overflow-hidden border-0 shadow-[var(--shadow-lg)]">
+                      <NewsImage
+                        src={featuredRemote.image_url}
+                        alt={featuredRemote.title}
+                        source={featuredRemote.image_source}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        loading="eager"
+                      >
+                        {({ image, attribution }) => (
                       <div className="grid lg:grid-cols-[1.05fr_0.95fr]">
                         <div className="relative min-h-[280px]">
-                          {featuredRemote.image_url && (
-                            <img
-                              src={featuredRemote.image_url}
-                              alt={featuredRemote.title}
-                              className="absolute inset-0 w-full h-full object-cover"
-                              loading="eager"
-                            />
-                          )}
+                          {image}
                           <div className="absolute inset-0 bg-gradient-to-t from-secondary/85 via-secondary/30 to-transparent" />
                           <div className="absolute left-6 bottom-6">
                             <Badge className="bg-primary text-white hover:bg-primary">Nota destacada</Badge>
@@ -141,9 +143,7 @@ const News = () => {
                                 {featuredRemote.source_name}
                               </span>
                             )}
-                            {featuredRemote.image_url && (
-                              <span>Imagen: {featuredRemote.image_source || "Archivo"}</span>
-                            )}
+                            <span>{attribution}</span>
                           </div>
                           <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight leading-tight">
                             {featuredRemote.title}
@@ -172,6 +172,8 @@ const News = () => {
                           )}
                         </CardContent>
                       </div>
+                        )}
+                      </NewsImage>
                     </Card>
                   ) : isLoading ? (
                     <Skeleton className="h-[320px] rounded-xl" />
@@ -199,20 +201,17 @@ const News = () => {
                     return (
                       <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                         <CardContent className="p-0">
+                          <NewsImage
+                            src={article.image_url}
+                            alt={article.title}
+                            source={article.image_source}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          >
+                            {({ image, attribution }) => (
                           <div className="grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr]">
                             <div className="h-full min-h-[160px] bg-muted overflow-hidden">
-                              {article.image_url ? (
-                                <img
-                                  src={article.image_url}
-                                  alt={article.title}
-                                  className="w-full h-full object-cover"
-                                  loading="lazy"
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary/10 to-primary/10">
-                                  <Newspaper className="w-8 h-8 text-muted-foreground/40" />
-                                </div>
-                              )}
+                              {image}
                             </div>
                             <div className="p-5">
                               <div className="flex flex-wrap items-center gap-2 mb-2">
@@ -240,9 +239,7 @@ const News = () => {
                                     <Calendar className="w-3 h-3" />
                                     {formatDate(article.published_at)}
                                   </span>
-                                  {article.image_url && (
-                                    <span>Imagen: {article.image_source || "Archivo"}</span>
-                                  )}
+                                  <span>{attribution}</span>
                                 </div>
                                 <a
                                   href={articleHref}
@@ -256,6 +253,8 @@ const News = () => {
                               </div>
                             </div>
                           </div>
+                            )}
+                          </NewsImage>
                         </CardContent>
                       </Card>
                     );
