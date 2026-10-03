@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { Shield, Users, Calendar, Image, DollarSign, FileText, UserCog, History, BarChart3, FileCheck, Mail, MessageSquare, ClipboardList, Gamepad2, Newspaper } from "lucide-react";
+import { AdminRepresentatives } from "@/components/admin/AdminRepresentatives";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { AdminPlayers } from "@/components/admin/AdminPlayers";
 import { AdminTeams } from "@/components/admin/AdminTeams";
@@ -115,6 +116,7 @@ const Admin = () => {
                 <Users className="w-4 h-4" />
                 <span className="hidden sm:inline">Jugadores</span>
               </TabsTrigger>
+              <TabsTrigger value="representatives" className="flex items-center gap-2" aria-label="Representantes"><UserCog className="w-4 h-4" /><span className="hidden sm:inline">Representantes</span></TabsTrigger>
               <TabsTrigger value="teams" className="flex items-center gap-2">
                 <Shield className="w-4 h-4" />
                 <span className="hidden sm:inline">Equipos</span>
@@ -184,6 +186,7 @@ const Admin = () => {
 
             <TabsContent value="dashboard" className="mt-6"><AdminDashboard /></TabsContent>
             <TabsContent value="players" className="mt-6"><AdminPlayers /></TabsContent>
+            <TabsContent value="representatives" className="mt-6"><AdminRepresentatives canManage={userRole === 'admin'} /></TabsContent>
             <TabsContent value="teams" className="mt-6"><AdminTeams /></TabsContent>
             <TabsContent value="documents" className="mt-6"><AdminDocuments /></TabsContent>
             <TabsContent value="cedulas" className="mt-6"><AdminCedulas /></TabsContent>

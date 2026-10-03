@@ -14,6 +14,64 @@ export type Database = {
   }
   public: {
     Tables: {
+      state_representatives: {
+        Row: {
+          id: string
+          state_slug: string
+          zone: string
+          name: string
+          email: string
+          phone: string | null
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          state_slug: string
+          zone?: string
+          name: string
+          email: string
+          phone?: string | null
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          state_slug?: string
+          zone?: string
+          name?: string
+          email?: string
+          phone?: string | null
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      representative_personal_details: {
+        Row: {
+          representative_id: string
+          spouse_name: string | null
+          representative_birthday: string | null
+          spouse_birthday: string | null
+        }
+        Insert: {
+          representative_id: string
+          spouse_name?: string | null
+          representative_birthday?: string | null
+          spouse_birthday?: string | null
+        }
+        Update: {
+          representative_id?: string
+          spouse_name?: string | null
+          representative_birthday?: string | null
+          spouse_birthday?: string | null
+        }
+        Relationships: [{ foreignKeyName: "representative_personal_details_representative_id_fkey"; columns: ["representative_id"]; isOneToOne: true; referencedRelation: "state_representatives"; referencedColumns: ["id"] }]
+      }
+
       admin_audit_log: {
         Row: {
           action: string
@@ -1890,6 +1948,27 @@ export type Database = {
       }
     }
     Functions: {
+      valid_representative_birthday: {
+        Args: { value: string | null }
+        Returns: boolean
+      }
+      save_state_representative: {
+        Args: {
+          p_id: string | null
+          p_state_slug: string
+          p_zone: string
+          p_name: string
+          p_email: string
+          p_phone: string | null
+          p_is_active: boolean
+          p_spouse_name: string | null
+          p_representative_birthday: string | null
+          p_spouse_birthday: string | null
+          p_expected_updated_at: string | null
+        }
+        Returns: string
+      }
+
       calculate_check_digit: { Args: { id_base: string }; Returns: string }
       can_access_player: {
         Args: { _registration_id: string; _user_id: string }
