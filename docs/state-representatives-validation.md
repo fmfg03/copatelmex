@@ -62,3 +62,19 @@ el PR y la conversación. La migración real y el despliegue siguen sin autoriza
 Antes de publicar,
 confirmar la release/DB reales y reconciliar cambios posteriores a la base para
 preservar el trabajo existente. El checkout original conserva sus cambios.
+
+## Integración previa al PR
+
+Tras aprobar el diff y autorizar los efectos Git, se integró únicamente el commit
+funcional de representantes sobre `origin/main` verificado en `2ef54e8`.
+Se excluyó del PR el commit local anterior `c44cfc5` de rutas `/telmex/`, que no
+pertenece al alcance aprobado. No hubo conflictos ni cambios funcionales en los
+14 archivos del alcance; las correcciones de videos y noticias de main se
+conservan.
+
+En esta base se repitieron: las 5 pruebas de lógica, tipos, lint del alcance,
+build Vite y todas las pruebas UI de escritorio/móvil, con resultado PASS.
+Se repitió también lint global: persiste el mismo fallo preexistente documentado.
+El SQL no cambió desde la ejecución aprobada en PostgreSQL 16 temporal.
+La revisión final de solo lectura confirmó el alcance y los permisos;
+resultado de autoreview: `CLEAN_WITH_NOTES`, por las limitaciones ya documentadas.
