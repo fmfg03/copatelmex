@@ -264,7 +264,7 @@ const NewsDetail = () => {
               </NewsImage>
 
               <div
-                className="prose max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-ul:text-foreground/90 prose-ol:text-foreground/90 prose-headings:my-6 prose-li:my-1 [&_br]:leading-normal [&_p]:my-6 [&_blockquote]:my-6 [&_figure]:my-6"
+                className="prose max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-ul:text-foreground/90 prose-ol:text-foreground/90 prose-headings:my-6 prose-li:my-1 [&_br]:leading-normal [&_p]:my-6 [&_blockquote]:my-6 [&_figure]:my-6 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl"
                 dangerouslySetInnerHTML={{ __html: formatArticleContent(article.content) }}
               />
             </article>

@@ -165,6 +165,26 @@ export const AdminNews = () => {
     }
   };
 
+  const uploadInlineImage = async (file: File): Promise<string> => {
+    const extensions: Record<string, string> = {
+      "image/jpeg": "jpg",
+      "image/png": "png",
+      "image/webp": "webp",
+      "image/gif": "gif",
+    };
+    const extension = extensions[file.type];
+    if (!extension) throw new Error("Selecciona una imagen JPG, PNG, WebP o GIF");
+
+    const fileName = `inline/${crypto.randomUUID()}.${extension}`;
+    const { error } = await supabase.storage
+      .from("news-images")
+      .upload(fileName, file, { contentType: file.type, upsert: false });
+    if (error) throw error;
+
+    const { data } = supabase.storage.from("news-images").getPublicUrl(fileName);
+    return data.publicUrl;
+  };
+
   const handleSave = async () => {
     if (!form.title.trim() || !form.content.trim()) {
       toast({ title: "Campos requeridos", description: "Título y contenido son obligatorios", variant: "destructive" });
@@ -386,7 +406,11 @@ export const AdminNews = () => {
               </div>
               <div className="space-y-2">
                 <Label>Contenido *</Label>
-                <RichTextEditor value={form.content} onChange={(html) => setForm({ ...form, content: html })} />
+                <RichTextEditor
+                  value={form.content}
+                  onChange={(html) => setForm((current) => ({ ...current, content: html }))}
+                  onImageUpload={uploadInlineImage}
+                />
               </div>
               <div className="space-y-2">
                 <Label>Imagen</Label>
