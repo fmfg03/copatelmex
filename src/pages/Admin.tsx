@@ -24,6 +24,7 @@ import { AdminDocuments } from "@/components/admin/AdminDocuments";
 import { AdminSurveys } from "@/components/admin/AdminSurveys";
 import { AdminMatchCapture } from "@/components/admin/AdminMatchCapture";
 import { AdminNews } from "@/components/admin/AdminNews";
+import { AdminStateChampions } from "@/components/admin/AdminStateChampions";
 import { toast } from "@/hooks/use-toast";
 
 const Admin = () => {
@@ -146,6 +147,10 @@ const Admin = () => {
                 <span className="hidden sm:inline">Multimedia</span>
               </TabsTrigger>
               {/* Pagos oculto - este torneo es gratuito */}
+              {userRole === 'admin' && <TabsTrigger value="champions" className="flex items-center gap-2">
+                <Image className="w-4 h-4" />
+                <span>Campeones estatales</span>
+              </TabsTrigger>}
               {/* <TabsTrigger value="payments" className="flex items-center gap-2">
                 <DollarSign className="w-4 h-4" />
                 <span className="hidden sm:inline">Pagos</span>
@@ -194,6 +199,7 @@ const Admin = () => {
             <TabsContent value="statistics" className="mt-6"><AdminStatistics /></TabsContent>
             <TabsContent value="capture" className="mt-6"><AdminMatchCapture /></TabsContent>
             <TabsContent value="gallery" className="mt-6"><AdminGallery /></TabsContent>
+            {userRole === 'admin' && <TabsContent value="champions" className="mt-6"><AdminStateChampions /></TabsContent>}
             <TabsContent value="payments" className="mt-6"><AdminPayments /></TabsContent>
             <TabsContent value="news" className="mt-6"><AdminNews /></TabsContent>
             <TabsContent value="email" className="mt-6"><AdminEmail /></TabsContent>

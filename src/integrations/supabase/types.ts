@@ -14,6 +14,13 @@ export type Database = {
   }
   public: {
     Tables: {
+      state_champions: {
+        Row: { id: string; state: string; draft: Json; published: Json | null; updated_at: string; published_at: string | null }
+        Insert: { id?: string; state: string; draft?: Json; published?: Json | null; updated_at?: string; published_at?: string | null }
+        Update: { id?: string; state?: string; draft?: Json; published?: Json | null; updated_at?: string; published_at?: string | null }
+        Relationships: []
+      }
+
       state_representatives: {
         Row: {
           id: string
@@ -1948,6 +1955,23 @@ export type Database = {
       }
     }
     Functions: {
+      save_state_champion_draft: {
+        Args: { p_state: string; p_draft: Json; p_id?: string; p_expected_updated_at?: string }
+        Returns: Database["public"]["Tables"]["state_champions"]["Row"]
+      }
+      publish_state_champion: {
+        Args: { p_id: string; p_expected_updated_at: string }
+        Returns: Database["public"]["Tables"]["state_champions"]["Row"]
+      }
+      withdraw_state_champion: {
+        Args: { p_id: string; p_expected_updated_at: string }
+        Returns: Database["public"]["Tables"]["state_champions"]["Row"]
+      }
+      get_published_state_champions: {
+        Args: never
+        Returns: { id: string; state: string; photos: Json }[]
+      }
+
       valid_representative_birthday: {
         Args: { value: string | null }
         Returns: boolean
