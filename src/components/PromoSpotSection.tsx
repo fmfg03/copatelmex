@@ -1,11 +1,22 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
+import { StateChampionsBanner } from "@/components/StateChampionsBanner";
+import { fetchPublishedChampions } from "@/lib/stateChampionsApi";
+import type { PublishedChampion } from "@/lib/stateChampions";
 
 const promoVideoPath = "/ctt-promo-26.mp4";
 
 export const PromoSpotSection = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isMuted, setIsMuted] = useState(true);
+  const [champions, setChampions] = useState<PublishedChampion[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    fetchPublishedChampions().then((entries) => { if (active) setChampions(entries); })
+      .catch(() => { if (active) setChampions([]); });
+    return () => { active = false; };
+  }, []);
 
   const toggleMute = () => {
     const video = videoRef.current;
@@ -23,7 +34,8 @@ export const PromoSpotSection = () => {
   return (
     <section className="bg-background py-12 md:py-16">
       <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-5xl">
+        <div data-testid="spot-champions-layout" className={champions.length ? "mx-auto grid max-w-7xl items-start gap-8 lg:grid-cols-2" : "mx-auto max-w-5xl"}>
+          <div data-testid="promo-spot">
           <div className="mb-6 text-center">
             <h2 className="text-3xl font-extrabold tracking-tight text-secondary md:text-4xl">
               Spot Copa Telmex Telcel
@@ -53,6 +65,8 @@ export const PromoSpotSection = () => {
               </button>
             </div>
           </div>
+          </div>
+          {champions.length > 0 && <StateChampionsBanner champions={champions} />}
         </div>
       </div>
     </section>
