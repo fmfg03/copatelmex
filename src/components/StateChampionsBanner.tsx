@@ -4,16 +4,20 @@ import { supabase } from "@/integrations/supabase/client";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import { CHAMPION_BUCKET, CHAMPION_CATEGORIES, CHAMPION_LABELS, CHAMPION_ROTATION_MS, sortChampions, type PublishedChampion } from "@/lib/stateChampions";
 
-function ChampionImage({ path, state, category }: { path: string; state: string; category: typeof CHAMPION_CATEGORIES[number] }) {
+function ChampionImage({ path, teamName, state, category }: { path: string; teamName?: string; state: string; category: typeof CHAMPION_CATEGORIES[number] }) {
   const [failed, setFailed] = useState(false);
   const label = CHAMPION_LABELS[category];
+  const name = teamName?.trim();
   return (
     <figure className="min-w-0 overflow-hidden rounded-lg border border-primary/20 bg-muted">
       <div className="aspect-[3/2]">
         {failed ? <p className="flex h-full items-center justify-center p-3 text-center text-sm text-muted-foreground" role="status">Fotografía de {label} no disponible</p>
-          : <img src={supabase.storage.from(CHAMPION_BUCKET).getPublicUrl(path).data.publicUrl} alt={`Campeones de ${state}, categoría ${label}`} width={900} height={600} loading="lazy" decoding="async" className="h-full w-full object-contain" onError={() => setFailed(true)} />}
+          : <img src={supabase.storage.from(CHAMPION_BUCKET).getPublicUrl(path).data.publicUrl} alt={name ? `${name}, campeones de ${state}, categoría ${label}` : `Campeones de ${state}, categoría ${label}`} width={900} height={600} loading="lazy" decoding="async" className="h-full w-full object-contain" onError={() => setFailed(true)} />}
       </div>
-      <figcaption className="px-2 py-2 text-center text-sm font-semibold text-secondary">{label}</figcaption>
+      <figcaption className="space-y-1 px-2 py-2 text-center text-sm text-secondary">
+        <span className="block font-semibold">{label}</span>
+        {name && <span className="block break-words [overflow-wrap:anywhere]" data-testid={`champion-team-${category}`}>{name}</span>}
+      </figcaption>
     </figure>
   );
 }
@@ -79,8 +83,8 @@ export function StateChampionsBanner({ champions }: { champions: PublishedChampi
         <h3 className="mb-4 text-center text-xl font-bold text-secondary" aria-live={stopped || interacting ? "polite" : "off"} data-testid="champions-state">{current.state}</h3>
         <CarouselContent className="ml-0">{states.map((entry, index) => <CarouselItem key={entry.id} className="pl-0" aria-hidden={index !== currentIndex}>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {CHAMPION_CATEGORIES.map((category) => entry.photos[category]
-              ? <ChampionImage key={`${entry.id}-${entry.photos[category].image_path}`} path={entry.photos[category].image_path} state={entry.state} category={category} />
+            {CHAMPION_CATEGORIES.map((category) => entry.photos[category]?.image_path
+              ? <ChampionImage key={`${entry.id}-${entry.photos[category].image_path}`} path={entry.photos[category].image_path} teamName={entry.photos[category].team_name} state={entry.state} category={category} />
               : <p key={category} className="text-sm">Fotografía de {CHAMPION_LABELS[category]} no disponible</p>)}
           </div>
         </CarouselItem>)}</CarouselContent>

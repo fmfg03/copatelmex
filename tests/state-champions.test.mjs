@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { championImagePlacement, validateChampionImage, completeChampionPhotos, sortChampions, DEFAULT_CHAMPION_FRAMING, MAX_CHAMPION_IMAGE_BYTES } from "../src/lib/stateChampions.ts";
+import { championImagePlacement, validateChampionImage, completeChampionPhotos, hasChampionImage, normalizeChampionTeamName, championTeamNameLength, validateChampionTeamName, sortChampions, DEFAULT_CHAMPION_FRAMING, MAX_CHAMPION_IMAGE_BYTES } from "../src/lib/stateChampions.ts";
 
 test("all three categories need an original and banner image to publish", () => {
-  const photo = { original_path: "champions/original.jpg", image_path: "champions/banner.webp", framing: DEFAULT_CHAMPION_FRAMING };
+  const photo = { team_name: "Águilas", original_path: "champions/original.jpg", image_path: "champions/banner.webp", framing: DEFAULT_CHAMPION_FRAMING };
   assert.equal(completeChampionPhotos({}), false);
   assert.equal(completeChampionPhotos({ varonil: photo, juvenil: photo }), false);
   assert.equal(completeChampionPhotos({ varonil: photo, juvenil: photo, femenil: { ...photo, original_path: "" } }), false);
@@ -34,4 +34,23 @@ test("selected framing crops predictably with bounds and center", () => {
 test("invalid dimensions and unsafe frames are refused", () => {
   for (const [width, height] of [[0, 600], [900, 0], [-1, 600], [NaN, 600], [Infinity, 600]]) assert.throws(() => championImagePlacement(width, height, DEFAULT_CHAMPION_FRAMING));
   for (const frame of [{ zoom: 4, x: 50, y: 50 }, { zoom: 0, x: 50, y: 50 }, { zoom: 1, x: -1, y: 50 }, { zoom: 1, x: 50, y: 101 }, { zoom: NaN, x: 50, y: 50 }]) assert.throws(() => championImagePlacement(900, 600, frame));
+});
+
+test("publication requires names and photos independently, including legacy drafts", () => {
+  const legacy = { original_path: "original.jpg", image_path: "banner.webp", framing: DEFAULT_CHAMPION_FRAMING };
+  assert.equal(completeChampionPhotos({ varonil: legacy, juvenil: legacy, femenil: legacy }), false);
+  assert.equal(hasChampionImage({ team_name: "Águilas" }), false);
+  assert.equal(completeChampionPhotos({ varonil: { team_name: "Águilas" } }), false);
+  assert.equal(completeChampionPhotos({ varonil: { ...legacy, team_name: "A" }, juvenil: { ...legacy, team_name: "B" }, femenil: { ...legacy, team_name: "  " } }), false);
+});
+test("team names trim edges and preserve accents, case and internal spaces", () => {
+  assert.equal(normalizeChampionTeamName(" \u00a0Águilas  del Norte\uFEFF "), "Águilas  del Norte");
+  assert.ok(validateChampionTeamName(" \t\u00a0"));
+  assert.equal(validateChampionTeamName("  Águilas  "), null);
+});
+test("team-name limit counts Unicode codepoints after trim", () => {
+  const limit = "🏆".repeat(150);
+  assert.equal(championTeamNameLength(`  ${limit}  `), 150);
+  assert.equal(validateChampionTeamName(`  ${limit}  `), null);
+  assert.ok(validateChampionTeamName(limit + "🏆"));
 });
