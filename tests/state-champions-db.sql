@@ -38,7 +38,7 @@ SET LOCAL ROLE authenticated;
 DO $$
 DECLARE e public.state_champions; old_version timestamptz; photo jsonb; complete jsonb; changed jsonb;
 BEGIN
-  photo := '{"original_path":"champions/test-original.jpg","image_path":"champions/test-banner.webp","framing":{"zoom":1,"x":50,"y":50}}'::jsonb;
+  photo := '{"team_name":"Águilas del Norte","original_path":"champions/test-original.jpg","image_path":"champions/test-banner.webp","framing":{"zoom":1,"x":50,"y":50}}'::jsonb;
   complete := jsonb_build_object('varonil',photo,'juvenil',photo,'femenil',photo);
   BEGIN PERFORM public.save_state_champion_draft('Invalid state','{}'); RAISE EXCEPTION 'invalid state allowed';
   EXCEPTION WHEN check_violation THEN NULL; END;
@@ -66,6 +66,15 @@ BEGIN
   BEGIN PERFORM public.publish_state_champion(e.id,old_version); RAISE EXCEPTION 'stale publish allowed';
   EXCEPTION WHEN serialization_failure THEN NULL; END;
   e := public.publish_state_champion(e.id,e.updated_at);
+  changed := jsonb_set(complete,'{varonil,team_name}','"Club CAMPEÓN"');
+  e := public.save_state_champion_draft(e.state,changed,e.id,e.updated_at);
+  IF e.draft->'varonil'->>'original_path' <> complete->'varonil'->>'original_path'
+    OR e.draft->'varonil'->>'image_path' <> complete->'varonil'->>'image_path'
+    OR e.draft->'varonil'->'framing' <> complete->'varonil'->'framing' THEN RAISE EXCEPTION 'name edit changed image'; END IF;
+  IF (SELECT photos FROM public.get_published_state_champions() WHERE id=e.id) <> complete THEN RAISE EXCEPTION 'name edit changed snapshot'; END IF;
+  e := public.publish_state_champion(e.id,e.updated_at);
+  IF (SELECT photos FROM public.get_published_state_champions() WHERE id=e.id)->'varonil'->>'team_name' <> 'Club CAMPEÓN' THEN RAISE EXCEPTION 'name republish failed'; END IF;
+  complete := changed;
   changed := jsonb_set(complete,'{varonil,image_path}','"champions/test-next.webp"');
   e := public.save_state_champion_draft(e.state,changed,e.id,e.updated_at);
   IF (SELECT photos FROM public.get_published_state_champions() WHERE id=e.id) <> complete THEN RAISE EXCEPTION 'draft edit changed published snapshot'; END IF;
@@ -74,6 +83,43 @@ BEGIN
   BEGIN PERFORM public.withdraw_state_champion(e.id,old_version); RAISE EXCEPTION 'stale withdraw allowed';
   EXCEPTION WHEN serialization_failure THEN NULL; END;
 END $$;
+
+-- Draft-first naming, exact JS trim whitespace and Unicode codepoint limits.
+DO $$
+DECLARE e public.state_champions; photo jsonb; images jsonb; named jsonb; invalid jsonb;
+  trim_chars constant text := U&'\0009\000A\000B\000C\000D\0020\00A0\1680\2000\2001\2002\2003\2004\2005\2006\2007\2008\2009\200A\2028\2029\202F\205F\3000\FEFF';
+BEGIN
+  e := public.save_state_champion_draft('Chiapas','{"varonil":{"team_name":"  Águilas MÉXICO  "}}');
+  IF e.draft <> '{"varonil":{"team_name":"Águilas MÉXICO"}}'::jsonb THEN RAISE EXCEPTION 'name-only normalization failed'; END IF;
+  BEGIN PERFORM public.publish_state_champion(e.id,e.updated_at); RAISE EXCEPTION 'name-only publish allowed'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+  photo := '{"original_path":"champions/test-original.jpg","image_path":"champions/test-banner.webp","framing":{"zoom":1,"x":50,"y":50}}'::jsonb;
+  images := jsonb_build_object('varonil',photo,'juvenil',photo,'femenil',photo);
+  e := public.save_state_champion_draft(e.state,images,e.id,e.updated_at);
+  IF e.draft <> images THEN RAISE EXCEPTION 'old draft rewritten'; END IF;
+  BEGIN PERFORM public.publish_state_champion(e.id,e.updated_at); RAISE EXCEPTION 'old draft without names published'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+  photo := photo || jsonb_build_object('team_name',trim_chars || 'Águilas  MÉXICO' || trim_chars);
+  named := jsonb_build_object('varonil',photo,'juvenil',photo,'femenil',photo);
+  e := public.save_state_champion_draft(e.state,named,e.id,e.updated_at);
+  IF e.draft->'varonil'->>'team_name' <> 'Águilas  MÉXICO' THEN RAISE EXCEPTION 'Unicode trim or case/accents/internal spaces changed'; END IF;
+  e := public.publish_state_champion(e.id,e.updated_at);
+  e := public.withdraw_state_champion(e.id,e.updated_at);
+  FOR invalid IN SELECT value FROM jsonb_array_elements('[null,23,true,[],{}]'::jsonb) LOOP
+    BEGIN PERFORM public.save_state_champion_draft(e.state,jsonb_build_object('varonil',jsonb_build_object('team_name',invalid)),e.id,e.updated_at); RAISE EXCEPTION 'invalid name type accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+  END LOOP;
+  BEGIN PERFORM public.save_state_champion_draft(e.state,jsonb_build_object('varonil',jsonb_build_object('team_name',repeat('🏆',151))),e.id,e.updated_at); RAISE EXCEPTION '151 codepoints accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+  e := public.save_state_champion_draft(e.state,jsonb_build_object('varonil',jsonb_build_object('team_name',trim_chars || repeat('🏆',150) || trim_chars)),e.id,e.updated_at);
+  IF char_length(e.draft->'varonil'->>'team_name') <> 150 THEN RAISE EXCEPTION '150 codepoints trim boundary failed'; END IF;
+  BEGIN PERFORM public.save_state_champion_draft(e.state,'{"varonil":{"team_name":"Equipo","image_path":"champions/test-banner.webp"}}',e.id,e.updated_at); RAISE EXCEPTION 'partial image fields accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+  BEGIN PERFORM public.save_state_champion_draft(e.state,'{"varonil":{}}',e.id,e.updated_at); RAISE EXCEPTION 'empty category accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+  e := public.save_state_champion_draft(e.state,jsonb_set(named,'{varonil,team_name}',to_jsonb(trim_chars)),e.id,e.updated_at);
+  IF e.draft->'varonil'->>'team_name' <> '' THEN RAISE EXCEPTION 'Unicode blank not normalized'; END IF;
+  BEGIN PERFORM public.publish_state_champion(e.id,e.updated_at); RAISE EXCEPTION 'Unicode blank published'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+  e := public.save_state_champion_draft(e.state,jsonb_set(named,'{varonil,team_name}','" \t\r\n "'),e.id,e.updated_at);
+  BEGIN PERFORM public.publish_state_champion(e.id,e.updated_at); RAISE EXCEPTION 'ASCII blank published'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+  e := public.save_state_champion_draft(e.state,'{"varonil":{"team_name":""}}',e.id,e.updated_at);
+  IF e.draft->'varonil'->>'team_name' <> '' THEN RAISE EXCEPTION 'empty draft name rejected'; END IF;
+END $$;
+
 RESET ROLE;
 SET LOCAL ROLE anon;
 DO $$ DECLARE snapshot jsonb; BEGIN
@@ -107,4 +153,31 @@ DO $$ BEGIN
   BEGIN PERFORM public.withdraw_state_champion('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',now()); RAISE EXCEPTION 'moderator withdraw allowed'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
 END $$;
 RESET ROLE;
+
+-- Reapplying the migration must not mutate legacy snapshots, drafts or dates.
+INSERT INTO public.state_champions(state,draft,published,updated_at,published_at)
+VALUES ('Zacatecas',
+ '{"varonil":{"original_path":"champions/test-original.jpg","image_path":"champions/test-banner.webp","framing":{"zoom":1,"x":50,"y":50}}}',
+ '{"varonil":{"original_path":"champions/test-original.jpg","image_path":"champions/test-banner.webp","framing":{"zoom":1,"x":50,"y":50}},"juvenil":{"original_path":"champions/test-original.jpg","image_path":"champions/test-banner.webp","framing":{"zoom":1,"x":50,"y":50}},"femenil":{"original_path":"champions/test-original.jpg","image_path":"champions/test-banner.webp","framing":{"zoom":1,"x":50,"y":50}}}',
+ '2026-10-12T10:00:00Z','2026-10-12T09:00:00Z');
+CREATE TEMP TABLE old_champions AS SELECT * FROM public.state_champions;
+\ir ../supabase/migrations/20261013130000_state_champions_team_names.sql
+DO $$ BEGIN
+  IF EXISTS ((SELECT * FROM public.state_champions EXCEPT SELECT * FROM old_champions)
+    UNION ALL (SELECT * FROM old_champions EXCEPT SELECT * FROM public.state_champions)) THEN RAISE EXCEPTION 'migration changed existing data'; END IF;
+END $$;
+SET LOCAL ROLE anon;
+DO $$ DECLARE snapshot jsonb; BEGIN
+  SELECT photos INTO snapshot FROM public.get_published_state_champions() WHERE state='Zacatecas';
+  IF snapshot IS NULL OR snapshot->'varonil' ? 'team_name' THEN RAISE EXCEPTION 'legacy public snapshot missing or fabricated name'; END IF;
+END $$;
+RESET ROLE;
+SELECT set_config('request.jwt.claim.sub','aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',true);
+SET LOCAL ROLE authenticated;
+DO $$ DECLARE e public.state_champions; BEGIN
+  SELECT * INTO e FROM public.state_champions WHERE state='Zacatecas';
+  BEGIN PERFORM public.publish_state_champion(e.id,e.updated_at); RAISE EXCEPTION 'legacy nameless draft republished'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+END $$;
+RESET ROLE;
+
 ROLLBACK;

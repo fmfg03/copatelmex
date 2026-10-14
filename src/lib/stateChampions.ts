@@ -14,9 +14,16 @@ export const CHAMPION_STATES = [
 export const CHAMPION_BUCKET = "gallery-media";
 export const MAX_CHAMPION_IMAGE_BYTES = 10 * 1024 * 1024;
 export const CHAMPION_ROTATION_MS = 6000;
+export const MAX_CHAMPION_TEAM_NAME_LENGTH = 150;
 export type ChampionFraming = { zoom: number; x: number; y: number };
 export const DEFAULT_CHAMPION_FRAMING: ChampionFraming = { zoom: 1, x: 50, y: 50 };
 export type ChampionPhoto = {
+  team_name?: string;
+  original_path?: string;
+  image_path?: string;
+  framing?: ChampionFraming;
+};
+export type ChampionPhotoWithImage = ChampionPhoto & {
   original_path: string;
   image_path: string;
   framing: ChampionFraming;
@@ -33,7 +40,25 @@ export type ChampionEntry = {
 export type PublishedChampion = { id: string; state: string; photos: ChampionPhotos };
 
 export function completeChampionPhotos(photos: ChampionPhotos): boolean {
-  return CHAMPION_CATEGORIES.every((category) => Boolean(photos[category]?.image_path && photos[category]?.original_path));
+  return CHAMPION_CATEGORIES.every((category) => hasChampionImage(photos[category]) && validateChampionTeamName(photos[category]?.team_name ?? "") === null);
+}
+
+export function hasChampionImage(photo?: ChampionPhoto): photo is ChampionPhotoWithImage {
+  return Boolean(photo?.original_path && photo?.image_path && photo?.framing);
+}
+
+export function normalizeChampionTeamName(name: string): string {
+  return name.trim();
+}
+
+export function championTeamNameLength(name: string): number {
+  return Array.from(normalizeChampionTeamName(name)).length;
+}
+
+export function validateChampionTeamName(name: string): string | null {
+  if (!normalizeChampionTeamName(name)) return "Escribe el nombre del equipo.";
+  if (championTeamNameLength(name) > MAX_CHAMPION_TEAM_NAME_LENGTH) return "El nombre del equipo no debe superar 150 caracteres.";
+  return null;
 }
 
 export function sortChampions<T extends { state: string }>(entries: T[]): T[] {

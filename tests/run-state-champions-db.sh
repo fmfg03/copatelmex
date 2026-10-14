@@ -20,5 +20,6 @@ trap cleanup EXIT
 "$pg_bin/psql" -h "$test_dir/socket" -p 55483 -U "$(if [ "$(id -u)" = 0 ]; then echo postgres; else id -un; fi)" -v ON_ERROR_STOP=1 \
   -f "$project_dir/tests/state-champions-fixture.sql" \
   -f "$project_dir/supabase/migrations/20261013120000_state_champions.sql" \
+  -f "$project_dir/supabase/migrations/20261013130000_state_champions_team_names.sql" \
   -f "$project_dir/tests/state-champions-db.sql"
 echo "PASS state champions SQL acceptance (disposable database)"

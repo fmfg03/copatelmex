@@ -8,15 +8,15 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { optimizeChampionImage } from "@/lib/championImages";
 import { fetchAdminChampions, saveChampionDraft, publishChampion, withdrawChampion } from "@/lib/stateChampionsApi";
-import { CHAMPION_BUCKET, CHAMPION_CATEGORIES, CHAMPION_LABELS, CHAMPION_STATES, DEFAULT_CHAMPION_FRAMING, completeChampionPhotos, sortChampions, validateChampionImage, type ChampionCategory, type ChampionEntry, type ChampionFraming, type ChampionPhoto, type ChampionPhotos } from "@/lib/stateChampions";
+import { CHAMPION_BUCKET, CHAMPION_CATEGORIES, CHAMPION_LABELS, CHAMPION_STATES, DEFAULT_CHAMPION_FRAMING, completeChampionPhotos, hasChampionImage, normalizeChampionTeamName, championTeamNameLength, validateChampionTeamName, MAX_CHAMPION_TEAM_NAME_LENGTH, sortChampions, validateChampionImage, type ChampionCategory, type ChampionEntry, type ChampionFraming, type ChampionPhoto, type ChampionPhotos } from "@/lib/stateChampions";
 
 type PendingPhoto = { file?: File; framing: ChampionFraming };
 type PendingPhotos = Partial<Record<ChampionCategory, PendingPhoto>>;
 const message = (error: unknown) => error instanceof Error ? error.message : "No se pudo completar la operación. Intenta nuevamente.";
 
-function PhotoPreview({ photo, pending, category, onFrame, onFile, onRemove, disabled }: {
+function PhotoPreview({ photo, pending, category, onFrame, onFile, onName, onRemove, disabled }: {
   photo?: ChampionPhoto; pending?: PendingPhoto; category: ChampionCategory;
-  onFrame: (frame: ChampionFraming) => void; onFile: (file: File) => void; onRemove: () => void; disabled: boolean;
+  onFrame: (frame: ChampionFraming) => void; onFile: (file: File) => void; onName: (name: string) => void; onRemove: () => void; disabled: boolean;
 }) {
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -44,9 +44,16 @@ function PhotoPreview({ photo, pending, category, onFrame, onFile, onRemove, dis
     }, 120);
     return () => { active = false; window.clearTimeout(timer); if (objectUrl) URL.revokeObjectURL(objectUrl); };
   }, [pending?.file, photo?.original_path, framing.zoom, framing.x, framing.y]);
-  const hasPhoto = Boolean(pending?.file || photo);
+  const hasPhoto = Boolean(pending?.file || hasChampionImage(photo));
+  const nameLength = championTeamNameLength(photo?.team_name ?? "");
   return <fieldset disabled={disabled} className="min-w-0 space-y-3 rounded-lg border p-3">
     <legend className="px-1 font-semibold">{label}</legend>
+    <div className="space-y-1">
+      <Label htmlFor={`champion-team-name-${category}`}>Nombre del equipo {label}</Label>
+      <Input id={`champion-team-name-${category}`} value={photo?.team_name ?? ""} onChange={(event) => onName(event.target.value)} aria-invalid={nameLength > MAX_CHAMPION_TEAM_NAME_LENGTH} aria-describedby={`champion-name-help-${category}`} />
+      <p id={`champion-name-help-${category}`} className="text-xs text-muted-foreground">{nameLength} / {MAX_CHAMPION_TEAM_NAME_LENGTH} caracteres</p>
+      {nameLength > MAX_CHAMPION_TEAM_NAME_LENGTH && <p role="alert" className="text-sm text-destructive">El nombre del equipo no debe superar 150 caracteres.</p>}
+    </div>
     <div className="aspect-[3/2] overflow-hidden rounded-md bg-muted">
       {preview ? <img src={preview} alt={`Vista previa ${label}`} width={900} height={600} className="h-full w-full object-contain" />
         : <p className="flex h-full items-center justify-center p-2 text-center text-sm text-muted-foreground">{hasPhoto ? "Preparando vista previa…" : "Sin fotografía"}</p>}
@@ -112,20 +119,25 @@ export function AdminStateChampions() {
   }
   function removePhoto(category: ChampionCategory) {
     fileVersions.current[category]++;
-    setDraft((current) => { const next = { ...current }; delete next[category]; return next; });
+    setDraft((current) => { const next = { ...current }; const name = current[category]?.team_name; if (name !== undefined) next[category] = { team_name: name }; else delete next[category]; return next; });
     setPending((current) => { const next = { ...current }; delete next[category]; return next; });
     setPreparing((current) => ({ ...current, [category]: false }));
   }
   const busy = saving || Object.values(preparing).some(Boolean);
-  const complete = CHAMPION_CATEGORIES.every((category) => pending[category]?.file || draft[category]);
+  const nameTooLong = CHAMPION_CATEGORIES.some((category) => championTeamNameLength(draft[category]?.team_name ?? "") > MAX_CHAMPION_TEAM_NAME_LENGTH);
+  const complete = CHAMPION_CATEGORIES.every((category) => (pending[category]?.file || hasChampionImage(draft[category])) && validateChampionTeamName(draft[category]?.team_name ?? "") === null);
 
   async function save(publish: boolean) {
-    if (busy || !state || (publish && !complete)) return;
+    if (busy || !state || nameTooLong || (publish && !complete)) return;
     setSaving(true); setDialogError(null);
     const uploaded: string[] = [];
     let mutationAttempted = false;
     try {
       const preparedDraft = { ...draft };
+      for (const category of CHAMPION_CATEGORIES) {
+        const photo = preparedDraft[category];
+        if (photo?.team_name !== undefined) preparedDraft[category] = { ...photo, team_name: normalizeChampionTeamName(photo.team_name) };
+      }
       for (const category of CHAMPION_CATEGORIES) {
         const replacement = pending[category];
         if (!replacement) continue;
@@ -140,6 +152,7 @@ export function AdminStateChampions() {
           if (result.error) throw new Error("No se pudo subir la fotografía original. Intenta nuevamente.");
           uploaded.push(originalPath);
         } else {
+          if (!originalPath) throw new Error("No se pudo recuperar el original para ajustar el encuadre.");
           const result = await supabase.storage.from(CHAMPION_BUCKET).download(originalPath);
           if (result.error || !result.data) throw new Error("No se pudo recuperar el original para ajustar el encuadre.");
           original = result.data;
@@ -150,7 +163,7 @@ export function AdminStateChampions() {
         const result = await supabase.storage.from(CHAMPION_BUCKET).upload(imagePath, optimized, { contentType: optimized.type, upsert: false });
         if (result.error) throw new Error("No se pudo subir la fotografía del banner. Intenta nuevamente.");
         uploaded.push(imagePath);
-        preparedDraft[category] = { original_path: originalPath, image_path: imagePath, framing: replacement.framing };
+        preparedDraft[category] = { ...preparedDraft[category], original_path: originalPath, image_path: imagePath, framing: replacement.framing };
       }
       mutationAttempted = true;
       const saved = await saveChampionDraft({ id: editing?.id, state, draft: preparedDraft, expectedUpdatedAt: editing?.updated_at });
@@ -181,7 +194,7 @@ export function AdminStateChampions() {
 
   return <div className="space-y-6" data-testid="admin-state-champions">
     <div className="flex flex-wrap items-center justify-between gap-4">
-      <div><h2 className="text-2xl font-bold">Campeones estatales</h2><p className="text-sm text-muted-foreground">Carga las tres categorías de cada estado y revisa el encuadre antes de publicar.</p></div>
+      <div><h2 className="text-2xl font-bold">Campeones estatales</h2><p className="text-sm text-muted-foreground">Carga las fotografías y nombres de equipo de las tres categorías de cada estado antes de publicar.</p></div>
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" onClick={() => void load()} disabled={loading || saving}>Recargar estados</Button>
         <Button onClick={() => start(null)} disabled={loading || saving || Boolean(error)}><ImagePlus className="mr-2 h-4 w-4" />Agregar estado</Button>
@@ -195,7 +208,7 @@ export function AdminStateChampions() {
         <CardHeader><CardTitle className="flex items-center gap-2"><Trophy className="h-5 w-5 text-primary" />{entry.state}</CardTitle></CardHeader>
         <CardContent className="space-y-3">
           <p className="font-medium">{entry.published ? "Publicado" : "Borrador"}</p>
-          <p className="text-sm text-muted-foreground">{CHAMPION_CATEGORIES.filter((category) => entry.draft[category]).length} / 3 fotografías en borrador</p>
+          <p className="text-sm text-muted-foreground">{CHAMPION_CATEGORIES.filter((category) => hasChampionImage(entry.draft[category])).length} / 3 fotografías en borrador</p>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" size="sm" disabled={saving} onClick={() => start(entry)}><Pencil className="mr-1 h-4 w-4" />Editar {entry.state}</Button>
             <Button size="sm" disabled={saving || !completeChampionPhotos(entry.draft)} onClick={() => void publish(entry)}>Publicar {entry.state}</Button>
@@ -215,12 +228,13 @@ export function AdminStateChampions() {
           </select>
         </div>
         <div className="grid gap-4 md:grid-cols-3">{CHAMPION_CATEGORIES.map((category) => <PhotoPreview key={`${editing?.id ?? "new"}-${category}`} category={category} photo={draft[category]} pending={pending[category]} disabled={busy}
+          onName={(name) => setDraft((current) => ({ ...current, [category]: { ...current[category], team_name: name } }))}
           onFile={(file) => void selectFile(category, file)} onRemove={() => removePhoto(category)}
           onFrame={(framing) => setPending((current) => ({ ...current, [category]: { ...current[category], framing } }))} />)}</div>
-        {!complete && <p className="text-sm text-muted-foreground">Completa Varonil, Juvenil y Femenil para publicar. Puedes guardar un borrador incompleto.</p>}
+        {!complete && <p className="text-sm text-muted-foreground">Completa las tres fotografías y sus nombres de equipo para publicar. Puedes guardar un borrador incompleto.</p>}
         <div className="flex flex-wrap justify-end gap-2">
           <Button variant="outline" disabled={busy} onClick={() => setOpen(false)}>Cancelar</Button>
-          <Button variant="outline" disabled={busy || !state} onClick={() => void save(false)}>Guardar borrador</Button>
+          <Button variant="outline" disabled={busy || !state || nameTooLong} onClick={() => void save(false)}>Guardar borrador</Button>
           <Button disabled={busy || !state || !complete} onClick={() => void save(true)}>{busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Publicar estado</Button>
         </div>
       </DialogContent>

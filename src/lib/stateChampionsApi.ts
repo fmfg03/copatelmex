@@ -9,7 +9,7 @@ function championApiError(error: { code?: string; message?: string }, fallback: 
     "42501": "Necesitas una sesión vigente con permisos de administrador.",
     PGRST301: "Tu sesión venció. Inicia sesión nuevamente.",
     PGRST302: "Necesitas iniciar sesión con permisos de administrador.",
-    "22023": "Revisa las imágenes y su encuadre. Para publicar se necesitan las tres categorías completas.",
+    "22023": "Revisa las fotografías, nombres de equipo y encuadres. Para publicar se necesitan las tres fotos y sus nombres; cada nombre admite hasta 150 caracteres.",
     P0002: "Este estado ya no está disponible. Recarga los datos.",
   };
   return new Error(messages[error.code ?? ""] ?? fallback);

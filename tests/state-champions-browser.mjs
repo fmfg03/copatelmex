@@ -5,7 +5,7 @@
  */
 import assert from 'node:assert/strict';
 import { pathToFileURL } from 'node:url';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 
 const { chromium } = await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE_PATH || '/root/copa-nido-aguila/node_modules/playwright-core/index.mjs').href);
 const base = (process.env.ACCEPTANCE_BASE_URL || 'http://127.0.0.1:4174/').replace(/\/?$/, '/');
@@ -20,8 +20,12 @@ async function screenshot(page, filename, target) {
   if (evidenceDir) await (target || page).screenshot({ path: `${evidenceDir}/${filename}.png`, ...(target ? {} : { fullPage: true }) });
 }
 const photos = Object.fromEntries(['varonil', 'juvenil', 'femenil'].map(category => [category, {
+  team_name: `Club ${category === 'varonil' ? 'Varonil' : category === 'juvenil' ? 'Juvenil' : 'Femenil'}`,
   original_path: `champions/acceptance/${category}.png`, image_path: `champions/acceptance/${category}.webp`, framing: { zoom: 1, x: 50, y: 50 },
 }]));
+const legacyPhotos = Object.fromEntries(Object.entries(photos).map(([category, photo]) => {
+  const { team_name, ...legacy } = photo; return [category, legacy];
+}));
 const entry = (state = 'Aguascalientes', draft = photos) => ({ id: '22222222-2222-4222-8222-222222222222', state, draft: structuredClone(draft), published: null, updated_at: '2026-10-13T12:00:00Z', published_at: null });
 const publicState = state => ({ id: state, state, photos });
 
@@ -34,6 +38,7 @@ async function check(name, fn) {
 async function fixture({ role = null, published = [], draftRows = [], publicFailure = false, broken = false, conflict = false, storageFailure = false, expired = false, viewport = { width: 1440, height: 1000 } } = {}) {
   const context = await browser.newContext({ viewport, reducedMotion: 'no-preference' });
   const calls = [];
+  let fixtureImage = png;
   await context.route('**/*', async route => {
     const request = route.request();
     const url = new URL(request.url());
@@ -42,9 +47,9 @@ async function fixture({ role = null, published = [], draftRows = [], publicFail
     if (url.hostname !== 'champions.example.test') return route.abort();
     if (url.pathname.includes('/auth/v1/user')) return json(user);
     if (url.pathname.includes('/auth/v1/token')) return expired ? json({ message: 'Invalid Refresh Token', error_code: 'refresh_token_not_found' }, 400) : json({ user, access_token: 'acceptance-access', refresh_token: 'acceptance-refresh', expires_in: 3600, token_type: 'bearer' });
-    if (url.pathname.includes('/storage/v1/object/public/')) return broken ? route.fulfill({ status: 404, body: '' }) : route.fulfill({ contentType: 'image/png', body: png });
+    if (url.pathname.includes('/storage/v1/object/public/')) return broken ? route.fulfill({ status: 404, body: '' }) : route.fulfill({ contentType: 'image/png', body: fixtureImage });
     if (url.pathname.startsWith('/storage/v1/object/')) {
-      if (request.method() === 'GET') return route.fulfill({ contentType: 'image/png', body: png });
+      if (request.method() === 'GET') { calls.push({ name: 'download_original', path: url.pathname }); return route.fulfill({ contentType: 'image/png', body: fixtureImage }); }
       calls.push({ name: 'storage', method: request.method(), path: url.pathname }); return storageFailure ? json({ message: 'Simulated upload failure', statusCode: '500' }, 500) : json({ Key: url.pathname });
     }
     const rpc = url.pathname.split('/rpc/')[1];
@@ -53,11 +58,13 @@ async function fixture({ role = null, published = [], draftRows = [], publicFail
       if (rpc === 'get_published_state_champions') return publicFailure ? json({ message: 'Acceptance simulated failure', code: 'XX000' }, 500) : json(published);
       if (conflict) return json({ message: 'Champion state changed; reload before saving', code: '40001' }, 409);
       if (rpc === 'save_state_champion_draft') {
-        const saved = { ...(draftRows.find(row => row.id === args.p_id) || entry(args.p_state)), draft: args.p_draft, updated_at: '2026-10-13T12:00:01Z' };
+        const draft = Object.fromEntries(Object.entries(args.p_draft).map(([category, photo]) => [category, { ...photo, ...(typeof photo.team_name === 'string' ? { team_name: photo.team_name.trim() } : {}) }]));
+        const saved = { ...(draftRows.find(row => row.id === args.p_id) || entry(args.p_state)), draft, updated_at: '2026-10-13T12:00:01Z' };
         draftRows.splice(0, draftRows.length, saved); return json(saved);
       }
       if (rpc === 'publish_state_champion' || rpc === 'withdraw_state_champion') {
         const saved = { ...draftRows[0], published: rpc === 'publish_state_champion' ? draftRows[0].draft : null, published_at: rpc === 'publish_state_champion' ? '2026-10-13T12:00:02Z' : null, updated_at: '2026-10-13T12:00:02Z' };
+        published.splice(0, published.length, ...(saved.published ? [{ id: saved.id, state: saved.state, photos: structuredClone(saved.published) }] : []));
         draftRows.splice(0, draftRows.length, saved); return json(saved);
       }
       return json(null);
@@ -75,6 +82,12 @@ async function fixture({ role = null, published = [], draftRows = [], publicFail
     localStorage.setItem('sb-champions-auth-token', JSON.stringify({ access_token: 'acceptance-access', refresh_token: 'acceptance-refresh', expires_at: Math.floor(Date.now() / 1000) + (expired ? -3600 : 3600), expires_in: 3600, token_type: 'bearer', user }));
   }, { user, expired });
   const page = await context.newPage();
+  fixtureImage = Buffer.from(await page.evaluate(() => {
+    const canvas = document.createElement('canvas'); canvas.width = 900; canvas.height = 600;
+    const ctx = canvas.getContext('2d'); ctx.fillStyle = '#165783'; ctx.fillRect(0, 0, 900, 600);
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(150, 200, 600, 200);
+    return canvas.toDataURL('image/png').split(',')[1];
+  }), 'base64');
   return { context, page, calls };
 }
 
@@ -313,6 +326,7 @@ await check('Admin: complete three-photo upload, publish version, withdraw', asy
     await page.getByLabel('Estado', { exact: true }).selectOption('Aguascalientes');
     const file = await photoFile(page);
     for (const label of ['Varonil', 'Juvenil', 'Femenil']) {
+      await page.getByLabel(`Nombre del equipo ${label}`, { exact: true }).fill(`Club ${label}`);
       await page.getByLabel(`Fotografía ${label}`, { exact: true }).setInputFiles(file);
       await page.getByAltText(`Vista previa ${label}`).waitFor();
     }
@@ -321,6 +335,7 @@ await check('Admin: complete three-photo upload, publish version, withdraw', asy
     await page.getByRole('dialog').waitFor({ state: 'hidden' });
     const save = calls.find(call => call.name === 'save_state_champion_draft');
     assert.equal(Object.keys(save.args.p_draft).length, 3);
+    assert.deepEqual(Object.values(save.args.p_draft).map(photo => photo.team_name), ['Club Varonil', 'Club Juvenil', 'Club Femenil']);
     const publish = calls.find(call => call.name === 'publish_state_champion');
     assert.equal(publish.args.p_expected_updated_at, '2026-10-13T12:00:01Z');
     await page.getByRole('button', { name: 'Retirar Aguascalientes', exact: true }).click();
@@ -342,6 +357,7 @@ await check('Admin: published replacement stays draft until explicit publish; st
     const save = calls.find(call => call.name === 'save_state_champion_draft');
     assert.equal(save.args.p_id, row.id); assert.equal(save.args.p_expected_updated_at, row.updated_at);
     assert.notEqual(save.args.p_draft.varonil.image_path, row.published.varonil.image_path);
+    assert.equal(save.args.p_draft.varonil.team_name, row.published.varonil.team_name);
     assert.deepEqual(row.published, photos);
     assert(!calls.some(call => call.name === 'publish_state_champion'));
     assert.equal(await page.getByRole('button', { name: 'Retirar Aguascalientes', exact: true }).count(), 1);
@@ -391,5 +407,143 @@ await check('Expired session cannot access admin champions', async () => {
   } finally { await context.close(); }
 });
 
+await check('Team names: partial name-only draft trims and reopens without uploads', async () => {
+  const { page, context, calls } = await fixture({ role: 'admin' });
+  try {
+    await openChampions(page); await page.getByRole('button', { name: 'Agregar estado', exact: true }).click();
+    await page.getByLabel('Estado', { exact: true }).selectOption('Aguascalientes');
+    await page.getByLabel('Nombre del equipo Varonil', { exact: true }).fill('  Águilas de México  ');
+    assert(await page.getByRole('button', { name: 'Publicar estado', exact: true }).isDisabled());
+    await page.getByRole('button', { name: 'Guardar borrador', exact: true }).click();
+    await page.getByRole('dialog').waitFor({ state: 'hidden' });
+    assert(!calls.some(call => call.name === 'storage' || call.name === 'download_original'));
+    const save = calls.find(call => call.name === 'save_state_champion_draft');
+    assert.equal(save.args.p_draft.varonil.team_name.trim(), 'Águilas de México');
+    assert.equal(save.args.p_draft.varonil.image_path, undefined); assert.equal(save.args.p_draft.varonil.original_path, undefined);
+    await page.getByRole('button', { name: 'Editar Aguascalientes', exact: true }).click();
+    assert.equal(await page.getByLabel('Nombre del equipo Varonil', { exact: true }).inputValue(), 'Águilas de México');
+    assert.equal(await page.getByLabel('Nombre del equipo Juvenil', { exact: true }).inputValue(), '');
+    assert(await page.getByRole('button', { name: 'Publicar estado', exact: true }).isDisabled());
+  } finally { await context.close(); }
+});
+
+await check('Team names: limit counts Unicode codepoints after trimming', async () => {
+  const { page, context, calls } = await fixture({ role: 'admin' });
+  try {
+    await openChampions(page); await page.getByRole('button', { name: 'Agregar estado', exact: true }).click();
+    await page.getByLabel('Estado', { exact: true }).selectOption('Aguascalientes');
+    const input = page.getByLabel('Nombre del equipo Varonil', { exact: true });
+    await input.fill('😀'.repeat(151));
+    assert.equal([...await input.inputValue()].length, 151, '151-codepoint input must reach validation without UTF-16 truncation');
+    const saveButton = page.getByRole('button', { name: 'Guardar borrador', exact: true });
+    if (await saveButton.isEnabled()) await saveButton.click();
+    assert(await page.getByRole('dialog').isVisible());
+    assert(!calls.some(call => call.name === 'save_state_champion_draft'));
+    await input.fill(`  ${'😀'.repeat(150)}  `);
+    await saveButton.click(); await page.getByRole('dialog').waitFor({ state: 'hidden' });
+    const save = calls.find(call => call.name === 'save_state_champion_draft');
+    assert.equal([...save.args.p_draft.varonil.team_name.trim()].length, 150);
+    await page.getByRole('button', { name: 'Editar Aguascalientes', exact: true }).click();
+    assert.equal([...await input.inputValue()].length, 150);
+  } finally { await context.close(); }
+});
+
+await check('Legacy draft: three photos with blank names cannot publish until all names supplied', async () => {
+  const { page, context } = await fixture({ role: 'admin', draftRows: [entry('Aguascalientes', legacyPhotos)] });
+  try {
+    await openChampions(page);
+    assert(await page.getByRole('button', { name: 'Publicar Aguascalientes', exact: true }).isDisabled());
+    await page.getByRole('button', { name: 'Editar Aguascalientes', exact: true }).click();
+    for (const label of ['Varonil', 'Juvenil', 'Femenil']) assert.equal(await page.getByLabel(`Nombre del equipo ${label}`, { exact: true }).inputValue(), '');
+    assert(await page.getByRole('button', { name: 'Publicar estado', exact: true }).isDisabled());
+    for (const label of ['Varonil', 'Juvenil', 'Femenil']) await page.getByLabel(`Nombre del equipo ${label}`, { exact: true }).fill(`Club ${label}`);
+    assert(await page.getByRole('button', { name: 'Publicar estado', exact: true }).isEnabled());
+    for (const label of ['Varonil', 'Juvenil', 'Femenil']) await page.getByAltText(`Vista previa ${label}`).waitFor();
+    await screenshot(page, 'admin-team-names', page.getByRole('dialog'));
+  } finally { await context.close(); }
+});
+
+await check('Team names: edit text without image operations; publication retains old names until republish', async () => {
+  const row = { ...entry(), published: structuredClone(photos), published_at: '2026-10-13T11:00:00Z' };
+  const { page, context, calls } = await fixture({ role: 'admin', draftRows: [row], published: [publicState('Aguascalientes')] });
+  try {
+    await openChampions(page); await page.getByRole('button', { name: 'Editar Aguascalientes', exact: true }).click();
+    for (const label of ['Varonil', 'Juvenil', 'Femenil']) await page.getByAltText(`Vista previa ${label}`).waitFor();
+    const downloadsBefore = calls.filter(call => call.name === 'download_original').length;
+    await page.getByLabel('Nombre del equipo Varonil', { exact: true }).fill('  Atlético Águila  ');
+    await screenshot(page, 'admin-team-names-existing-preview', page.getByRole('dialog'));
+    await page.getByRole('button', { name: 'Guardar borrador', exact: true }).click(); await page.getByRole('dialog').waitFor({ state: 'hidden' });
+    const save = calls.find(call => call.name === 'save_state_champion_draft');
+    assert.equal(save.args.p_draft.varonil.team_name.trim(), 'Atlético Águila');
+    for (const category of ['varonil', 'juvenil', 'femenil']) {
+      assert.equal(save.args.p_draft[category].image_path, photos[category].image_path);
+      assert.equal(save.args.p_draft[category].original_path, photos[category].original_path);
+      assert.deepEqual(save.args.p_draft[category].framing, photos[category].framing);
+    }
+    assert(!calls.some(call => call.name === 'storage'));
+    assert.equal(calls.filter(call => call.name === 'download_original').length, downloadsBefore);
+    assert(!calls.some(call => call.name === 'publish_state_champion'));
+    const publicPage = await context.newPage(); await publicPage.goto(base); await publicPage.getByTestId('state-champions-banner').waitFor();
+    assert.equal(await publicPage.getByTestId('state-champions-banner').getByText('Club Varonil', { exact: true }).count(), 1);
+    assert.equal(await publicPage.getByTestId('state-champions-banner').getByText('Atlético Águila', { exact: true }).count(), 0);
+    await page.getByRole('button', { name: 'Publicar Aguascalientes', exact: true }).click();
+    await publicPage.reload(); await publicPage.getByTestId('state-champions-banner').getByText('Atlético Águila', { exact: true }).waitFor();
+  } finally { await context.close(); }
+});
+
+await check('Team names: removing an image keeps its category name', async () => {
+  const { page, context, calls } = await fixture({ role: 'admin', draftRows: [entry()] });
+  try {
+    await openChampions(page); await page.getByRole('button', { name: 'Editar Aguascalientes', exact: true }).click();
+    const category = page.locator('fieldset').filter({ has: page.getByLabel('Nombre del equipo Varonil', { exact: true }) });
+    await category.getByRole('button', { name: 'Quitar foto', exact: true }).click();
+    assert.equal(await page.getByLabel('Nombre del equipo Varonil', { exact: true }).inputValue(), 'Club Varonil');
+    assert(await page.getByRole('button', { name: 'Publicar estado', exact: true }).isDisabled());
+    await page.getByRole('button', { name: 'Guardar borrador', exact: true }).click(); await page.getByRole('dialog').waitFor({ state: 'hidden' });
+    assert.deepEqual(calls.find(call => call.name === 'save_state_champion_draft').args.p_draft.varonil, { team_name: 'Club Varonil' });
+  } finally { await context.close(); }
+});
+
+await check('Legacy publication: photographs and categories remain visible without invented team names', async () => {
+  const { page, context } = await fixture({ published: [{ id: 'legacy', state: 'Aguascalientes', photos: legacyPhotos }] });
+  try {
+    await page.goto(base); const banner = page.getByTestId('state-champions-banner'); await banner.waitFor();
+    assert.equal(await banner.locator('img').count(), 3);
+    for (const label of ['Varonil', 'Juvenil', 'Femenil']) assert.equal(await banner.getByText(label, { exact: true }).count(), 1);
+    assert.equal(await banner.getByText(/^Club /).count(), 0);
+    const alts = await banner.locator('img').evaluateAll(images => images.map(image => image.alt));
+    assert(alts.every(alt => alt.includes('Aguascalientes') && !alt.includes('undefined')));
+  } finally { await context.close(); }
+});
+
+for (const [label, viewport] of [['desktop', { width: 1440, height: 1000 }], ['mobile', { width: 390, height: 844 }]]) await check(`Team names: ${label} literal text, accessible photo names and long-name wrapping`, async () => {
+  const names = { varonil: 'Águilas de México', juvenil: '<img src=x onerror=alert(1)>', femenil: 'Á'.repeat(150) };
+  const namedPhotos = Object.fromEntries(Object.entries(photos).map(([category, photo]) => [category, { ...photo, team_name: names[category] }]));
+  const { page, context } = await fixture({ viewport, published: [{ id: 'named', state: 'Aguascalientes', photos: namedPhotos }] });
+  try {
+    await page.goto(base); const banner = page.getByTestId('state-champions-banner'); await banner.waitFor(); await banner.scrollIntoViewIfNeeded();
+    for (const [category, name] of Object.entries(names)) {
+      const text = banner.getByText(name, { exact: true }); assert.equal(await text.count(), 1);
+      const figure = banner.locator('figure').filter({ has: page.getByText(name, { exact: true }) });
+      const alt = await figure.locator('img').getAttribute('alt');
+      assert(alt.includes(name) && alt.includes('Aguascalientes') && alt.toLowerCase().includes(category));
+      const fig = await figure.boundingBox(); const nameBox = await text.boundingBox();
+      assert(nameBox.x >= fig.x && nameBox.x + nameBox.width <= fig.x + fig.width + 1);
+      const categoryText = figure.getByText(category === 'varonil' ? 'Varonil' : category === 'juvenil' ? 'Juvenil' : 'Femenil', { exact: true });
+      const categoryBox = await categoryText.boundingBox();
+      assert(nameBox.y >= categoryBox.y + categoryBox.height - 1);
+    }
+    assert.equal(await banner.locator('img[src="x"], [onerror]').count(), 0);
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+    const longName = banner.getByText(names.femenil, { exact: true });
+    assert(await longName.evaluate(el => el.getBoundingClientRect().height > parseFloat(getComputedStyle(el).lineHeight) * 1.5));
+    await screenshot(page, `public-team-names-${label}`, page.getByTestId('spot-champions-layout'));
+  } finally { await context.close(); }
+});
+
 await browser.close();
+if (evidenceDir) {
+  await writeFile(`${evidenceDir}/browser-results.json`, JSON.stringify({ status: results.every(result => result.result === 'PASS') ? 'PASS' : 'FAIL', case_count: results.length, mocked_external_requests: true, cases: results }, null, 2) + '\n');
+  await writeFile(`${evidenceDir}/browser-output.log`, results.map(result => `${result.result} ${result.name}${result.error ? `: ${result.error}` : ''}`).join('\n') + '\n');
+}
 if (results.some(result => result.result === 'FAIL')) process.exitCode = 1;

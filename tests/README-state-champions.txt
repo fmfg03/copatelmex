@@ -11,8 +11,15 @@ su ancho. Los errores de imágenes muestran la categoría no disponible.
 
 Panel > Campeones estatales (solo administradores): seleccionar estado,
 cargar JPG/PNG/WebP de hasta 10 MB por categoría Varonil/Juvenil/Femenil,
-revisar vista previa, ajustar encuadre y guardar borrador o publicar.
-Los borradores pueden estar incompletos. Publicar requiere tres categorías.
+escribir Nombre del equipo por categoría, revisar vista previa, ajustar
+encuadre y guardar borrador o publicar.
+Los borradores pueden guardar nombres sin fotos. Publicar requiere tres
+fotos y tres nombres no vacíos, de hasta 150 caracteres Unicode después de
+quitar espacios en los extremos. Se conservan acentos, mayúsculas y espacios
+interiores. Los nombres se muestran como texto bajo su categoría y en el
+texto alternativo de la imagen. Cambiar solo nombres no vuelve a subir fotos.
+Quitar o reemplazar una foto conserva su nombre. Las publicaciones anteriores
+sin nombres permanecen visibles; necesitan nombres antes de republicarse.
 Retirar conserva el borrador. Editar un borrador mantiene intacta la versión
 publicada hasta republicar. Recargar estados permite recuperar conflictos
 de edición concurrente después de cerrar el editor.
@@ -36,7 +43,7 @@ Pruebas unitarias (Node 22 con soporte de eliminación de tipos):
 Pruebas SQL (PostgreSQL 16, usuario postgres disponible si se ejecuta como root):
   bash tests/run-state-champions-db.sh
 El script crea un cluster NUEVO con socket Unix temporal, sin puerto TCP.
-Instala una fixture mínima, la migración y los casos de aceptación; los
+Instala una fixture mínima, ambas migraciones de campeones y los casos de aceptación; los
 casos se revierten y el servidor temporal se apaga al terminar.
 PG_BIN permite usar otra ubicación de los binarios de PostgreSQL.
 La fixture simula auth.uid, has_role y metadata de storage. No demuestra
